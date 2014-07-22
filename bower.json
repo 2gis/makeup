@@ -1,0 +1,16 @@
+{
+  "name": "Makeup",
+  "version": "0.0.0",
+  "homepage": "https://github.com/chaptykov/makeup",
+  "authors": [
+    "Tim Chaptykov <tim.chaptykov@gmail.com>"
+  ],
+  "license": "Commercial",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {}
+}

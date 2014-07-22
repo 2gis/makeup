@@ -1,0 +1,166 @@
+html {
+    height: 100%;
+    }
+
+body {
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    min-width: 1024px;
+    }
+
+button {
+    -webkit-font-smoothing: antialiased;
+    }
+
+.loading * {
+	transition: none !important;
+	}
+
+// * {outline: 1px solid rgba(128, 128, 128, .5);}
+
+
+/* Layout */
+
+.makeup {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: #4e4d4b;
+    color: #fff;
+    font: 20px/1 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .makeup__menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 2em;
+        background: #363535;
+        z-index: 2;
+        }
+
+    .makeup__aside {
+        position: absolute;
+        top: 2em;
+        bottom: 0;
+        left: 0;
+        width: 10em;
+        background: #1e1e1e;
+        z-index: 1;
+        }
+
+    .makeup__status {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 10em;
+        height: .75em;
+        }
+
+    .makeup__main {
+        position: absolute;
+        top: 2em;
+        left: 10em;
+        right: 0;
+        bottom: .75em;
+        }
+
+
+/* Ruler */
+
+.makeup__ruler {
+    position: absolute;
+
+    &--h {
+        top: 0;
+        right: 0;
+        left: 0;
+        height: .75em;
+        background: #242424;
+        }
+    &--v {
+        top: .75em;
+        bottom: 0;
+        left: 0;
+        width: .75em;
+        background: #242424;
+        }
+    }
+
+
+/* Button */
+
+.makeup__btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.6em;
+    height: 1.6em;
+    margin: .2em
+    }
+
+    .makeup__btn-checkbox {
+        display: none;
+        }
+
+    .makeup__btn-label {
+        .box-sizing(border-box);
+        display: inline-block;
+        vertical-align: middle;
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        text-indent: -999em;
+        background: #444;
+        overflow: hidden;
+        cursor: pointer;
+
+        .makeup__btn-checkbox:checked + & {
+            background: #000;
+            }
+        }
+
+
+/* Search */
+
+.makeup__search {
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+    .makeup__search-input {
+        
+        }
+
+
+/* Radio */
+
+.makeup__radio {
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+    .makeup__radio-title {
+        
+        }
+
+    .makeup__radio-item {
+        display: inline-block;
+        vertical-align: middle;
+        }
+
+        .makeup__radio-item-input {
+            display: none;
+            }
+
+        .makeup__radio-item-label {
+            display: inline-block;
+            vertical-align: middle;
+            width: 1.6em;
+            height: 1.6em;
+            margin: .2em;
+            background: #444;
+            }

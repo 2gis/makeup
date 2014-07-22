@@ -1,0 +1,67 @@
+.btn,
+.btn:visited {
+    .user-select(none);
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 9px 28px 8px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    vertical-align: top;
+    font: 16px/21px 'Proxima Nova Semibold', Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    transition:
+        background .2s ease,
+        color .2s ease;
+
+    &:hover {
+        background: #fff;
+        color: #000;
+        }
+    &:active {
+        bottom: -1px;
+        }
+    &:focus {
+        outline: none;
+        }
+
+    &._video {
+        border-color: #a697ff;
+        color: #a697fe;
+
+        &:hover {
+            background: #a697ff;
+            color: #000;
+            }
+        }
+
+    &._submit {
+        padding: 9px 0 8px;
+        width: 100%;
+        border: 0;
+        background: #1371f6;
+        color: #fff;
+        transition: background .2s ease;
+
+        &:hover {
+            background: #2b7ff7;
+            }
+        &:active {
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, .3);
+            }
+
+        &._inline {
+            width: auto;
+            padding: 9px 50px 8px;
+            }
+        }
+    }
+
+
+
+/* Indent between buttons */
+.btn + .btn {
+    margin-left: 16px;
+    }
