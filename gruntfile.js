@@ -19,8 +19,11 @@ module.exports = function(grunt) {
             },
             js: {
                 src: [
-                    'source/js/main.js',
-                    'source/blocks/*/*.js'
+                    'bower_components/handlebars/handlebars.min.js',
+                    'bower_components/jquery/dist/jquery.min.js',
+                    'temp/templates.js',
+                    'source/data/*.js',
+                    'source/js/main.js'
                 ],
                 dest: 'dist/makeup.js',
             }
@@ -104,6 +107,23 @@ module.exports = function(grunt) {
             }
         },
 
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: "makeupTemplates",
+                    processName: function(str) {
+                        var filepath = str.split('/'),
+                            filename = filepath[filepath.length - 1].split('.');
+
+                        return filename[0];
+                    }
+                },
+                files: {
+                    "temp/templates.js": "source/templates/*.html"
+                }
+            }
+        },
+
         watch: {
             css: {
                 files: [
@@ -180,8 +200,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-csso');
     grunt.loadNpmTasks('grunt-svgmin');
     grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-compile-handlebars');
     grunt.loadNpmTasks('grunt-data-uri');
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
 
     // Tasks
 
@@ -218,6 +238,7 @@ module.exports = function(grunt) {
         'clean:regular',
         'img',
         'css',
+        'handlebars',
         'js'
     ]);
 

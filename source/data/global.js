@@ -1,6 +1,7 @@
-{
+var global = {
     "menu": {
-        "tooltip": "Toggle menu"
+        "tooltip": "Toggle menu",
+        "default": true
     },
 
     "search": {
@@ -9,48 +10,44 @@
 
     "mode": {
         "label": "Mode",
-        "type": "radio",
-        "name": "makeup-mode",
 
         "items": [
             {
                 "tooltip": "Image",
-                "modifier": "_1",
+                "value": "1",
                 "checked": true
             },
             {
                 "tooltip": "Markup",
-                "modifier": "_2"
+                "value": "2",
             },
             {
                 "tooltip": "Markup and image",
-                "modifier": "_3"
+                "value": "3",
             },
             {
                 "tooltip": "Markup and inversed image",
-                "modifier": "_4"
+                "value": "4",
             }
         ]
     },
 
     "background": {
         "label": "Background",
-        "type": "radio",
-        "name": "makeup-background",
 
         "items": [
             {
                 "tooltip": "Gray",
-                "modifier": "color",
+                "value": "color",
                 "checked": true
             },
             {
                 "tooltip": "Transparency grid",
-                "modifier": "transparency"
+                "value": "transparency"
             },
             {
                 "tooltip": "2GIS Map",
-                "modifier": "_map"
+                "value": "map"
             }
         ]
     },

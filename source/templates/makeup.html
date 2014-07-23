@@ -1,0 +1,135 @@
+<div class="makeup">
+
+    {{!-- Menu --}}
+    <nav class="makeup__menu">
+
+        {{!-- Toggle menu --}}
+        {{#if menu}}
+            <div class="makeup__btn">
+                <input type="checkbox" name="makeup-menu" id="makeup-menu" class="makeup__btn-checkbox"{{#if menu.default}} checked{{/if}}>
+                <label for="makeup-menu" class="makeup__btn-label makeup__btn-label--menu" title="{{menu.tooltip}}">
+                    {{menu.tooltip}}
+                </label>
+            </div>
+        {{/if}}
+
+        {{!-- Search --}}
+        {{#if search}}
+            <div class="makeup__search">
+                <input type="text" class="makeup__search-input" name="makeup-search" id="makeup-search"{{#if search.placeholder}} placeholder="{{search.placeholder}}"{{/if}}>
+                <label for="makeup-search" class="makeup__search-icon"></label>
+            </div>
+        {{/if}}
+
+        {{!-- Mode --}}
+        {{#if mode}}
+            <div class="makeup__radio">
+
+                <div class="makeup__radio-title">
+                    {{mode.label}}
+                </div>
+
+                {{#each mode.items}}
+                    <div class="makeup__radio-item">
+                        <input type="radio" name="makeup-mode" id="makeup-mode-{{value}}" class="makeup__radio-item-input"{{#if checked}} checked{{/if}} data-value="{{value}}">
+                        <label for="makeup-mode-{{value}}" class="makeup__radio-item-label makeup__radio-item-label--blend-{{value}}" title="{{tooltip}}">
+                            {{tooltip}}
+                        </label>
+                    </div>
+                {{/each}}
+
+            </div>
+        {{/if}}
+
+        <!-- Background -->
+        {{#if background}}
+            <div class="makeup__radio">
+
+                <div class="makeup__radio-title">
+                    {{background.label}}
+                </div>
+
+                {{#each items}}
+                    <div class="makeup__radio-item">
+                        <input type="radio" name="makeup-bg" id="makeup-bg-{{value}}" class="makeup__radio-item-input"{{#if checked}} checked{{/if}} data-value="{{value}}">
+                        <label for="makeup-bg-{{value}}" class="makeup__radio-item-label makeup__radio-item-label--bg-{{value}}" title="{{tooltip}}">{{tooltip}}</label>
+                    </div>
+                {{/each}}
+
+            </div>
+        {{/if}}
+
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="makeup__aside">
+
+        <div class="makeup__nav">
+
+            <div class="makeup__nav-title">Modules</div>
+
+            <nav class="makeup__nav-list">
+
+                <article class="makeup__module">
+
+                    <header class="makeup__module-header">
+                        <div class="makeup__module-header-meta">
+                            <a href="#" class="makeup__doclink"></a>
+                            <div class="makeup__rating">1.6</div>
+                        </div>
+                        articleCard
+                    </header>
+
+                    <div class="makeup__subnav">
+                        <div class="makeup__subnav-title">vcData</div>
+                        <a href="#" class="makeup__subnav-link">full</a>
+                        <a href="#" class="makeup__subnav-link makeup__subnav-link--current">default</a>
+                        <a href="#" class="makeup__subnav-link">scroll</a>
+                        <div class="makeup__subnav-title">initData</div>
+                        <a href="#" class="makeup__subnav-link">default</a>
+                    </div>
+
+                </article>
+
+                <article class="makeup__module">
+
+                    <header class="makeup__module-header">
+                        <div class="makeup__module-header-meta">
+                            <a href="#" class="makeup__doclink"></a>
+                            <div class="makeup__rating">1.6</div>
+                        </div>
+                        articleCard
+                    </header>
+
+                    <div class="makeup__subnav">
+                        <div class="makeup__subnav-title">vcData</div>
+                        <a href="#" class="makeup__subnav-link">full</a>
+                        <a href="#" class="makeup__subnav-link">default</a>
+                        <a href="#" class="makeup__subnav-link">scroll</a>
+                        <div class="makeup__subnav-title">initData</div>
+                        <a href="#" class="makeup__subnav-link">default</a>
+                    </div>
+
+                </article>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+    <!-- Statusbar -->
+    <div class="makeup__status">
+        Statusbar
+    </div>
+
+    <!-- Main -->
+    <div class="makeup__main">
+
+        <!-- Rulers -->
+        <div class="makeup__ruler makeup__ruler--h"></div>
+        <div class="makeup__ruler makeup__ruler--v"></div>
+
+    </div>
+
+</div>
