@@ -37,6 +37,8 @@ gulp.task('default', function() {
 });
 
 
+gulp.task('d', ['dev']);
+
 gulp.task('dev', ['build'], function(callback) {
     return runSequence('build', 'connect', 'watch', callback);
 });
