@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     defineModule = require('gulp-define-module'),
     declare = require('gulp-declare'),
     jshint = require('gulp-jshint'),
-    plumber = require('gulp-plumber'), // @TODO
+    plumber = require('gulp-plumber'),
     
     runSequence = require('run-sequence'),
 
@@ -111,6 +111,7 @@ gulp.task('build-css', function() {
                   'source/less/common.less',
                   'source/blocks/*/*.less'])
             .pipe(concat('makeup.css'))
+            .pipe(plumber())
             .pipe(less())
             .pipe(buildOptions.release ? csso() : gutil.noop())
             .pipe(gulp.dest('dist/'))
