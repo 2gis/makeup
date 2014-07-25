@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     handlebars = require('gulp-handlebars'),
     defineModule = require('gulp-define-module'),
     declare = require('gulp-declare'),
+    jshint = require('gulp-jshint'),
     plumber = require('gulp-plumber'), // @TODO
     
     runSequence = require('run-sequence'),
@@ -86,6 +87,8 @@ gulp.task('build-js', function() {
     return (
         gulp.src(['source/js/main.js',
                   'source/blocks/*/*.js'])
+            .pipe(jshint())
+            .pipe(jshint.reporter('jshint-stylish'))
             .pipe(concat('makeup.js'))
             .pipe(buildOptions.release ? uglify() : gutil.noop())
             .pipe(gulp.dest('dist/'))

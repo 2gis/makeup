@@ -31,6 +31,8 @@
     "gulp-handlebars": "^2.1.0",
     "gulp-plumber": "^0.6.4",
     "gulp-define-module": "^0.1.1",
-    "gulp-declare": "^0.2.0"
+    "gulp-declare": "^0.2.0",
+    "gulp-jshint": "^1.7.1",
+    "jshint-stylish": "^0.4.0"
   }
 }
