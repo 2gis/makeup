@@ -13,7 +13,6 @@ var gulp = require('gulp'),
     declare = require('gulp-declare'),
     plumber = require('gulp-plumber'), // @TODO
     
-    es = require('event-stream'),
     runSequence = require('run-sequence'),
 
     args = require('yargs').argv;
