@@ -28,7 +28,7 @@ var config = require('./config.js'),
 
 
 var buildOptions = {
-        release: args._.indexOf('release') !== -1
+        release: 'r' in args || 'release' in args
     };
 
 
