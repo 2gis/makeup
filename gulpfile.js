@@ -117,3 +117,29 @@ gulp.task('build-css', function() {
             .pipe(gulp.dest('dist/'))
     );
 });
+
+
+var mocha = require('gulp-mocha'),
+
+    mochaOptions = {
+        globals: ['DEBUG'],
+        reporter: 'landing'
+    };
+
+gulp.task('test', function() {
+    return runSequence('unit', 'dom');
+});
+
+gulp.task('unit', function() {
+    return (
+        gulp.src('test/*.spec.js', { read: false })
+            .pipe(mocha(mochaOptions))
+            .on('error', function() {
+                gulp.emit('tl.fail', 'Unit tests failed!');
+            })
+    );
+});
+
+gulp.task('dom', function() {
+
+});
