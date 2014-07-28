@@ -128,9 +128,7 @@ var mocha = require('gulp-mocha'),
         reporter: 'landing'
     };
 
-gulp.task('test', function() {
-    return runSequence('unit', 'dom');
-});
+gulp.task('test', ['unit']);
 
 gulp.task('unit', function() {
     return (
@@ -140,8 +138,4 @@ gulp.task('unit', function() {
                 gulp.emit('tl.fail', 'Unit tests failed!');
             })
     );
-});
-
-gulp.task('dom', function() {
-
 });
