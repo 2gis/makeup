@@ -66,7 +66,7 @@ gulp.task('clean', function() {
 
 gulp.task('connect', function() {
     connect.server({
-        root: config.root || defaultConfig.root,
+        root: __dirname + '/' + (config.root || defaultConfig.root),
         port: config.port || defaultConfig.port
     });
 });
