@@ -32,6 +32,7 @@
     "gulp-plumber": "^0.6.4",
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^3.0.0",
+    "html-minifier": "^0.6.6",
     "jshint-stylish": "^0.4.0",
     "run-sequence": "^0.3.6",
     "yargs": "^1.2.6"

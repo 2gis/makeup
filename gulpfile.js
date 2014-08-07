@@ -13,7 +13,7 @@ var gulp = require('gulp'),
     declare = require('gulp-declare'),
     jshint = require('gulp-jshint'),
     plumber = require('gulp-plumber'),
-    
+
     runSequence = require('run-sequence'),
 
     args = require('yargs').argv;
@@ -23,7 +23,7 @@ var config = require('./config.js'),
 
     defaultConfig = {
         port: 3000,
-        root: 'dist/'
+        root: ''
     };
 
 
@@ -73,12 +73,25 @@ gulp.task('connect', function() {
 
 
 gulp.task('build-templates', function() {
+    var minify = require('html-minifier').minify;
+
     return (
         gulp.src('source/templates/*.html')
             .pipe(handlebars())
             .pipe(defineModule('plain'))
             .pipe(declare({
-                namespace: 'makeupTemplates'
+                namespace: 'makeupTemplates',
+                // processName: function(filepath) {
+                //     return filepath.replace(/source\/templates\/(.*).html/g, "$1");
+                // },
+                processContent: function(content, filepath) {
+                    return minify(content, {
+                        removeComments: true,
+                        collapseWhitespace: true,
+                        conservativeCollapse: true,
+                        removeEmptyAttributes: true
+                    });
+                }
             }))
             .pipe(concat('templates.js'))
             .pipe(gulp.dest('temp/'))
@@ -87,10 +100,16 @@ gulp.task('build-templates', function() {
 
 gulp.task('build-js', function() {
     return (
-        gulp.src(['source/js/main.js',
-                  'source/blocks/*/*.js'])
+        gulp.src([
+                'bower_components/handlebars/handlebars.min.js',
+                'bower_components/jquery/dist/jquery.min.js',
+                'bower_components/baron/baron.min.js',
+                'temp/templates.js',
+                'source/js/main.js',
+                'source/blocks/*/*.js'
+            ])
             .pipe(jshint())
-            .pipe(jshint.reporter('jshint-stylish'))
+            // .pipe(jshint.reporter('jshint-stylish'))
             .pipe(concat('makeup.js'))
             .pipe(buildOptions.release ? uglify() : gutil.noop())
             .pipe(gulp.dest('dist/'))
@@ -108,10 +127,12 @@ gulp.task('build-img', function() {
 
 gulp.task('build-css', function() {
     return (
-        gulp.src(['source/less/reset.less',
-                  'source/less/mixins.less',
-                  'source/less/common.less',
-                  'source/blocks/*/*.less'])
+        gulp.src([
+                'source/less/reset.less',
+                'source/less/mixins.less',
+                'source/less/common.less',
+                'source/blocks/*/*.less'
+            ])
             .pipe(concat('makeup.css'))
             .pipe(plumber())
             .pipe(less())
