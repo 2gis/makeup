@@ -21,4 +21,6 @@ main/static/assets
 cubic/local.py
 .idea/
 
+dist/
+
 npm-debug.log
