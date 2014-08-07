@@ -293,7 +293,7 @@ button {
 
 /* Navigation */
 .makeup__nav {
-    
+
     }
 
     .makeup__nav-title {
@@ -302,20 +302,40 @@ button {
         }
 
     .makeup__nav-list {
-        
+
         }
 
 /* Module */
 .makeup__module {
-    
+    .user-select(none);
     }
 
     .makeup__module-header {
+        position: relative;
         font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #eee;
         padding: 0 0 0 2.5em;
         white-space: nowrap;
         overflow: hidden;
+        cursor: pointer;
+
+        .makeup__module--expandable &:before {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            margin-top: -4px;
+            width: 8px;
+            height: 7px;
+            background: url(svg/i_expand.svg) top left no-repeat;
+            content: '';
+            }
+        .makeup__module--expanded &:before {
+            left: 17px;
+            width: 7px;
+            height: 8px;
+            margin-top: -3px;
+            background: url(svg/i_expanded.svg) top left no-repeat;
+            }
         }
 
         .makeup__module-header-meta {
@@ -344,7 +364,14 @@ button {
     }
 
 /* Subnav */
-.makeup__subnav {}
+.makeup__subnav {
+    display: none;
+    overflow: hidden;
+
+    .makeup__module--expanded & {
+        display: block;
+        }
+    }
 
     .makeup__subnav-title {
         color: #666;

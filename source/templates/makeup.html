@@ -6,7 +6,7 @@
         {{!-- Toggle menu --}}
         {{#if menu}}
             <div class="makeup__btn">
-                <input type="checkbox" name="makeup-menu" id="makeup-menu" class="makeup__btn-checkbox"{{#if menu.default}} checked{{/if}}>
+                <input type="checkbox" name="makeup-menu" id="makeup-menu" class="makeup__btn-checkbox"{{#if menu.checked}} checked{{/if}}>
                 <label for="makeup-menu" class="makeup__btn-label makeup__btn-label--menu" title="{{menu.tooltip}}">
                     {{menu.tooltip}}
                 </label>
@@ -68,51 +68,36 @@
 
             <div class="makeup__nav-title">Modules</div>
 
-            <nav class="makeup__nav-list">
+            {{#if modules}}
+                <nav class="makeup__nav-list">
+                    {{#each modules}}
+                        <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
 
-                <article class="makeup__module">
+                            <header class="makeup__module-header">
+                                {{label}}
+                            </header>
 
-                    <header class="makeup__module-header">
-                        <div class="makeup__module-header-meta">
-                            <a href="#" class="makeup__doclink"></a>
-                            <div class="makeup__rating">1.6</div>
-                        </div>
-                        articleCard
-                    </header>
+                            {{#if items}}
+                                <div class="makeup__subnav">
+                                    {{#each items}}
+                                        <div class="makeup__subnav-title">
+                                            {{label}}
+                                        </div>
+                                        {{#if items}}
+                                            {{#each items}}
+                                                <span class="makeup__subnav-link">
+                                                    {{label}}
+                                                </span>
+                                            {{/each}}
+                                        {{/if}}
+                                    {{/each}}
+                                </div>
+                            {{/if}}
 
-                    <div class="makeup__subnav">
-                        <div class="makeup__subnav-title">vcData</div>
-                        <a href="#" class="makeup__subnav-link">full</a>
-                        <a href="#" class="makeup__subnav-link makeup__subnav-link--current">default</a>
-                        <a href="#" class="makeup__subnav-link">scroll</a>
-                        <div class="makeup__subnav-title">initData</div>
-                        <a href="#" class="makeup__subnav-link">default</a>
-                    </div>
-
-                </article>
-
-                <article class="makeup__module">
-
-                    <header class="makeup__module-header">
-                        <div class="makeup__module-header-meta">
-                            <a href="#" class="makeup__doclink"></a>
-                            <div class="makeup__rating">1.6</div>
-                        </div>
-                        articleCard
-                    </header>
-
-                    <div class="makeup__subnav">
-                        <div class="makeup__subnav-title">vcData</div>
-                        <a href="#" class="makeup__subnav-link">full</a>
-                        <a href="#" class="makeup__subnav-link">default</a>
-                        <a href="#" class="makeup__subnav-link">scroll</a>
-                        <div class="makeup__subnav-title">initData</div>
-                        <a href="#" class="makeup__subnav-link">default</a>
-                    </div>
-
-                </article>
-
-            </nav>
+                        </article>
+                    {{/each}}
+                </nav>
+            {{/if}}
 
         </div>
 
