@@ -32,6 +32,9 @@ Makeup.prototype = {
                 scrollerTrack: '.makeup__aside-track',
                 scrollerTrackBar: '.makeup__aside-track-bar',
                 moduleHeader: '.makeup__module-header',
+                slider: '.makeup__slider',
+                sliderTrack: '.makeup__slider-track',
+                sliderTrackRunner: '.makeup__slider-track-runner'
             },
 
             modifiers: {
@@ -89,8 +92,6 @@ Makeup.prototype = {
 
             transparency: {
                 label: "Transparency",
-                type: "slider",
-                name: "makeup-transparency",
 
                 slider: {
                     min: 0,
@@ -101,8 +102,6 @@ Makeup.prototype = {
 
             zoom: {
                 label: "Zoom",
-                type: "slider",
-                name: "makeup-zoom",
 
                 slider: {
                     min: 1,
@@ -144,6 +143,7 @@ Makeup.prototype = {
     },
 
     _bindListeners: function() {
+        var params = this._params;
         /*
         Baron
         Rader
@@ -160,8 +160,27 @@ Makeup.prototype = {
         */
 
         this._bindMenuListeners();
-        this._bindSearchListeners();
-        },
+
+        if (params.search) {
+            this._bindSearchListeners();
+        }
+
+        if (params.modes) {
+            this._bindModesListeners();
+        }
+
+        if (params.backgrounds) {
+            this._bindBackgroundsListeners();
+        }
+
+        if (params.transparency) {
+            this._bindTransparencyListeners();
+        }
+
+        if (params.zoom) {
+            this._bindZoomListeners();
+        }
+    },
 
     /**
      * Menu
@@ -203,7 +222,9 @@ Makeup.prototype = {
     /**
      * Search control listeners
      */
-    _bindSearchListeners: function() {},
+    _bindSearchListeners: function() {
+
+    },
 
     /**
      * Mode control listeners
@@ -215,7 +236,45 @@ Makeup.prototype = {
     /**
      * Background control listeners
      */
-    _bindBackgroundsListeners: function() {},
+    _bindBackgroundsListeners: function() {
+
+    },
+
+    /**
+     * Background control listeners
+     */
+    _bindTransparencyListeners: function() {
+        var slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
+            sliderTrack = slider.find(this._params.selectors.sliderTrack),
+            sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
+            sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+
+        sliderTrack.rader({
+            points: sliderTrackPoint,
+            runners: sliderTrackRunner,
+            values: [0, 1],
+            change: function(e) {},
+            move: function(e) {}
+        });
+    },
+
+    /**
+     * Background control listeners
+     */
+    _bindZoomListeners: function() {
+        var slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
+            sliderTrack = slider.find(this._params.selectors.sliderTrack),
+            sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
+            sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+
+        sliderTrack.rader({
+            points: sliderTrackPoint,
+            runners: sliderTrackRunner,
+            values: [1, 4],
+            change: function(e) {},
+            move: function(e) {}
+        });
+    },
 
     /**
      * Mod

@@ -59,6 +59,34 @@
             </div>
         {{/if}}
 
+        {{#if transparency}}
+            <div class="makeup__slider makeup__slider--transparency">
+
+                <div class="makeup__slider-title">{{transparency.label}}</div>
+
+                <div class="makeup__slider-track">
+                    <div class="makeup__slider-track-in">
+                        <div class="makeup__slider-track-runner"></div>
+                    </div>
+                </div>
+
+            </div>
+        {{/if}}
+
+        {{#if zoom}}
+            <div class="makeup__slider makeup__slider--zoom">
+
+                <div class="makeup__slider-title">{{zoom.label}}</div>
+
+                <div class="makeup__slider-track">
+                    <div class="makeup__slider-track-in">
+                        <div class="makeup__slider-track-runner"></div>
+                    </div>
+                </div>
+
+            </div>
+        {{/if}}
+
     </nav>
 
     <!-- Sidebar -->

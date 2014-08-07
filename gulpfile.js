@@ -104,6 +104,7 @@ gulp.task('build-js', function() {
                 'bower_components/handlebars/handlebars.min.js',
                 'bower_components/jquery/dist/jquery.min.js',
                 'bower_components/baron/baron.min.js',
+                'bower_components/rader/rader.min.js',
                 'temp/templates.js',
                 'source/js/main.js',
                 'source/blocks/*/*.js'

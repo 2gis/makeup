@@ -322,19 +322,89 @@ button {
             background: url(svg/i_bg-map.svg) top left no-repeat;
             }
 
-/* Navigation */
-.makeup__nav {
 
+/* Slider */
+
+.makeup__slider {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 .25em 0 .2em;
+
+    &:before {
+        display: inline-block;
+        vertical-align: middle;
+        height: 1.6em;
+        content: '';
+        }
     }
+
+    .makeup__slider-title {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: .7em;
+        color: #ccc;
+        margin-right: .4em;
+        }
+
+    .makeup__slider-track {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        height: 1px;
+        border-top: 1px solid #000;
+        background: #444;
+        width: 60px;
+        margin: 0 0 0 8px;
+        }
+
+        .makeup__slider-track-in {}
+
+            .makeup__slider-track-runner {
+                position: absolute;
+                width: 0;
+                height: 0;
+                z-index: 1;
+
+                &:active {
+                    z-index: 2;
+                    }
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: -8px;
+                    left: -7px;
+                    width: 15px;
+                    height: 16px;
+                    border-radius: 2px;
+                    background: linear-gradient(to top, #555, #444);
+                    box-shadow: 0 1px 3px 0 #000;
+                    }
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: -4px;
+                    left: -3px;
+                    width: 5px;
+                    height: 8px;
+                    border-left: 1px solid #252525;
+                    border-right: 1px solid #252525;
+                    background: linear-gradient(to right, #252525, #252525) center center repeat-y;
+                    background-size: 1px 1px;
+                    }
+                }
+
+
+/* Navigation */
+.makeup__nav {}
 
     .makeup__nav-title {
         font: bold .8em/1.25em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         margin: .875em 0 .625em 1em;
         }
 
-    .makeup__nav-list {
+    .makeup__nav-list {}
 
-        }
 
 /* Module */
 .makeup__module {
