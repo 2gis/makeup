@@ -63,44 +63,50 @@
 
     <!-- Sidebar -->
     <aside class="makeup__aside">
+        <div class="makeup__aside-in">
 
-        <div class="makeup__nav">
+            <div class="makeup__nav">
 
-            <div class="makeup__nav-title">Modules</div>
+                <div class="makeup__nav-title">Modules</div>
 
-            {{#if modules}}
-                <nav class="makeup__nav-list">
-                    {{#each modules}}
-                        <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
+                {{#if modules}}
+                    <nav class="makeup__nav-list">
+                        {{#each modules}}
+                            <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
 
-                            <header class="makeup__module-header">
-                                {{label}}
-                            </header>
+                                <header class="makeup__module-header">
+                                    {{label}}
+                                </header>
 
-                            {{#if items}}
-                                <div class="makeup__subnav">
-                                    {{#each items}}
-                                        <div class="makeup__subnav-title">
-                                            {{label}}
-                                        </div>
-                                        {{#if items}}
-                                            {{#each items}}
-                                                <span class="makeup__subnav-link">
-                                                    {{label}}
-                                                </span>
-                                            {{/each}}
-                                        {{/if}}
-                                    {{/each}}
-                                </div>
-                            {{/if}}
+                                {{#if items}}
+                                    <div class="makeup__subnav">
+                                        {{#each items}}
+                                            <div class="makeup__subnav-title">
+                                                {{label}}
+                                            </div>
+                                            {{#if items}}
+                                                {{#each items}}
+                                                    <span class="makeup__subnav-link">
+                                                        {{label}}
+                                                    </span>
+                                                {{/each}}
+                                            {{/if}}
+                                        {{/each}}
+                                    </div>
+                                {{/if}}
 
-                        </article>
-                    {{/each}}
-                </nav>
-            {{/if}}
+                            </article>
+                        {{/each}}
+                    </nav>
+                {{/if}}
+
+            </div>
+
+            <div class="makeup__aside-track">
+                <div class="makeup__aside-track-bar"></div>
+            </div>
 
         </div>
-
     </aside>
 
     <!-- Statusbar -->

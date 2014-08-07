@@ -27,7 +27,15 @@ Makeup.prototype = {
         this._params = this._viewModel(_.merge({
 
             selectors: {
-                moduleHeader: '.makeup__module-header'
+                sidebar: '.makeup__aside',
+                scroller: '.makeup__aside-in',
+                scrollerTrack: '.makeup__aside-track',
+                scrollerTrackBar: '.makeup__aside-track-bar',
+                moduleHeader: '.makeup__module-header',
+            },
+
+            modifiers: {
+                baron: 'makeup__aside--baron'
             },
 
             menu: {
@@ -130,10 +138,6 @@ Makeup.prototype = {
 
         }, options));
 
-        // console.log(this._params);
-
-        // console.log(JSON.stringify(this._params, null, 4));
-
         $('body').append(makeupTemplates.makeup(this._params));
 
         this._bindListeners();
@@ -164,6 +168,7 @@ Makeup.prototype = {
      */
     _bindMenuListeners: function() {
         var that = this,
+            sidebar = $(this._params.selectors.sidebar),
             module = $(this._params.selectors.moduleHeader);
 
         module.on('click', function() {
@@ -179,11 +184,19 @@ Makeup.prototype = {
             }
         });
 
+        this._baron = sidebar.baron({
+            scroller: this._params.selectors.scroller,
+            track:    this._params.selectors.scrollerTrack,
+            bar:      this._params.selectors.scrollerTrackBar,
+            barOnCls: this._params.modifiers.baron
+        });
+
         /**
          * Toggle subnavigation
          */
         function toggleMenuItem(directory) {
             that._mod(directory, {expanded: !that._mod(directory).expanded});
+            that._baron.update();
         }
     },
 
@@ -274,6 +287,10 @@ Makeup.prototype = {
 
         return out;
     },
+
+    /**
+     * Change
+     */
 
     /**
      * View model

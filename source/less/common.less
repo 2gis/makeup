@@ -51,6 +51,37 @@ button {
         z-index: 1;
         }
 
+        .makeup__aside-in {
+            height: 100%;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+                width: 0;
+                }
+            }
+
+            .makeup__aside-track {
+                display: none;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                bottom: 1px;
+                width: 4px;
+
+                .makeup__aside--baron & {
+                    display: block;
+                    }
+                }
+
+                .makeup__aside-track-bar {
+                    position: absolute;
+                    z-index: 1;
+                    right: 0;
+                    width: 4px;
+                    background: rgba(255, 255, 255, .4);
+                    }
+
+
     .makeup__status {
         position: absolute;
         right: 0;
