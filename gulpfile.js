@@ -81,9 +81,6 @@ gulp.task('build-templates', function() {
             .pipe(defineModule('plain'))
             .pipe(declare({
                 namespace: 'makeupTemplates',
-                // processName: function(filepath) {
-                //     return filepath.replace(/source\/templates\/(.*).html/g, "$1");
-                // },
                 processContent: function(content, filepath) {
                     return minify(content, {
                         removeComments: true,
@@ -98,7 +95,18 @@ gulp.task('build-templates', function() {
     );
 });
 
-gulp.task('build-js', function() {
+gulp.task('jshint', function() {
+    return (
+        gulp.src([
+            'source/js/main.js',
+            'source/blocks/*/*.js'
+        ])
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'))
+    );
+});
+
+gulp.task('build-js', ['jshint'], function() {
     return (
         gulp.src([
                 'bower_components/handlebars/handlebars.min.js',
@@ -108,9 +116,7 @@ gulp.task('build-js', function() {
                 'temp/templates.js',
                 'source/js/main.js',
                 'source/blocks/*/*.js'
-            ])
-            .pipe(jshint())
-            // .pipe(jshint.reporter('jshint-stylish'))
+        ])
             .pipe(concat('makeup.js'))
             .pipe(buildOptions.release ? uglify() : gutil.noop())
             .pipe(gulp.dest('dist/'))
