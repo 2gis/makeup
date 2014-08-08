@@ -111,15 +111,128 @@ button {
         left: 0;
         height: .75em;
         background: #242424;
+        padding: 0 0 0 2em;
         }
-    &--v {
-        top: .75em;
-        bottom: 0;
-        left: 0;
-        width: .75em;
-        background: #242424;
-        }
+
+    // &--v {
+    //     top: .75em;
+    //     bottom: 0;
+    //     left: 0;
+    //     width: .75em;
+    //     background: #242424;
+    //     }
     }
+
+    .makeup__ruler-track {
+        position: relative;
+        width: 2000px;
+        height: .75em;
+        background:
+            linear-gradient(to right,
+                transparent 10%,
+                #898989 10%,
+                #898989 11%,
+                transparent 11%,
+                transparent 20%,
+                #898989 20%,
+                #898989 21%,
+                transparent 21%,
+                transparent 30%,
+                #898989 30%,
+                #898989 31%,
+                transparent 31%,
+                transparent 40%,
+                #898989 40%,
+                #898989 41%,
+                transparent 41%,
+                transparent 50%,
+                #898989 50%,
+                #898989 51%,
+                transparent 51%,
+                transparent 60%,
+                #898989 60%,
+                #898989 61%,
+                transparent 61%,
+                transparent 70%,
+                #898989 70%,
+                #898989 71%,
+                transparent 71%,
+                transparent 80%,
+                #898989 80%,
+                #898989 81%,
+                transparent 81%,
+                transparent 90%,
+                #898989 90%,
+                #898989 91%,
+                transparent 91%
+            ) 0 10px repeat-x;
+        background-size: 100px 2px;
+        }
+
+        .makeup__ruler-track-in {
+            // width: 1000px;
+            }
+
+            .makeup__ruler-track-active {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: .75em;
+                background: #3a3a3a;
+                background-size: 10px 2px;
+                }
+
+            .makeup__ruler-track-runner {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 0;
+                z-index: 2;
+
+                &:before {
+                    position: absolute;
+                    top: 1px;
+                    left: -7px;
+                    width: 15px;
+                    height: 16px;
+                    background: url(svg/i_dragger-h.svg) top left no-repeat;
+                    content: '';
+                    }
+                }
+
+    .makeup__ruler-scale {
+        .user-select(none);
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 2em;
+        height: .75em;
+        z-index: 1;
+        white-space: nowrap;
+        counter-reset: scale;
+        }
+
+        .makeup__ruler-scale-item {
+            width: 100px;
+            height: .75em;
+            display: inline-block;
+            vertical-align: top;
+            text-align: right;
+            }
+
+        .makeup__ruler-scale-item:before {
+            display: inline-block;
+            vertical-align: top;
+            width: 3em;
+            text-align: center;
+            margin-right: -1.5em;
+            content: counter(scale)'00';
+            counter-increment: scale;
+            font: .5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            // background: #242424;
+            letter-spacing: -.1ex;
+            }
 
 
 /* Button */

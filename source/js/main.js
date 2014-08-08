@@ -34,7 +34,11 @@ Makeup.prototype = {
                 moduleHeader: '.makeup__module-header',
                 slider: '.makeup__slider',
                 sliderTrack: '.makeup__slider-track',
-                sliderTrackRunner: '.makeup__slider-track-runner'
+                sliderTrackRunner: '.makeup__slider-track-runner',
+                ruler: '.makeup__ruler-track',
+                rulerTrack: '.makeup__ruler-track-in',
+                rulerTrackActive: '.makeup__ruler-track-active',
+                rulerTrackRunner: '.makeup__ruler-track-runner'
             },
 
             modifiers: {
@@ -180,6 +184,10 @@ Makeup.prototype = {
         if (params.zoom) {
             this._bindZoomListeners();
         }
+
+        if (params.ruler) {
+            this._bindRulerListeners();
+        }
     },
 
     /**
@@ -271,6 +279,39 @@ Makeup.prototype = {
             points: sliderTrackPoint,
             runners: sliderTrackRunner,
             values: [1, 4],
+            change: function(e) {},
+            move: function(e) {}
+        });
+    },
+
+    /**
+     * Background control listeners
+     */
+    _bindRulerListeners: function() {
+        var ruler = $(this._params.selectors.ruler),
+            rulerTrack = ruler.find(this._params.selectors.rulerTrack),
+            rulerTrackActive = ruler.find(this._params.selectors.rulerTrackActive),
+            rulerTrackRunner = ruler.find(this._params.selectors.rulerTrackRunner),
+            rulerTrackPoint = ruler.find(this._params.selectors.rulerTrackPoint),
+            pos = [];
+
+        var i = 0;
+
+        while (i <= 2000) {
+            pos.push(i);
+            i += 100;
+        }
+
+        console.log(pos);
+
+        rulerTrack.rader({
+            trackActive: rulerTrackActive,
+            points: rulerTrackPoint,
+            pointsPos: pos,
+            runners: rulerTrackRunner,
+            values: [0, 2000],
+            runnersVal: [0, 400],
+            stickingRadius: 5,
             change: function(e) {},
             move: function(e) {}
         });
