@@ -18,7 +18,23 @@ State.prototype = {
     _init: function(params) {
         this._params = this._path2object(this._getHash()) || {};
 
+        this._bindListeners();
+
         this.set(params);
+    },
+
+    _bindListeners: function() {
+        var state = this,
+
+            onhashchangeHandler = window.onhashchange;
+
+        window.onhashchange = function() {
+            if (onhashchangeHandler instanceof Function) {
+                onhashchangeHandler.call(window);
+            }
+
+            state.set(state._path2object(state._getHash()));
+        };
     },
 
     /**
@@ -91,9 +107,9 @@ State.prototype = {
     },
 
     /**
-     * Sets state
+     * Sets state according to `params`
      *
-     * @param {Object} params 
+     * @param {Object} params Key-value object
      *
      * @returns {Object} State object
      *
