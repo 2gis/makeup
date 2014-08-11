@@ -139,6 +139,7 @@ Makeup.prototype = {
         $('body').append(makeupTemplates.makeup(this._params));
 
         this._bindListeners();
+        this._state = new State();
     },
 
     _bindListeners: function() {
@@ -247,7 +248,9 @@ Makeup.prototype = {
      * Background control listeners
      */
     _bindTransparencyListeners: function() {
-        var slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
+        var makeup = this,
+
+            slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
             sliderTrack = slider.find(this._params.selectors.sliderTrack),
             sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
             sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
@@ -256,7 +259,11 @@ Makeup.prototype = {
             points: sliderTrackPoint,
             runners: sliderTrackRunner,
             values: [0, 1],
-            change: function(e) {},
+            change: function(e) {
+                var transparencyValue = this.values[1];
+
+                makeup._state.set({ transparency: transparencyValue });
+            },
             move: function(e) {}
         });
     },
@@ -265,7 +272,9 @@ Makeup.prototype = {
      * Background control listeners
      */
     _bindZoomListeners: function() {
-        var slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
+        var makeup = this,
+        
+            slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
             sliderTrack = slider.find(this._params.selectors.sliderTrack),
             sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
             sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
@@ -274,7 +283,11 @@ Makeup.prototype = {
             points: sliderTrackPoint,
             runners: sliderTrackRunner,
             values: [1, 4],
-            change: function(e) {},
+            change: function(e) {
+                var zoomValue = this.values[1];
+
+                makeup._state.set({ zoom: zoomValue });
+            },
             move: function(e) {}
         });
     },
