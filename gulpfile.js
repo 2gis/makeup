@@ -110,11 +110,12 @@ gulp.task('build-js', ['jshint'], function() {
     return (
         gulp.src([
                 'bower_components/handlebars/handlebars.min.js',
+                'bower_components/lodash/dist/lodash.min.js',
                 'bower_components/jquery/dist/jquery.min.js',
                 'bower_components/baron/baron.min.js',
                 'bower_components/rader/rader.min.js',
                 'temp/templates.js',
-                'source/js/main.js',
+                'source/js/*.js',
                 'source/blocks/*/*.js'
         ])
             .pipe(concat('makeup.js'))
