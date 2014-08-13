@@ -112,7 +112,6 @@ State.prototype = {
      * @param {Object} params Key-value object
      *
      * @returns {Object} State object
-     *
      */
     set: function(params) {
         _.assign(this._params, params);

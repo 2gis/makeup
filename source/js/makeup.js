@@ -36,6 +36,7 @@ Makeup.prototype = {
                 rulerTrack: '.makeup__ruler-track-in',
                 rulerTrackActive: '.makeup__ruler-track-active',
                 rulerTrackRunner: '.makeup__ruler-track-runner',
+                rulerTrackPoint: '.makeup__ruler-track-point',
 
                 box: '.makeup__main',
                 container: '.makeup__container',
@@ -123,8 +124,8 @@ Makeup.prototype = {
 
                     slider: {
                         min: 0,
-                        max: 1000,
-                        step: 10
+                        max: 2000,
+                        value: 400
                     }
                 },
                 v: {
@@ -323,31 +324,41 @@ Makeup.prototype = {
      * Background control listeners
      */
     _bindRulerListeners: function() {
-        var ruler = $(this._params.selectors.ruler),
+        var makeup = this,
+
+            ruler = $(this._params.selectors.ruler),
             rulerTrack = ruler.find(this._params.selectors.rulerTrack),
             rulerTrackActive = ruler.find(this._params.selectors.rulerTrackActive),
             rulerTrackRunner = ruler.find(this._params.selectors.rulerTrackRunner),
             rulerTrackPoint = ruler.find(this._params.selectors.rulerTrackPoint),
-            pos = [];
 
-        var i = 0;
+            min = this._params.ruler.h.slider.min,
+            max = this._params.ruler.h.slider.max,
+            value = this._params.ruler.h.slider.value,
+
+            horizontalRuler,
+            pos = [],
+            i = 0;
 
         while (i <= 2000) {
             pos.push(i);
             i += 100;
         }
 
-        rulerTrack.rader({
+        horizontalRuler = rulerTrack.rader({
             trackActive: rulerTrackActive,
+            runners: rulerTrackRunner,
             points: rulerTrackPoint,
             pointsPos: pos,
-            runners: rulerTrackRunner,
-            values: [0, 2000],
-            runnersVal: [0, 400],
+            values: [min, max],
             stickingRadius: 5,
-            change: function(e) {},
-            move: function(e) {}
+            onUpdate: function(e) {
+                makeup._state.set({ width: e.maxVal })
+            }
         });
+
+        horizontalRuler.pos(0, 0);
+        horizontalRuler.pos(1, value);
     },
 
     /**
@@ -375,6 +386,13 @@ Makeup.prototype = {
         if (state.hasOwnProperty('zoom')) {
             container.css({
                 transform: 'scale(' + validateRangeValue(state.zoom, params.zoom.slider) + ')'
+            });
+        }
+
+        // Width
+        if (state.hasOwnProperty('width')) {
+            container.css({
+                width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
             });
         }
 
