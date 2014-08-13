@@ -27,13 +27,20 @@ Makeup.prototype = {
                 scrollerTrack: '.makeup__aside-track',
                 scrollerTrackBar: '.makeup__aside-track-bar',
                 moduleHeader: '.makeup__module-header',
+
                 slider: '.makeup__slider',
                 sliderTrack: '.makeup__slider-track',
                 sliderTrackRunner: '.makeup__slider-track-runner',
+
                 ruler: '.makeup__ruler-track',
                 rulerTrack: '.makeup__ruler-track-in',
                 rulerTrackActive: '.makeup__ruler-track-active',
-                rulerTrackRunner: '.makeup__ruler-track-runner'
+                rulerTrackRunner: '.makeup__ruler-track-runner',
+
+                box: '.makeup__main',
+                container: '.makeup__container',
+                containerImage: '.makeup__container-image',
+                containerMarkup: '.makeup__container-markup'
             },
 
             modifiers: {
@@ -95,7 +102,7 @@ Makeup.prototype = {
                 slider: {
                     min: 0,
                     max: 1,
-                    step: 0.1
+                    value: 1
                 }
             },
 
@@ -105,7 +112,7 @@ Makeup.prototype = {
                 slider: {
                     min: 1,
                     max: 4,
-                    step: 0.2
+                    value: 1
                 }
             },
 
@@ -138,12 +145,14 @@ Makeup.prototype = {
 
         $('body').append(makeupTemplates.makeup(this._params));
 
-        this._bindListeners();
         this._state = new State();
+        this._bindListeners();
     },
 
     _bindListeners: function() {
-        var params = this._params;
+        var makeup = this,
+            params = this._params,
+            win = $(window);
         /*
         Baron
         Rader
@@ -158,6 +167,10 @@ Makeup.prototype = {
         — дополнительно: статусбар (ховер по элементам, комментарии к модулю/типу)
         — дополнительно: настройки (масштаб)
         */
+
+        win.on('hashchange', function(e) {
+            makeup._setState(makeup._state.get());
+        });
 
         this._bindMenuListeners();
 
@@ -234,7 +247,7 @@ Makeup.prototype = {
      * Mode control listeners
      */
     _bindModesListeners: function() {
-
+        var makeup = this;
     },
 
     /**
@@ -250,21 +263,28 @@ Makeup.prototype = {
     _bindTransparencyListeners: function() {
         var makeup = this,
 
+            min = this._params.transparency.slider.min,
+            max = this._params.transparency.slider.max,
+            value = this._params.transparency.slider.value,
+
             slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
             sliderTrack = slider.find(this._params.selectors.sliderTrack),
             sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
             sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
 
+
         sliderTrack.rader({
             points: sliderTrackPoint,
             runners: sliderTrackRunner,
-            values: [0, 1],
-            change: function(e) {
-                var transparencyValue = this.values[1];
+            runnersVal: [value],
+            values: [min, max],
+            pointsPos: [min, max],
 
-                makeup._state.set({ transparency: transparencyValue });
-            },
-            move: function(e) {}
+            onUpdate: function(e) {
+                var value = Math.round(e.minVal * 100) / 100;
+
+                makeup._state.set({ transparency: value });
+            }
         });
     },
 
@@ -273,22 +293,29 @@ Makeup.prototype = {
      */
     _bindZoomListeners: function() {
         var makeup = this,
-        
+
+            min = this._params.zoom.slider.min,
+            max = this._params.zoom.slider.max,
+            value = this._params.zoom.slider.value,
+
             slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
             sliderTrack = slider.find(this._params.selectors.sliderTrack),
             sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
             sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
 
+
         sliderTrack.rader({
             points: sliderTrackPoint,
             runners: sliderTrackRunner,
-            values: [1, 4],
-            change: function(e) {
-                var zoomValue = this.values[1];
+            runnersVal: [value],
+            values: [min, max],
+            pointsPos: [min, max],
 
-                makeup._state.set({ zoom: zoomValue });
-            },
-            move: function(e) {}
+            onUpdate: function(e) {
+                var value = Math.round(e.minVal * 100) / 100;
+
+                makeup._state.set({ zoom: value });
+            }
         });
     },
 
@@ -310,8 +337,6 @@ Makeup.prototype = {
             i += 100;
         }
 
-        console.log(pos);
-
         rulerTrack.rader({
             trackActive: rulerTrackActive,
             points: rulerTrackPoint,
@@ -323,6 +348,53 @@ Makeup.prototype = {
             change: function(e) {},
             move: function(e) {}
         });
+    },
+
+    /**
+     * Set application state from object
+     *
+     * @param {Object} state
+     */
+    _setState: function(state) {
+        if (!state) {
+            return;
+        }
+
+        var params = this._params,
+            box = $(this._params.selectors.box),
+            container = $(this._params.selectors.container);
+
+        // Transparency
+        if (state.hasOwnProperty('transparency')) {
+            container.css({
+                opacity: validateRangeValue(state.transparency, params.transparency.slider)
+            });
+        }
+
+        // Zoom
+        if (state.hasOwnProperty('zoom')) {
+            container.css({
+                transform: 'scale(' + validateRangeValue(state.zoom, params.zoom.slider) + ')'
+            });
+        }
+
+        /**
+         * Validate range value
+         *
+         * @param {Number} value
+         * @param {Object} options
+         */
+        function validateRangeValue(value, options) {
+            if (value < options.min) {
+                return min;
+            }
+
+            if (value > options.max) {
+                return max;
+            }
+
+            return value;
+        }
     },
 
     /**
@@ -395,10 +467,6 @@ Makeup.prototype = {
 
         return out;
     },
-
-    /**
-     * Change
-     */
 
     /**
      * View model

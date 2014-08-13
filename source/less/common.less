@@ -97,6 +97,8 @@ button {
         left: 10em;
         right: 0;
         bottom: .75em;
+        overflow-x: hidden;
+        overflow-y: auto;
         }
 
 
@@ -104,6 +106,7 @@ button {
 
 .makeup__ruler {
     position: absolute;
+    overflow: hidden;
 
     &--h {
         top: 0;
@@ -164,7 +167,8 @@ button {
                 transparent 90%,
                 #898989 90%,
                 #898989 91%,
-                transparent 91%
+                transparent 91%,
+                transparent 100%
             ) 0 10px repeat-x;
         background-size: 100px 2px;
         }
@@ -232,6 +236,26 @@ button {
             font: .5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
             // background: #242424;
             letter-spacing: -.1ex;
+            }
+
+
+    .makeup__container {
+        position: absolute;
+        top: 2em;
+        left: 2em;
+        width: 400px;
+        height: 300px;
+        background: #fff;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        }
+
+        .makeup__container-image {
+
+            }
+
+        .makeup__container-markup {
+
             }
 
 
