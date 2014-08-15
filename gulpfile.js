@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     declare = require('gulp-declare'),
     jshint = require('gulp-jshint'),
     plumber = require('gulp-plumber'),
+    headerfooter = require('gulp-headerfooter'),
 
     runSequence = require('run-sequence'),
 
@@ -119,6 +120,9 @@ gulp.task('build-js', ['jshint'], function() {
                 'source/blocks/*/*.js'
         ])
             .pipe(concat('makeup.js'))
+            .pipe(headerfooter.header('(function(global) {'))
+            .pipe(headerfooter.footer('    global.Makeup = Makeup;'))
+            .pipe(headerfooter.footer('})(window);'))
             .pipe(buildOptions.release ? uglify() : gutil.noop())
             .pipe(gulp.dest('dist/'))
     );
