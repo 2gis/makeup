@@ -51,7 +51,7 @@
 
                 {{#each background.items}}
                     <div class="makeup__radio-item">
-                        <input type="radio" name="makeup-bg" id="makeup-bg-{{value}}" class="makeup__radio-item-input"{{#if checked}} checked{{/if}} data-value="{{value}}">
+                        <input type="radio" name="makeup-bg" id="makeup-bg-{{value}}" class="makeup__radio-item-input makeup__bg"{{#if checked}} checked{{/if}} value="{{value}}">
                         <label for="makeup-bg-{{value}}" class="makeup__radio-item-label makeup__radio-item-label--bg-{{value}}" title="{{tooltip}}">{{tooltip}}</label>
                     </div>
                 {{/each}}

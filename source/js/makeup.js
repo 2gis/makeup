@@ -31,6 +31,7 @@ Makeup.prototype = {
                 moduleHeader: '.makeup__module-header',
 
                 modeControl: '.makeup__mode',
+                bgControl: '.makeup__bg',
 
                 slider: '.makeup__slider',
                 sliderTrack: '.makeup__slider-track',
@@ -187,7 +188,7 @@ Makeup.prototype = {
             this._bindModesListeners();
         }
 
-        if (params.backgrounds) {
+        if (params.background) {
             this._bindBackgroundsListeners();
         }
 
@@ -281,7 +282,21 @@ Makeup.prototype = {
      * Background control listeners
      */
     _bindBackgroundsListeners: function() {
+        var makeup = this,
+            makeupElement = $(makeup._params.selectors.element),
+            bgControl = $(makeup._params.selectors.bgControl);
 
+        bgControl.on('change', function() {
+            var value;
+
+            bgControl.each(function(i) {
+                if (bgControl[i].checked == true) {
+                    value = bgControl[i].value;
+                }
+            });
+
+            makeup._mod(makeupElement[0], {bg: value});
+        });
     },
 
     /**
