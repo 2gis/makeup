@@ -22,6 +22,8 @@ Makeup.prototype = {
         this._params = this._viewModel(_.merge({
 
             selectors: {
+                element: '.makeup',
+
                 sidebar: '.makeup__aside',
                 scroller: '.makeup__aside-in',
                 scrollerTrack: '.makeup__aside-track',
@@ -221,6 +223,14 @@ Makeup.prototype = {
             }
         });
 
+        if (this._params.menu) {
+            var toggleMenu = $('#makeup-menu');
+
+            toggleMenu.on('change', function() {
+                makeup._state.set({ menu: this.checked });
+            });
+        }
+
         this._baron = sidebar.baron({
             scroller: this._params.selectors.scroller,
             track:    this._params.selectors.scrollerTrack,
@@ -372,8 +382,14 @@ Makeup.prototype = {
         }
 
         var params = this._params,
+            makeupElement = $(this._params.selectors.element),
             box = $(this._params.selectors.box),
             container = $(this._params.selectors.container);
+
+        // Menu toggler
+        if (state.hasOwnProperty('menu')) {
+            this._mod(makeupElement[0], {menu: state.menu});
+        }
 
         // Transparency
         if (state.hasOwnProperty('transparency')) {

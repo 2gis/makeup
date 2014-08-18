@@ -44,11 +44,20 @@ button {
     .makeup__aside {
         position: absolute;
         top: 2em;
-        bottom: 0;
+        bottom: .75em;
         left: 0;
         width: 10em;
         background: #1e1e1e;
         z-index: 1;
+        -webkit-transition: -webkit-transform .3s ease;
+        transition: transform .3s ease;
+        -webkit-transform: translate(0, 0) translateZ(0);
+        transform: translate(0, 0) translateZ(0);
+
+        .makeup--menu-false & {
+            -webkit-transform: translate(-100%, 0) translateZ(0);
+            transform: translate(-100%, 0) translateZ(0);
+            }
         }
 
         .makeup__aside-in {
@@ -86,7 +95,7 @@ button {
         position: absolute;
         right: 0;
         bottom: 0;
-        left: 10em;
+        left: 0;
         height: .75em;
         overflow: hidden;
         }
@@ -99,6 +108,13 @@ button {
         bottom: .75em;
         overflow-x: hidden;
         overflow-y: auto;
+        transition: left .3s ease;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+
+        .makeup--menu-false & {
+            left: 0;
+            }
         }
 
 
