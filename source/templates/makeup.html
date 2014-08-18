@@ -31,7 +31,7 @@
 
                 {{#each mode.items}}
                     <div class="makeup__radio-item">
-                        <input type="radio" name="makeup-mode" id="makeup-mode-{{value}}" class="makeup__radio-item-input"{{#if checked}} checked{{/if}} data-value="{{value}}">
+                        <input type="radio" name="makeup-mode" id="makeup-mode-{{value}}" class="makeup__radio-item-input makeup__mode"{{#if checked}} checked{{/if}} value="{{value}}">
                         <label for="makeup-mode-{{value}}" class="makeup__radio-item-label makeup__radio-item-label--blend-{{value}}" title="{{tooltip}}">
                             {{tooltip}}
                         </label>

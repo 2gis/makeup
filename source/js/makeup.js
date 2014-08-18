@@ -30,6 +30,8 @@ Makeup.prototype = {
                 scrollerTrackBar: '.makeup__aside-track-bar',
                 moduleHeader: '.makeup__module-header',
 
+                modeControl: '.makeup__mode',
+
                 slider: '.makeup__slider',
                 sliderTrack: '.makeup__slider-track',
                 sliderTrackRunner: '.makeup__slider-track-runner',
@@ -181,7 +183,7 @@ Makeup.prototype = {
             this._bindSearchListeners();
         }
 
-        if (params.modes) {
+        if (params.mode) {
             this._bindModesListeners();
         }
 
@@ -258,7 +260,21 @@ Makeup.prototype = {
      * Mode control listeners
      */
     _bindModesListeners: function() {
-        var makeup = this;
+        var makeup = this,
+            makeupElement = $(makeup._params.selectors.element),
+            modeControl = $(makeup._params.selectors.modeControl);
+
+        modeControl.on('change', function() {
+            var value;
+
+            modeControl.each(function(i) {
+                if (modeControl[i].checked == true) {
+                    value = modeControl[i].value;
+                }
+            });
+
+            makeup._mod(makeupElement[0], {mode: value});
+        });
     },
 
     /**
