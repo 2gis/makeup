@@ -24,12 +24,12 @@ State.prototype = {
     _init: function(params) {
         this._params = this._path2object(this._getHash()) || {};
 
-        this._bindListeners();
+        this._bindEventListeners();
 
         this.set(params);
     },
 
-    _bindListeners: function() {
+    _bindEventListeners: function() {
         var state = this,
             jqWindow = $(window);
 
@@ -69,9 +69,9 @@ State.prototype = {
     /**
      * Converts object to key-value path
      *
-     * @param {String} path The path (Like: key1/value1/key2/value2)
+     * @param {Object} object Key-value object
      *
-     * @returns {Object} Object
+     * @returns {String} path The path, like: key1/value1/key2/value2
      */
     _object2path: function(object) {
         var path = '!';
