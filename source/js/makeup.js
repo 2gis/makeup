@@ -1,3 +1,10 @@
+/**
+ * Wake up!
+ * Grab a brush and put a little makeup!
+ *
+ * @requires jQuery
+ * @requires lodash
+ */
 function Makeup(options) {
     var instance;
 
