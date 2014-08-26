@@ -1,3 +1,9 @@
+/**
+ * The State
+ *
+ * @requires jQuery
+ * @requires lodash
+ */
 function State(params) {
     var state;
 
@@ -25,16 +31,11 @@ State.prototype = {
 
     _bindListeners: function() {
         var state = this,
+            jqWindow = $(window);
 
-            onhashchangeHandler = window.onhashchange;
-
-        window.onhashchange = function() {
-            if (onhashchangeHandler instanceof Function) {
-                onhashchangeHandler.call(window);
-            }
-
+        jqWindow.bind('hashchange.Makeup', function() {
             state.set(state._path2object(state._getHash()));
-        };
+        });
     },
 
     /**
@@ -117,6 +118,13 @@ State.prototype = {
         _.assign(this._params, params);
 
         this._setHash(this._object2path(this._params));
+
+        var jqWindow = $(window);
+
+        jqWindow.trigger({
+            type: 'statechange',
+            state: this._params
+        });
 
         return this._params;
     },

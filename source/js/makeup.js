@@ -181,8 +181,8 @@ Makeup.prototype = {
         — дополнительно: настройки (масштаб)
         */
 
-        win.on('hashchange', function(e) {
-            makeup._setState(makeup._state.get());
+        win.on('statechange', function(e) {
+            makeup._setState(e.state);
         });
 
         this._bindMenuListeners();
