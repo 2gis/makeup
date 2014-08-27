@@ -182,7 +182,6 @@ Makeup.prototype = {
         */
 
         win.on('statechange', function(e) {
-            console.log('State is changed!');
             makeup._setState(e.state);
         });
 
