@@ -34,7 +34,12 @@ State.prototype = {
             jqWindow = $(window);
 
         jqWindow.bind('hashchange.Makeup', function() {
-            state.set(state._path2object(state._getHash()));
+            state._setParams(state._path2object(state._getHash()));
+
+            jqWindow.trigger({
+                type: 'statechange',
+                state: state._params
+            });
         });
     },
 
@@ -108,15 +113,25 @@ State.prototype = {
     },
 
     /**
-     * Sets state according to `params`
+     * Sets state params according to `params`,
+     *
+     * @param {Object} params Key-value object
+     */
+    _setParams: function(params) {
+        _.assign(this._params, params);
+    },
+
+    /**
+     * Sets state according to `params`,
+     * changes hash value,
+     * triggers 'statechange' event
      *
      * @param {Object} params Key-value object
      *
      * @returns {Object} State object
      */
     set: function(params) {
-        _.assign(this._params, params);
-
+        this._setParams(params);
         this._setHash(this._object2path(this._params));
 
         var jqWindow = $(window);
