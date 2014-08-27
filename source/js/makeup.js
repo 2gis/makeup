@@ -182,6 +182,7 @@ Makeup.prototype = {
         */
 
         win.on('statechange', function(e) {
+            console.log('State is changed!');
             makeup._setState(e.state);
         });
 
@@ -458,11 +459,11 @@ Makeup.prototype = {
          */
         function validateRangeValue(value, options) {
             if (value < options.min) {
-                return min;
+                return options.min;
             }
 
             if (value > options.max) {
-                return max;
+                return options.max;
             }
 
             return value;
