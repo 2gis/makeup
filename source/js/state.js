@@ -2,7 +2,6 @@
  * The State
  *
  * @requires jQuery
- * @requires lodash
  */
 function State(params) {
     var state;
@@ -118,7 +117,11 @@ State.prototype = {
      * @param {Object} params Key-value object
      */
     _setParams: function(params) {
-        _.assign(this._params, params);
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                this._params[key] = params[key];
+            }
+        }
     },
 
     /**
