@@ -4,18 +4,17 @@
  * @requires jQuery
  */
 var State = (function($) {
-    function State(params) {
-        var state;
+    var state;
 
-        if (this instanceof State) {
+    function State(params) {
+        if (typeof state == 'object') {
+            return state;
+        }
+        else {
             state = this;
-        } else {
-            state = createObject(State.prototype);
         }
 
         state._init(params);
-
-        return state;
     }
 
     State.prototype = {
