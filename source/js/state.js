@@ -159,6 +159,6 @@ State.prototype = {
             return this._params;
         }
 
-        return (key in this._params) ? this._params[key] : null;
+        return (this._params.hasOwnProperty(key)) ? this._params[key] : null;
     }
 };
