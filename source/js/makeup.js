@@ -5,638 +5,642 @@
  * @requires jQuery
  * @requires lodash
  */
-function Makeup(options) {
-    var instance;
+var Makeup = (function($, _) {
+    function Makeup(options) {
+        var instance;
 
-    if (this instanceof Makeup) {
-        instance = this;
-    } else {
-        instance = createObject(Makeup.prototype);
+        if (this instanceof Makeup) {
+            instance = this;
+        } else {
+            instance = createObject(Makeup.prototype);
+        }
+
+        instance._init(options);
+
+        return instance;
     }
 
-    instance._init(options);
+    Makeup.prototype = {
+        constructor: Makeup,
 
-    return instance;
-}
+        _state: {},
 
-Makeup.prototype = {
-    constructor: Makeup,
+        _init: function(options) {
 
-    _state: {},
+            this._params = this._viewModel(_.merge({
 
-    _init: function(options) {
+                selectors: {
+                    element: '.makeup',
 
-        this._params = this._viewModel(_.merge({
+                    sidebar: '.makeup__aside',
+                    scroller: '.makeup__aside-in',
+                    scrollerTrack: '.makeup__aside-track',
+                    scrollerTrackBar: '.makeup__aside-track-bar',
+                    moduleHeader: '.makeup__module-header',
 
-            selectors: {
-                element: '.makeup',
+                    modeControl: '.makeup__mode',
+                    bgControl: '.makeup__bg',
 
-                sidebar: '.makeup__aside',
-                scroller: '.makeup__aside-in',
-                scrollerTrack: '.makeup__aside-track',
-                scrollerTrackBar: '.makeup__aside-track-bar',
-                moduleHeader: '.makeup__module-header',
+                    slider: '.makeup__slider',
+                    sliderTrack: '.makeup__slider-track',
+                    sliderTrackRunner: '.makeup__slider-track-runner',
 
-                modeControl: '.makeup__mode',
-                bgControl: '.makeup__bg',
+                    ruler: '.makeup__ruler-track',
+                    rulerTrack: '.makeup__ruler-track-in',
+                    rulerTrackActive: '.makeup__ruler-track-active',
+                    rulerTrackRunner: '.makeup__ruler-track-runner',
+                    rulerTrackPoint: '.makeup__ruler-track-point',
 
-                slider: '.makeup__slider',
-                sliderTrack: '.makeup__slider-track',
-                sliderTrackRunner: '.makeup__slider-track-runner',
+                    box: '.makeup__main',
+                    container: '.makeup__container',
+                    containerImage: '.makeup__container-image',
+                    containerMarkup: '.makeup__container-markup'
+                },
 
-                ruler: '.makeup__ruler-track',
-                rulerTrack: '.makeup__ruler-track-in',
-                rulerTrackActive: '.makeup__ruler-track-active',
-                rulerTrackRunner: '.makeup__ruler-track-runner',
-                rulerTrackPoint: '.makeup__ruler-track-point',
+                modifiers: {
+                    baron: 'makeup__aside--baron'
+                },
 
-                box: '.makeup__main',
-                container: '.makeup__container',
-                containerImage: '.makeup__container-image',
-                containerMarkup: '.makeup__container-markup'
-            },
+                menu: {
+                    tooltip: "Toggle menu",
+                    checked: true
+                },
 
-            modifiers: {
-                baron: 'makeup__aside--baron'
-            },
+                search: {
+                    placeholder: ""
+                },
 
-            menu: {
-                tooltip: "Toggle menu",
-                checked: true
-            },
+                mode: {
+                    label: "Mode",
 
-            search: {
-                placeholder: ""
-            },
+                    items: [
+                        {
+                            tooltip: "Image",
+                            value: "1",
+                            checked: true
+                        },
+                        {
+                            tooltip: "Markup",
+                            value: "2",
+                        },
+                        {
+                            tooltip: "Markup and image",
+                            value: "3",
+                        },
+                        {
+                            tooltip: "Markup and inversed image",
+                            value: "4",
+                        }
+                    ]
+                },
 
-            mode: {
-                label: "Mode",
+                background: {
+                    label: "Background",
 
-                items: [
-                    {
-                        tooltip: "Image",
-                        value: "1",
-                        checked: true
-                    },
-                    {
-                        tooltip: "Markup",
-                        value: "2",
-                    },
-                    {
-                        tooltip: "Markup and image",
-                        value: "3",
-                    },
-                    {
-                        tooltip: "Markup and inversed image",
-                        value: "4",
-                    }
-                ]
-            },
+                    items: [
+                        {
+                            tooltip: "Gray",
+                            value: "color",
+                            checked: true
+                        },
+                        {
+                            tooltip: "Transparency grid",
+                            value: "transparency"
+                        }
+                    ]
+                },
 
-            background: {
-                label: "Background",
-
-                items: [
-                    {
-                        tooltip: "Gray",
-                        value: "color",
-                        checked: true
-                    },
-                    {
-                        tooltip: "Transparency grid",
-                        value: "transparency"
-                    }
-                ]
-            },
-
-            transparency: {
-                label: "Transparency",
-
-                slider: {
-                    min: 0,
-                    max: 1,
-                    value: 1
-                }
-            },
-
-            zoom: {
-                label: "Zoom",
-
-                slider: {
-                    min: 1,
-                    max: 4,
-                    value: 1
-                }
-            },
-
-            ruler: {
-                h: {
-                    type: "ruler",
-                    name: "makeup-ruler-h",
+                transparency: {
+                    label: "Transparency",
 
                     slider: {
                         min: 0,
-                        max: 2000,
-                        value: 400
+                        max: 1,
+                        value: 1
                     }
                 },
-                v: {
-                    type: "ruler",
-                    name: "makeup-ruler-v",
+
+                zoom: {
+                    label: "Zoom",
 
                     slider: {
-                        min: 0,
-                        max: 1000,
-                        step: 10
+                        min: 1,
+                        max: 4,
+                        value: 1
                     }
-                }
-            },
+                },
 
-            renderModule: function() {}
+                ruler: {
+                    h: {
+                        type: "ruler",
+                        name: "makeup-ruler-h",
 
-        }, options));
+                        slider: {
+                            min: 0,
+                            max: 2000,
+                            value: 400
+                        }
+                    },
+                    v: {
+                        type: "ruler",
+                        name: "makeup-ruler-v",
 
-        $('body').append(makeupTemplates.makeup(this._params));
+                        slider: {
+                            min: 0,
+                            max: 1000,
+                            step: 10
+                        }
+                    }
+                },
 
-        this._state = new State();
-        this._bindListeners();
-    },
+                renderModule: function() {}
 
-    _bindListeners: function() {
-        var makeup = this,
-            params = this._params,
-            win = $(window);
-        /*
-        Baron
-        Rader
-        — меню
-        — поиск
-        — смена режима
-        — смена фона
-        — масштаб
-        — прозрачность
-        — сворачивание/разворачивание элементов списка
-        — линейки
-        — дополнительно: статусбар (ховер по элементам, комментарии к модулю/типу)
-        — дополнительно: настройки (масштаб)
-        */
+            }, options));
 
-        win.on('statechange', function(e) {
-            makeup._setState(e.state);
-        });
+            $('body').append(makeupTemplates.makeup(this._params));
 
-        this._bindMenuListeners();
+            this._state = new State();
+            this._bindListeners();
+        },
 
-        if (params.search) {
-            this._bindSearchListeners();
-        }
+        _bindListeners: function() {
+            var makeup = this,
+                params = this._params,
+                win = $(window);
+            /*
+            Baron
+            Rader
+            — меню
+            — поиск
+            — смена режима
+            — смена фона
+            — масштаб
+            — прозрачность
+            — сворачивание/разворачивание элементов списка
+            — линейки
+            — дополнительно: статусбар (ховер по элементам, комментарии к модулю/типу)
+            — дополнительно: настройки (масштаб)
+            */
 
-        if (params.mode) {
-            this._bindModesListeners();
-        }
-
-        if (params.background) {
-            this._bindBackgroundsListeners();
-        }
-
-        if (params.transparency) {
-            this._bindTransparencyListeners();
-        }
-
-        if (params.zoom) {
-            this._bindZoomListeners();
-        }
-
-        if (params.ruler) {
-            this._bindRulerListeners();
-        }
-    },
-
-    /**
-     * Menu
-     */
-    _bindMenuListeners: function() {
-        var that = this,
-            sidebar = $(this._params.selectors.sidebar),
-            module = $(this._params.selectors.moduleHeader);
-
-        module.on('click', function() {
-            var directory = this.parentNode;
-
-            if (that._mod(directory).expandable) {
-                toggleMenuItem(directory);
-            } else {
-                var id = directory.dataset.id,
-                    module = that._params.modules[id];
-
-                that._params.renderModule(module);
-            }
-        });
-
-        if (this._params.menu) {
-            var toggleMenu = $('#makeup-menu');
-
-            toggleMenu.on('change', function() {
-                makeup._state.set({ menu: this.checked });
+            win.on('statechange', function(e) {
+                makeup._setState(e.state);
             });
-        }
 
-        this._baron = sidebar.baron({
-            scroller: this._params.selectors.scroller,
-            track:    this._params.selectors.scrollerTrack,
-            bar:      this._params.selectors.scrollerTrackBar,
-            barOnCls: this._params.modifiers.baron
-        });
+            this._bindMenuListeners();
+
+            if (params.search) {
+                this._bindSearchListeners();
+            }
+
+            if (params.mode) {
+                this._bindModesListeners();
+            }
+
+            if (params.background) {
+                this._bindBackgroundsListeners();
+            }
+
+            if (params.transparency) {
+                this._bindTransparencyListeners();
+            }
+
+            if (params.zoom) {
+                this._bindZoomListeners();
+            }
+
+            if (params.ruler) {
+                this._bindRulerListeners();
+            }
+        },
 
         /**
-         * Toggle subnavigation
+         * Menu
          */
-        function toggleMenuItem(directory) {
-            that._mod(directory, {expanded: !that._mod(directory).expanded});
-            that._baron.update();
-        }
-    },
+        _bindMenuListeners: function() {
+            var that = this,
+                sidebar = $(this._params.selectors.sidebar),
+                module = $(this._params.selectors.moduleHeader);
 
-    /**
-     * Search control listeners
-     */
-    _bindSearchListeners: function() {
+            module.on('click', function() {
+                var directory = this.parentNode;
 
-    },
-
-    /**
-     * Mode control listeners
-     */
-    _bindModesListeners: function() {
-        var makeup = this,
-            makeupElement = $(makeup._params.selectors.element),
-            modeControl = $(makeup._params.selectors.modeControl);
-
-        modeControl.on('change', function() {
-            var value;
-
-            modeControl.each(function(i) {
-                if (modeControl[i].checked == true) {
-                    value = modeControl[i].value;
-                }
-            });
-
-            makeup._mod(makeupElement[0], {mode: value});
-        });
-    },
-
-    /**
-     * Background control listeners
-     */
-    _bindBackgroundsListeners: function() {
-        var makeup = this,
-            makeupElement = $(makeup._params.selectors.element),
-            bgControl = $(makeup._params.selectors.bgControl);
-
-        bgControl.on('change', function() {
-            var value;
-
-            bgControl.each(function(i) {
-                if (bgControl[i].checked == true) {
-                    value = bgControl[i].value;
-                }
-            });
-
-            makeup._mod(makeupElement[0], {bg: value});
-        });
-    },
-
-    /**
-     * Background control listeners
-     */
-    _bindTransparencyListeners: function() {
-        var makeup = this,
-
-            min = this._params.transparency.slider.min,
-            max = this._params.transparency.slider.max,
-            value = this._params.transparency.slider.value,
-
-            slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
-            sliderTrack = slider.find(this._params.selectors.sliderTrack),
-            sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
-            sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
-
-
-        sliderTrack.rader({
-            points: sliderTrackPoint,
-            runners: sliderTrackRunner,
-            runnersVal: [value],
-            values: [min, max],
-            pointsPos: [min, max],
-
-            onUpdate: function(e) {
-                var value = Math.round(e.minVal * 100) / 100;
-
-                makeup._state.set({ transparency: value });
-            }
-        });
-    },
-
-    /**
-     * Background control listeners
-     */
-    _bindZoomListeners: function() {
-        var makeup = this,
-
-            min = this._params.zoom.slider.min,
-            max = this._params.zoom.slider.max,
-            value = this._params.zoom.slider.value,
-
-            slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
-            sliderTrack = slider.find(this._params.selectors.sliderTrack),
-            sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
-            sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
-
-
-        sliderTrack.rader({
-            points: sliderTrackPoint,
-            runners: sliderTrackRunner,
-            runnersVal: [value],
-            values: [min, max],
-            pointsPos: [min, max],
-
-            onUpdate: function(e) {
-                var value = Math.round(e.minVal * 100) / 100;
-
-                makeup._state.set({ zoom: value });
-            }
-        });
-    },
-
-    /**
-     * Background control listeners
-     */
-    _bindRulerListeners: function() {
-        var makeup = this,
-
-            ruler = $(this._params.selectors.ruler),
-            rulerTrack = ruler.find(this._params.selectors.rulerTrack),
-            rulerTrackActive = ruler.find(this._params.selectors.rulerTrackActive),
-            rulerTrackRunner = ruler.find(this._params.selectors.rulerTrackRunner),
-            rulerTrackPoint = ruler.find(this._params.selectors.rulerTrackPoint),
-
-            min = this._params.ruler.h.slider.min,
-            max = this._params.ruler.h.slider.max,
-            value = this._params.ruler.h.slider.value,
-
-            horizontalRuler,
-            pos = [],
-            i = 0;
-
-        while (i <= 2000) {
-            pos.push(i);
-            i += 100;
-        }
-
-        horizontalRuler = rulerTrack.rader({
-            trackActive: rulerTrackActive,
-            runners: rulerTrackRunner,
-            points: rulerTrackPoint,
-            pointsPos: pos,
-            values: [min, max],
-            stickingRadius: 5,
-            onUpdate: function(e) {
-                makeup._state.set({ width: e.maxVal })
-            }
-        });
-
-        horizontalRuler.pos(0, 0);
-        horizontalRuler.pos(1, value);
-    },
-
-    /**
-     * Set application state from object
-     *
-     * @param {Object} state
-     */
-    _setState: function(state) {
-        if (!state) {
-            return;
-        }
-
-        var params = this._params,
-            makeupElement = $(this._params.selectors.element),
-            box = $(this._params.selectors.box),
-            container = $(this._params.selectors.container);
-
-        // Menu toggler
-        if (state.hasOwnProperty('menu')) {
-            this._mod(makeupElement[0], {menu: state.menu});
-        }
-
-        // Transparency
-        if (state.hasOwnProperty('transparency')) {
-            container.css({
-                opacity: validateRangeValue(state.transparency, params.transparency.slider)
-            });
-        }
-
-        // Zoom
-        if (state.hasOwnProperty('zoom')) {
-            container.css({
-                transform: 'scale(' + validateRangeValue(state.zoom, params.zoom.slider) + ')'
-            });
-        }
-
-        // Width
-        if (state.hasOwnProperty('width')) {
-            container.css({
-                width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
-            });
-        }
-
-        /**
-         * Validate range value
-         *
-         * @param {Number} value
-         * @param {Object} options
-         */
-        function validateRangeValue(value, options) {
-            if (value < options.min) {
-                return options.min;
-            }
-
-            if (value > options.max) {
-                return options.max;
-            }
-
-            return value;
-        }
-    },
-
-    /**
-     * Mod
-     */
-    _mod: function(el, modifiers) {
-        if (!el.mod) {
-            el.mod = this._parseMod(el);
-            el.blockName = el.classList[0];
-        }
-
-        if (!modifiers) {
-            return el.mod;
-        } else {
-            var newMods = _.merge(_.clone(el.mod), modifiers),
-                oldMods = el.mod,
-                operations = [],
-                element = $(el);
-
-            _(newMods).forIn(function(value, key) {
-
-                // Add modifier
-                if (!oldMods[key]) {
-                    operations.push({key: key, value: value, isRemove: false});
-                    return;
-                }
-
-                // Remove modifier
-                if (!value) {
-                    operations.push({key: key, value: oldMods[key], isRemove: true});
-                    return;
-                }
-
-                // Change value
-                operations.push(
-                    {key: key, value: oldMods[key], isRemove: true},
-                    {key: key, value: value, isRemove: false}
-                );
-
-            });
-
-            _(operations).forEach(function(item) {
-                var value = item.value === true ? '' : '-' + item.value,
-                    modifier = el.blockName + '--' + item.key + value;
-
-                if (item.isRemove) {
-                    element.removeClass(modifier);
+                if (that._mod(directory).expandable) {
+                    toggleMenuItem(directory);
                 } else {
-                    element.addClass(modifier);
+                    var id = directory.dataset.id,
+                        module = that._params.modules[id];
+
+                    that._params.renderModule(module);
                 }
             });
 
-            el.mod = newMods;
-        }
-    },
+            if (this._params.menu) {
+                var toggleMenu = $('#makeup-menu');
 
-    /**
-     * Parse mods from DOM
-     */
-    _parseMod: function(el) {
-        var classes = el.classList,
-            moduleName = classes[0],
-            out = {};
-
-        for (var i = 1, len = classes.length; i < len; i++) {
-            var item = classes[i].replace(moduleName, '').split('-');
-
-            out[item[2]] = item[3] || true;
-        }
-
-        return out;
-    },
-
-    /**
-     * View model
-     */
-    _viewModel: function(data) {
-        var model = data || {},
-            out = model;
-
-        if (model && model.modules) {
-            out.modules = this._parseCollection(model.modules);
-        }
-
-        return out;
-    },
-
-    /**
-     * Parse item
-     */
-    _parseItem: function(item) {
-        var out = {};
-
-        if (typeof item == "string") {
-            out.name = item;
-        } else if (item instanceof Object) {
-            var children = item.items,
-                documentation = item.documentation,
-                meta = item.meta;
-
-            out = item;
-            out.name = out.name || 'Untitled';
-
-            // Documentation
-            if (documentation && documentation instanceof Array && documentation.length) {
-                out.documentation = this._parseCollection(documentation, this._parseDocumentation);
+                toggleMenu.on('change', function() {
+                    makeup._state.set({ menu: this.checked });
+                });
             }
 
-            // Meta
-            if (item.meta && item.meta instanceof Array && item.meta.length) {
-                out.meta = this._parseCollection(meta, this._parseMeta);
+            this._baron = sidebar.baron({
+                scroller: this._params.selectors.scroller,
+                track:    this._params.selectors.scrollerTrack,
+                bar:      this._params.selectors.scrollerTrackBar,
+                barOnCls: this._params.modifiers.baron
+            });
+
+            /**
+             * Toggle subnavigation
+             */
+            function toggleMenuItem(directory) {
+                that._mod(directory, {expanded: !that._mod(directory).expanded});
+                that._baron.update();
+            }
+        },
+
+        /**
+         * Search control listeners
+         */
+        _bindSearchListeners: function() {
+
+        },
+
+        /**
+         * Mode control listeners
+         */
+        _bindModesListeners: function() {
+            var makeup = this,
+                makeupElement = $(makeup._params.selectors.element),
+                modeControl = $(makeup._params.selectors.modeControl);
+
+            modeControl.on('change', function() {
+                var value;
+
+                modeControl.each(function(i) {
+                    if (modeControl[i].checked == true) {
+                        value = modeControl[i].value;
+                    }
+                });
+
+                makeup._mod(makeupElement[0], {mode: value});
+            });
+        },
+
+        /**
+         * Background control listeners
+         */
+        _bindBackgroundsListeners: function() {
+            var makeup = this,
+                makeupElement = $(makeup._params.selectors.element),
+                bgControl = $(makeup._params.selectors.bgControl);
+
+            bgControl.on('change', function() {
+                var value;
+
+                bgControl.each(function(i) {
+                    if (bgControl[i].checked == true) {
+                        value = bgControl[i].value;
+                    }
+                });
+
+                makeup._mod(makeupElement[0], {bg: value});
+            });
+        },
+
+        /**
+         * Background control listeners
+         */
+        _bindTransparencyListeners: function() {
+            var makeup = this,
+
+                min = this._params.transparency.slider.min,
+                max = this._params.transparency.slider.max,
+                value = this._params.transparency.slider.value,
+
+                slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
+                sliderTrack = slider.find(this._params.selectors.sliderTrack),
+                sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
+                sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+
+
+            sliderTrack.rader({
+                points: sliderTrackPoint,
+                runners: sliderTrackRunner,
+                runnersVal: [value],
+                values: [min, max],
+                pointsPos: [min, max],
+
+                onUpdate: function(e) {
+                    var value = Math.round(e.minVal * 100) / 100;
+
+                    makeup._state.set({ transparency: value });
+                }
+            });
+        },
+
+        /**
+         * Background control listeners
+         */
+        _bindZoomListeners: function() {
+            var makeup = this,
+
+                min = this._params.zoom.slider.min,
+                max = this._params.zoom.slider.max,
+                value = this._params.zoom.slider.value,
+
+                slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
+                sliderTrack = slider.find(this._params.selectors.sliderTrack),
+                sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
+                sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+
+
+            sliderTrack.rader({
+                points: sliderTrackPoint,
+                runners: sliderTrackRunner,
+                runnersVal: [value],
+                values: [min, max],
+                pointsPos: [min, max],
+
+                onUpdate: function(e) {
+                    var value = Math.round(e.minVal * 100) / 100;
+
+                    makeup._state.set({ zoom: value });
+                }
+            });
+        },
+
+        /**
+         * Background control listeners
+         */
+        _bindRulerListeners: function() {
+            var makeup = this,
+
+                ruler = $(this._params.selectors.ruler),
+                rulerTrack = ruler.find(this._params.selectors.rulerTrack),
+                rulerTrackActive = ruler.find(this._params.selectors.rulerTrackActive),
+                rulerTrackRunner = ruler.find(this._params.selectors.rulerTrackRunner),
+                rulerTrackPoint = ruler.find(this._params.selectors.rulerTrackPoint),
+
+                min = this._params.ruler.h.slider.min,
+                max = this._params.ruler.h.slider.max,
+                value = this._params.ruler.h.slider.value,
+
+                horizontalRuler,
+                pos = [],
+                i = 0;
+
+            while (i <= 2000) {
+                pos.push(i);
+                i += 100;
             }
 
-            // Children
-            if (children && children instanceof Array && children.length) {
-                out.items = this._parseCollection(children);
+            horizontalRuler = rulerTrack.rader({
+                trackActive: rulerTrackActive,
+                runners: rulerTrackRunner,
+                points: rulerTrackPoint,
+                pointsPos: pos,
+                values: [min, max],
+                stickingRadius: 5,
+                onUpdate: function(e) {
+                    makeup._state.set({ width: e.maxVal })
+                }
+            });
+
+            horizontalRuler.pos(0, 0);
+            horizontalRuler.pos(1, value);
+        },
+
+        /**
+         * Set application state from object
+         *
+         * @param {Object} state
+         */
+        _setState: function(state) {
+            if (!state) {
+                return;
             }
-        }
 
-        out.label = out.label || out.name;
+            var params = this._params,
+                makeupElement = $(this._params.selectors.element),
+                box = $(this._params.selectors.box),
+                container = $(this._params.selectors.container);
 
-        return out;
-    },
-
-    /**
-     * Parse collection
-     */
-    _parseCollection: function(arr, func) {
-        var out = [],
-            that = this;
-
-        _(arr).compact().forEach(function(item) {
-            out.push(func ? func(item) : that._parseItem(item));
-        });
-
-        return out;
-    },
-
-    /**
-     * Parse documentation
-     */
-    _parseDocumentation: function(item) {
-        var out = {};
-
-        if (typeof item == "string") {
-            out.link = item;
-        } else if (item instanceof Object && item.link) {
-            out.link = item.link;
-            out.label = item.label || out.link;
-
-            if (item.modifier) {
-                out.modifier = item.modifier;
+            // Menu toggler
+            if (state.hasOwnProperty('menu')) {
+                this._mod(makeupElement[0], {menu: state.menu});
             }
+
+            // Transparency
+            if (state.hasOwnProperty('transparency')) {
+                container.css({
+                    opacity: validateRangeValue(state.transparency, params.transparency.slider)
+                });
+            }
+
+            // Zoom
+            if (state.hasOwnProperty('zoom')) {
+                container.css({
+                    transform: 'scale(' + validateRangeValue(state.zoom, params.zoom.slider) + ')'
+                });
+            }
+
+            // Width
+            if (state.hasOwnProperty('width')) {
+                container.css({
+                    width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
+                });
+            }
+
+            /**
+             * Validate range value
+             *
+             * @param {Number} value
+             * @param {Object} options
+             */
+            function validateRangeValue(value, options) {
+                if (value < options.min) {
+                    return options.min;
+                }
+
+                if (value > options.max) {
+                    return options.max;
+                }
+
+                return value;
+            }
+        },
+
+        /**
+         * Mod
+         */
+        _mod: function(el, modifiers) {
+            if (!el.mod) {
+                el.mod = this._parseMod(el);
+                el.blockName = el.classList[0];
+            }
+
+            if (!modifiers) {
+                return el.mod;
+            } else {
+                var newMods = _.merge(_.clone(el.mod), modifiers),
+                    oldMods = el.mod,
+                    operations = [],
+                    element = $(el);
+
+                _(newMods).forIn(function(value, key) {
+
+                    // Add modifier
+                    if (!oldMods[key]) {
+                        operations.push({key: key, value: value, isRemove: false});
+                        return;
+                    }
+
+                    // Remove modifier
+                    if (!value) {
+                        operations.push({key: key, value: oldMods[key], isRemove: true});
+                        return;
+                    }
+
+                    // Change value
+                    operations.push(
+                        {key: key, value: oldMods[key], isRemove: true},
+                        {key: key, value: value, isRemove: false}
+                    );
+
+                });
+
+                _(operations).forEach(function(item) {
+                    var value = item.value === true ? '' : '-' + item.value,
+                        modifier = el.blockName + '--' + item.key + value;
+
+                    if (item.isRemove) {
+                        element.removeClass(modifier);
+                    } else {
+                        element.addClass(modifier);
+                    }
+                });
+
+                el.mod = newMods;
+            }
+        },
+
+        /**
+         * Parse mods from DOM
+         */
+        _parseMod: function(el) {
+            var classes = el.classList,
+                moduleName = classes[0],
+                out = {};
+
+            for (var i = 1, len = classes.length; i < len; i++) {
+                var item = classes[i].replace(moduleName, '').split('-');
+
+                out[item[2]] = item[3] || true;
+            }
+
+            return out;
+        },
+
+        /**
+         * View model
+         */
+        _viewModel: function(data) {
+            var model = data || {},
+                out = model;
+
+            if (model && model.modules) {
+                out.modules = this._parseCollection(model.modules);
+            }
+
+            return out;
+        },
+
+        /**
+         * Parse item
+         */
+        _parseItem: function(item) {
+            var out = {};
+
+            if (typeof item == "string") {
+                out.name = item;
+            } else if (item instanceof Object) {
+                var children = item.items,
+                    documentation = item.documentation,
+                    meta = item.meta;
+
+                out = item;
+                out.name = out.name || 'Untitled';
+
+                // Documentation
+                if (documentation && documentation instanceof Array && documentation.length) {
+                    out.documentation = this._parseCollection(documentation, this._parseDocumentation);
+                }
+
+                // Meta
+                if (item.meta && item.meta instanceof Array && item.meta.length) {
+                    out.meta = this._parseCollection(meta, this._parseMeta);
+                }
+
+                // Children
+                if (children && children instanceof Array && children.length) {
+                    out.items = this._parseCollection(children);
+                }
+            }
+
+            out.label = out.label || out.name;
+
+            return out;
+        },
+
+        /**
+         * Parse collection
+         */
+        _parseCollection: function(arr, func) {
+            var out = [],
+                that = this;
+
+            _(arr).compact().forEach(function(item) {
+                out.push(func ? func(item) : that._parseItem(item));
+            });
+
+            return out;
+        },
+
+        /**
+         * Parse documentation
+         */
+        _parseDocumentation: function(item) {
+            var out = {};
+
+            if (typeof item == "string") {
+                out.link = item;
+            } else if (item instanceof Object && item.link) {
+                out.link = item.link;
+                out.label = item.label || out.link;
+
+                if (item.modifier) {
+                    out.modifier = item.modifier;
+                }
+            }
+
+            return out;
+        },
+
+        /**
+         * Parse meta
+         */
+        _parseMeta: function(item) {
+            var out = {};
+
+            if (typeof item == "string") {
+                out.key = item;
+            } else if (item instanceof Object && item.key) {
+                out = item;
+            }
+
+            return out;
         }
+    };
 
-        return out;
-    },
-
-    /**
-     * Parse meta
-     */
-    _parseMeta: function(item) {
-        var out = {};
-
-        if (typeof item == "string") {
-            out.key = item;
-        } else if (item instanceof Object && item.key) {
-            out = item;
-        }
-
-        return out;
-    }
-};
+    return Makeup;
+})(jQuery, _);
