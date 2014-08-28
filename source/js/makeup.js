@@ -6,18 +6,16 @@
  * @requires lodash
  */
 var Makeup = (function($, _) {
-    function Makeup(options) {
-        var instance;
+    var makeup;
 
-        if (this instanceof Makeup) {
-            instance = this;
+    function Makeup(options) {
+        if (typeof makeup == 'object') {
+            return makeup;
         } else {
-            instance = createObject(Makeup.prototype);
+            makeup = this;
         }
 
-        instance._init(options);
-
-        return instance;
+        makeup._init(options);
     }
 
     Makeup.prototype = {
