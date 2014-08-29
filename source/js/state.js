@@ -43,7 +43,7 @@ var State = (function($) {
         },
 
         /**
-         * Converts slash-slpitted key-value path to object
+         * Converts slash-splitted key-value path to object
          *
          * @param {String} path The path (Like: key1/value1/key2/value2)
          *
