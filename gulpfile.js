@@ -53,6 +53,8 @@ gulp.task('watch', function(callback) {
 
     gulp.watch('./source/images/**/*.{jpg,jpeg,gif,png}', ['build-img']);
     gulp.watch('./source/svg/**/*.svg', ['build-img']);
+
+    gulp.watch('./source/templates/*.html', ['build-templates', 'build-js']);
 });
 
 gulp.task('build', function(callback) {
