@@ -60,56 +60,56 @@ var Makeup = (function($, _) {
                 },
 
                 menu: {
-                    tooltip: "Toggle menu",
+                    tooltip: 'Toggle menu',
                     checked: true
                 },
 
                 search: {
-                    placeholder: ""
+                    placeholder: ''
                 },
 
                 mode: {
-                    label: "Mode",
+                    label: 'Mode',
 
                     items: [
                         {
-                            tooltip: "Image",
-                            value: "1",
+                            tooltip: 'Image',
+                            value: '1',
                             checked: true
                         },
                         {
-                            tooltip: "Markup",
-                            value: "2",
+                            tooltip: 'Markup',
+                            value: '2',
                         },
                         {
-                            tooltip: "Markup and image",
-                            value: "3",
+                            tooltip: 'Markup and image',
+                            value: '3',
                         },
                         {
-                            tooltip: "Markup and inversed image",
-                            value: "4",
+                            tooltip: 'Markup and inversed image',
+                            value: '4',
                         }
                     ]
                 },
 
                 background: {
-                    label: "Background",
+                    label: 'Background',
 
                     items: [
                         {
-                            tooltip: "Gray",
-                            value: "color",
+                            tooltip: 'Gray',
+                            value: 'color',
                             checked: true
                         },
                         {
-                            tooltip: "Transparency grid",
-                            value: "transparency"
+                            tooltip: 'Transparency grid',
+                            value: 'transparency'
                         }
                     ]
                 },
 
                 transparency: {
-                    label: "Transparency",
+                    label: 'Transparency',
 
                     slider: {
                         min: 0,
@@ -119,7 +119,7 @@ var Makeup = (function($, _) {
                 },
 
                 zoom: {
-                    label: "Zoom",
+                    label: 'Zoom',
 
                     slider: {
                         min: 1,
@@ -130,8 +130,8 @@ var Makeup = (function($, _) {
 
                 ruler: {
                     h: {
-                        type: "ruler",
-                        name: "makeup-ruler-h",
+                        type: 'ruler',
+                        name: 'makeup-ruler-h',
 
                         slider: {
                             min: 0,
@@ -140,8 +140,8 @@ var Makeup = (function($, _) {
                         }
                     },
                     v: {
-                        type: "ruler",
-                        name: "makeup-ruler-v",
+                        type: 'ruler',
+                        name: 'makeup-ruler-v',
 
                         slider: {
                             min: 0,
@@ -550,6 +550,7 @@ var Makeup = (function($, _) {
                 out.modules = this._parseCollection(model.modules);
             }
 
+            console.log(out);
             return out;
         },
 
@@ -559,7 +560,7 @@ var Makeup = (function($, _) {
         _parseItem: function(item) {
             var out = {};
 
-            if (typeof item == "string") {
+            if (typeof item == 'string') {
                 out.name = item;
             } else if (item instanceof Object) {
                 var children = item.items,
@@ -570,8 +571,12 @@ var Makeup = (function($, _) {
                 out.name = out.name || 'Untitled';
 
                 // Documentation
-                if (documentation && documentation instanceof Array && documentation.length) {
-                    out.documentation = this._parseCollection(documentation, this._parseDocumentation);
+                if (documentation) {
+                    if (documentation instanceof Array && documentation.length) {
+                        out.documentation = this._parseCollection(documentation, this._parseDocumentation);
+                    } else if (typeof documentation == 'string') {
+                        out.documentation = [this._parseDocumentation(documentation)];
+                    }
                 }
 
                 // Meta
@@ -610,7 +615,7 @@ var Makeup = (function($, _) {
         _parseDocumentation: function(item) {
             var out = {};
 
-            if (typeof item == "string") {
+            if (typeof item == 'string') {
                 out.link = item;
             } else if (item instanceof Object && item.link) {
                 out.link = item.link;
@@ -630,7 +635,7 @@ var Makeup = (function($, _) {
         _parseMeta: function(item) {
             var out = {};
 
-            if (typeof item == "string") {
+            if (typeof item == 'string') {
                 out.key = item;
             } else if (item instanceof Object && item.key) {
                 out = item;

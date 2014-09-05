@@ -605,9 +605,31 @@ button {
             }
         }
 
-        .makeup__module-header-meta {
-            float: right;
+        .makeup__module-header-in {
+            width: 100%;
+            max-width: 100%;
             }
+
+            .makeup__module-header-meta {
+                height: 1.7em;
+                float: right;
+                }
+
+            .makeup__module-header-inner {}
+
+                .makeup__module-header-inner {
+                    position: relative;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    }
+
+                    .makeup__module-header-title {
+                        display: inline-block;
+                        overflow: hidden;
+                        max-width: 100%;
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        }
 
 /* Module rating */
 .makeup__rating {
@@ -619,16 +641,44 @@ button {
     padding: 0 1em 0 0;
     }
 
-/* Module doc link */
-.makeup__doclink {
-    position: relative;
-    bottom: -2px;
-    display: inline-block;
-    vertical-align: middle;
-    width: 17px;
-    height: 14px;
-    background: url(svg/i_info.svg) top left no-repeat;
+/* Module doc links */
+.makeup__doc {
+    font-size: 0;
+    line-height: 0;
+    height: 100%;
+    padding: 0 10px 0 0;
+
+    &:before {
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        width: 2px;
+        content: '';
+        }
     }
+    .makeup__doc-link {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        opacity: .5;
+        transition: opacity .2s linear;
+
+        &:before {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 10px;
+            height: 10px;
+            background: url(svg/i_info.svg) top left no-repeat;
+            content: '';
+            }
+
+        &:hover {
+            opacity: 1;
+            }
+        }
 
 /* Subnav */
 .makeup__subnav {
