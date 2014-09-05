@@ -24,7 +24,8 @@ var config = require('./config.js'),
 
     defaultConfig = {
         port: 3000,
-        root: ''
+        root: '',
+        hostname: '*'
     };
 
 
