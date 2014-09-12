@@ -17,8 +17,6 @@ results
 temp
 node_modules
 bower_components
-main/static/assets
-cubic/local.py
 .idea/
 
 dist/
