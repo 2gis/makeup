@@ -7,25 +7,18 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     rename = require('gulp-rename');
 
-var baseStylesheets = [
-        './temp/sprite.less',
-        './source/less/mixins.less',
-        './source/less/reset.less',
-        './source/less/common.less',
-        './source/blocks/*/*.less'
-    ];
-
 module.exports = function(buildOptions) {
     gulp.task('css.modern', function() {
-        var files = baseStylesheets;
-
-        files.unshift('./source/less/svg.less');
-
-        console.log(process.cwd());
-
         return (
             gulp
-                .src(files)
+                .src([
+                    './temp/sprite.less',
+                    './source/less/mixins.less',
+                    './source/less/svg.less',
+                    './source/less/reset.less',
+                    './source/less/common.less',
+                    './source/blocks/*/*.less'
+                ])
                 .pipe(concat('makeup.css'))
                 .pipe(plumber())
                 .pipe(less())
@@ -35,13 +28,16 @@ module.exports = function(buildOptions) {
     });
 
     gulp.task('css.ie', function() {
-        var files = baseStylesheets;
-
-        files.unshift('./source/less/png.less');
-
         return (
             gulp
-                .src(files)
+                .src([
+                    './temp/sprite.less',
+                    './source/less/mixins.less',
+                    './source/less/png.less',
+                    './source/less/reset.less',
+                    './source/less/common.less',
+                    './source/blocks/*/*.less'
+                ])
                 .pipe(concat('makeup.ie.css'))
                 .pipe(plumber())
                 .pipe(less())
@@ -51,6 +47,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence(['css.modern'], callback);
+        runSequence(['css.ie', 'css.modern'], callback);
     };
 };

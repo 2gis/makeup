@@ -24,11 +24,18 @@
     background-image: url('assets/@{sprite-image}');
     }
 
+.sprite-width(@sprite) {
+    width: ~`"@{sprite}".split(', ')[4]`;
+    }
+
+.sprite-height(@sprite) {
+    height: ~`"@{sprite}".split(', ')[5]`;
+    }
+
 .sprite(@sprite) {
     .sprite-image(@sprite);
     .sprite-position(@sprite);
     .sprite-size(@sprite);
-
-    width: ~`"@{sprite}".split(', ')[4]`;
-    height: ~`"@{sprite}".split(', ')[5]`;
+    .sprite-width(@sprite);
+    .sprite-height(@sprite);
     }
