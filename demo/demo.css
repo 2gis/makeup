@@ -1,0 +1,37 @@
+.btn {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 0 2px;
+    min-width: 171px;
+    border: 0;
+    border-radius: 3px;
+    background-color: #1ab0de;
+    background-image: linear-gradient(to bottom, #33b9e1, #01a7da);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .2);
+    color: #fff;
+    vertical-align: top;
+    text-align: center;
+    font: 14px/30px Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    }
+.btn:hover {
+    background: linear-gradient(to bottom, #41d0ff, #0fa5d7);
+    box-shadow: 0 1px rgba(255, 255, 255, .2) inset;
+    }
+.btn:active {
+    background: linear-gradient(to bottom, #008fe1, #0da5d5);
+    }
+.btn:focus {
+    outline: none;
+    }
+.btn._disabled,
+.btn._disabled:hover,
+.btn._disabled:active {
+    background: #5f605d;
+    background: rgba(230, 230, 230, .1);
+    box-shadow: none;
+    color: #8a8a8a;
+    color: rgba(230, 230, 230, .3);
+    cursor: default;
+    }

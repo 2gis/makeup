@@ -1,33 +1,10 @@
 var gulp = require('gulp'),
-
-    gutil = require('gulp-util'),
+    args = require('yargs').argv,
     clean = require('gulp-clean'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    less = require('gulp-less'),
-    csso = require('gulp-csso'),
-    imagemin = require('gulp-imagemin'),
-    connect = require('gulp-connect'),
-    handlebars = require('gulp-handlebars'),
-    defineModule = require('gulp-define-module'),
-    declare = require('gulp-declare'),
-    jshint = require('gulp-jshint'),
-    plumber = require('gulp-plumber'),
-    headerfooter = require('gulp-headerfooter'),
-
+    connect = require('gulp-connect');
     runSequence = require('run-sequence'),
-
-    args = require('yargs').argv;
-
-
-var config = require('./config.js'),
-
-    defaultConfig = {
-        port: 3000,
-        root: '',
-        hostname: '*'
-    };
-
+    mocha = require('gulp-mocha'),
+    config = require('./config.js');
 
 var buildOptions = {
         release: 'r' in args || 'release' in args
@@ -40,136 +17,69 @@ gulp.task('default', function() {
 
 
 gulp.task('d', ['dev']);
-
-gulp.task('dev', ['build'], function(callback) {
+gulp.task('dev', function(callback) {
     return runSequence('build', 'connect', 'watch', callback);
 });
 
-gulp.task('watch', function(callback) {
-    gulp.watch('./source/blocks/**/*.less', ['build-css']);
-    gulp.watch('./source/less/**/*.less', ['build-css']);
-
-    gulp.watch('./source/blocks/**/*.js', ['build-js']);
-    gulp.watch('./source/js/**/*.js', ['build-js']);
-
-    gulp.watch('./source/images/**/*.{jpg,jpeg,gif,png}', ['build-img']);
-    gulp.watch('./source/svg/**/*.svg', ['build-img']);
-
-    gulp.watch('./source/templates/*.html', ['build-templates', 'build-js']);
-});
 
 gulp.task('build', function(callback) {
-    return runSequence('build-templates', 'build-js', 'build-img', 'build-css', callback);
+    return runSequence('templates', 'js', 'sprite', 'css', callback);
+});
+
+
+gulp.task('t', ['unit']);
+gulp.task('test', ['unit']);
+
+
+gulp.task('watch', function(callback) {
+    // Templates
+    gulp.watch('./source/templates/*.html', ['templates', 'js']);
+
+    // Scripts
+    gulp.watch('./source/blocks/**/*.js', ['js']);
+    gulp.watch('./source/js/**/*.js', ['js']);
+
+    // Images
+    gulp.watch('./source/images/**/*.{jpg,jpeg,gif,png}', ['img']);
+    gulp.watch('./source/svg/**/*.svg', ['sprite', 'css']);
+
+    // Styles
+    gulp.watch('./source/blocks/**/*.less', ['css']);
+    gulp.watch('./source/less/**/*.less', ['css']);
 });
 
 
 gulp.task('clean', function() {
-    return gulp.src(['dist/*', 'temp/*'], { read: false }).pipe(clean());
+    return (
+        gulp
+            .src(['dist/*', 'temp/*'], {read: false})
+            .pipe(clean())
+    );
 });
 
 
 gulp.task('connect', function() {
     connect.server({
-        root: __dirname + '/' + (config.root || defaultConfig.root),
-        port: config.port || defaultConfig.port
+        root: __dirname + '/' + config.root,
+        port: config.port
     });
 });
 
 
-gulp.task('build-templates', function() {
-    var minify = require('html-minifier').minify;
+gulp.task('templates', require('./tasks/templates')(buildOptions));
+gulp.task('js', require('./tasks/scripts')(buildOptions));
+gulp.task('img', require('./tasks/images')(buildOptions));
+gulp.task('sprite', require('./tasks/sprite')(buildOptions));
+gulp.task('css', require('./tasks/styles')(buildOptions));
 
-    return (
-        gulp.src('source/templates/*.html')
-            .pipe(handlebars())
-            .pipe(defineModule('plain'))
-            .pipe(declare({
-                namespace: 'makeupTemplates',
-                processContent: function(content, filepath) {
-                    return minify(content, {
-                        removeComments: true,
-                        collapseWhitespace: true,
-                        conservativeCollapse: true,
-                        removeEmptyAttributes: true
-                    });
-                }
-            }))
-            .pipe(concat('templates.js'))
-            .pipe(gulp.dest('temp/'))
-    );
-});
-
-gulp.task('jshint', function() {
-    return (
-        gulp.src([
-            'source/js/main.js',
-            'source/blocks/*/*.js'
-        ])
-        .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish'))
-    );
-});
-
-gulp.task('build-js', ['jshint'], function() {
-    return (
-        gulp.src([
-                'bower_components/handlebars/handlebars.min.js',
-                'bower_components/lodash/dist/lodash.min.js',
-                'bower_components/jquery/dist/jquery.min.js',
-                'bower_components/baron/baron.min.js',
-                'bower_components/rader/rader.min.js',
-                'temp/templates.js',
-                'source/js/*.js',
-                'source/blocks/*/*.js'
-        ])
-            .pipe(concat('makeup.js'))
-            .pipe(headerfooter.header('(function(global) {'))
-            .pipe(headerfooter.footer('    global.Makeup = Makeup;'))
-            .pipe(headerfooter.footer('})(window);'))
-            .pipe(buildOptions.release ? uglify() : gutil.noop())
-            .pipe(gulp.dest('dist/'))
-    );
-});
-
-gulp.task('build-img', function() {
-    return (
-        gulp.src(['source/images/**/*.{jpg,jpeg,gif,png,svg}',
-                  '!source/images/**/_*'])
-            .pipe(imagemin())
-            .pipe(gulp.dest('dist/images/'))
-    );
-});
-
-gulp.task('build-css', function() {
-    return (
-        gulp.src([
-                'source/less/reset.less',
-                'source/less/mixins.less',
-                'source/less/common.less',
-                'source/blocks/*/*.less'
-            ])
-            .pipe(concat('makeup.css'))
-            .pipe(plumber())
-            .pipe(less())
-            .pipe(buildOptions.release ? csso() : gutil.noop())
-            .pipe(gulp.dest('dist/'))
-    );
-});
-
-
-var mocha = require('gulp-mocha'),
-
-    mochaOptions = {
-        globals: ['DEBUG'],
-        reporter: 'landing'
-    };
-
-gulp.task('test', ['unit']);
 
 gulp.task('unit', function() {
     return (
         gulp.src('test/*.spec.js', { read: false })
-            .pipe(mocha(mochaOptions))
+            .pipe(mocha({
+                globals: ['DEBUG'],
+                reporter: 'landing'
+            }))
             .on('error', function() {
                 gulp.emit('tl.fail', 'Unit tests failed!');
             })

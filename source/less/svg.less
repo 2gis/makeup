@@ -1,0 +1,9 @@
+.bg(@file) {
+    @sprite: 'sprite-@{file}';
+
+    background-image: data-uri('../../dist/assets/svg/@{file}.svg');
+    background-repeat: no-repeat;
+
+    width: ~`"@{sprite}".split(', ')[4]`;
+    height: ~`"@{sprite}".split(', ')[5]`;
+    }
