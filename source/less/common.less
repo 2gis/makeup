@@ -205,8 +205,7 @@ button {
         }
 
         .makeup__ruler-track-in {
-            // width: 1000px;
-            counter-reset: scale -1;
+            counter-reset: scale - 1;
             }
 
             .makeup__ruler-track-point {
@@ -253,9 +252,7 @@ button {
                     position: absolute;
                     top: 1px;
                     left: -7px;
-                    width: 15px;
-                    height: 16px;
-                    background: url(svg/i_dragger-h.svg) top left no-repeat;
+                    .bg('i_dragger-h');
                     content: '';
                     }
                 }
@@ -333,9 +330,7 @@ button {
         }
 
     .makeup__btn-label--menu:before {
-        background: url(svg/i_menu.svg) top left no-repeat;
-        width: 16px;
-        height: 12px;
+        .bg('i_menu');
         margin: -6px 0 0 -8px;
         }
 
@@ -383,10 +378,8 @@ button {
         position: absolute;
         top: 50%;
         left: .3em;
-        width: 10px;
-        height: 10px;
         margin-top: -5px;
-        background: url(svg/i_search.svg) top left no-repeat;
+        .bg('i_search');
         z-index: 1;
         }
 
@@ -451,41 +444,35 @@ button {
         .makeup__radio-item-label--blend-2:before,
         .makeup__radio-item-label--blend-3:before,
         .makeup__radio-item-label--blend-4:before {
-            width: 18px;
-            height: 17px;
             margin: -8px 0 0 -9px;
             }
         .makeup__radio-item-label--blend-1:before {
-            background: url(svg/i_blend-1.svg) top left no-repeat;
+            .bg('i_blend-1');
             }
         .makeup__radio-item-label--blend-2:before {
-            background: url(svg/i_blend-2.svg) top left no-repeat;
+            .bg('i_blend-2');
             }
         .makeup__radio-item-label--blend-3:before {
-            background: url(svg/i_blend-3.svg) top left no-repeat;
+            .bg('i_blend-3');
             }
         .makeup__radio-item-label--blend-4:before {
-            background: url(svg/i_blend-4.svg) top left no-repeat;
+            .bg('i_blend-4');
             }
 
         /* Background */
         .makeup__radio-item-label--bg-color:before,
         .makeup__radio-item-label--bg-transparency:before {
-            width: 16px;
-            height: 16px;
             margin: -8px 0 0 -8px;
             }
         .makeup__radio-item-label--bg-color:before {
-            background: url(svg/i_bg-color.svg) top left no-repeat;
+            .bg('i_bg-color');
             }
         .makeup__radio-item-label--bg-transparency:before {
-            background: url(svg/i_bg-transparency.svg) top left no-repeat;
+            .bg('i_bg-transparency');
             }
         .makeup__radio-item-label--bg-map:before {
-            width: 17px;
-            height: 14px;
             margin: -7px 0 0 -8px;
-            background: url(svg/i_bg-map.svg) top left no-repeat;
+            .bg('i_bg-map');
             }
 
 
@@ -591,17 +578,13 @@ button {
             left: 18px;
             top: 50%;
             margin-top: -4px;
-            width: 8px;
-            height: 7px;
-            background: url(svg/i_expand.svg) top left no-repeat;
+            .bg('i_expand');
             content: '';
             }
         .makeup__module--expanded &:before {
             left: 17px;
-            width: 7px;
-            height: 8px;
+            .bg('i_expanded');
             margin-top: -3px;
-            background: url(svg/i_expanded.svg) top left no-repeat;
             }
         }
 
@@ -669,9 +652,7 @@ button {
             position: absolute;
             top: 3px;
             left: 3px;
-            width: 10px;
-            height: 10px;
-            background: url(svg/i_info.svg) top left no-repeat;
+            .bg('i_info');
             content: '';
             }
 
