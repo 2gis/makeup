@@ -13,11 +13,13 @@
 
     var makeup = new Makeup({
 
-        renderModule: function(module) {
-            console.log(module);
-        },
+        renderModule: function(module) {},
 
         modules: [
+            {
+                name: 'articleCard',
+                documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья', 'http://google.com']
+            },
             {
                 name: 'articleCard articleCard articleCard',
                 documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья', 'http://google.com'],
@@ -25,7 +27,10 @@
                     {
                         label: 'vcData',
                         items: [
-                            'full',
+                            {
+                                label: 'full',
+                                image: 'test.png'
+                            },
                             'default',
                             'scroll'
                         ]

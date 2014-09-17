@@ -35,6 +35,7 @@ var Makeup = (function($, _) {
                     scrollerTrack: '.makeup__aside-track',
                     scrollerTrackBar: '.makeup__aside-track-bar',
                     moduleHeader: '.makeup__module-header',
+                    moduleType: '.makeup__subnav-link',
 
                     modeControl: '.makeup__mode',
                     bgControl: '.makeup__bg',
@@ -217,9 +218,10 @@ var Makeup = (function($, _) {
         _bindMenuListeners: function() {
             var that = this,
                 sidebar = $(this._params.selectors.sidebar),
-                module = $(this._params.selectors.moduleHeader);
+                moduleHeader = $(this._params.selectors.moduleHeader),
+                moduleType = $(this._params.selectors.moduleType);
 
-            module.on('click', function() {
+            moduleHeader.on('click', function() {
                 var directory = this.parentNode;
 
                 if (that._mod(directory).expandable) {
@@ -228,8 +230,18 @@ var Makeup = (function($, _) {
                     var id = directory.dataset.id,
                         module = that._params.modules[id];
 
-                    that._params.renderModule(module);
+                    setCurrent(this);
+                    that._renderModule(module);
                 }
+            });
+
+            moduleType.on('click', function() {
+                var directory = this.parentNode.parentNode,
+                    id = directory.dataset.id,
+                    module = that._params.modules[id];
+
+                setCurrent(this);
+                that._renderModule(module);
             });
 
             if (this._params.menu) {
@@ -248,11 +260,25 @@ var Makeup = (function($, _) {
             });
 
             /**
-             * Toggle subnavigation
+             * Toggle navigation item
              */
             function toggleMenuItem(directory) {
                 that._mod(directory, {expanded: !that._mod(directory).expanded});
                 that._baron.update();
+            }
+
+            /**
+             * Set current menu item
+             */
+            function setCurrent(currentItem) {
+                moduleHeader.each(function(i) {
+                    that._mod(moduleHeader[i], {current: false});
+                });
+                moduleType.each(function(i) {
+                    that._mod(moduleType[i], {current: false});
+                });
+
+                that._mod(currentItem, {current: true});
             }
         },
 
@@ -469,7 +495,20 @@ var Makeup = (function($, _) {
         },
 
         /**
+         * Render module
+         */
+        _renderModule: function(module) {
+            console.log(module);
+
+            // User method
+            this._params.renderModule(module);
+        },
+
+        /**
          * Mod
+         *
+         * @param {} el
+         * @param {} modifiers
          */
         _mod: function(el, modifiers) {
             if (!el.mod) {
@@ -486,6 +525,8 @@ var Makeup = (function($, _) {
                     element = $(el);
 
                 _(newMods).forIn(function(value, key) {
+
+                    console.log(key, !oldMods[key]);
 
                     // Add modifier
                     if (!oldMods[key]) {
