@@ -8,6 +8,22 @@
 var Makeup = (function($, _) {
     var makeup;
 
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    function trimString(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     function Makeup(options) {
         if (typeof makeup == 'object') {
             return makeup;
@@ -49,6 +65,8 @@ var Makeup = (function($, _) {
                     rulerTrackActive: '.makeup__ruler-track-active',
                     rulerTrackRunner: '.makeup__ruler-track-runner',
                     rulerTrackPoint: '.makeup__ruler-track-point',
+
+                    statusBar: '.makeup__status',
 
                     box: '.makeup__main',
                     container: '.makeup__container',
@@ -230,6 +248,8 @@ var Makeup = (function($, _) {
                     var id = directory.dataset.id,
                         module = that._params.modules[id];
 
+                    $(that._params.selectors.statusBar).text(escapeHTML(module.name));
+
                     setCurrent(this);
                     that._renderModule(module);
                 }
@@ -239,6 +259,9 @@ var Makeup = (function($, _) {
                 var directory = this.parentNode.parentNode,
                     id = directory.dataset.id,
                     module = that._params.modules[id];
+
+                $(that._params.selectors.statusBar)
+                    .text(escapeHTML(module.name) + ' -> ' + escapeHTML(trimString($(this).text())));
 
                 setCurrent(this);
                 that._renderModule(module);
