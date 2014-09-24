@@ -426,7 +426,7 @@ var Makeup = (function($, _) {
                 values: [min, max],
                 stickingRadius: 5,
                 onUpdate: function(e) {
-                    makeup._state.set({ width: e.maxVal })
+                    makeup._state.set({ width: e.maxVal.toFixed(0) })
                 }
             });
 
