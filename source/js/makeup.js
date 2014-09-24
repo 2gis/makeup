@@ -50,6 +50,8 @@ var Makeup = (function($, _) {
                     rulerTrackRunner: '.makeup__ruler-track-runner',
                     rulerTrackPoint: '.makeup__ruler-track-point',
 
+                    statusBar: '.makeup__status',
+
                     box: '.makeup__main',
                     container: '.makeup__container',
                     containerImage: '.makeup__container-image',
@@ -230,6 +232,8 @@ var Makeup = (function($, _) {
                     var id = directory.dataset.id,
                         module = that._params.modules[id];
 
+                    that._setStatus(escapeHTML(module.name));
+
                     setCurrent(this);
                     that._renderModule(module);
                 }
@@ -239,6 +243,8 @@ var Makeup = (function($, _) {
                 var directory = this.parentNode.parentNode,
                     id = directory.dataset.id,
                     module = that._params.modules[id];
+
+                that._setStatus(escapeHTML(module.name) + ' → ' + escapeHTML(trimString($(this).text())));
 
                 setCurrent(this);
                 that._renderModule(module);
@@ -495,6 +501,17 @@ var Makeup = (function($, _) {
         },
 
         /**
+         * Sets text on status bar
+         *
+         * @param {String} str text of status
+         */
+        _setStatus: function(str) {
+            var that = this;
+
+            $(that._params.selectors.statusBar).text(str || '');
+        },
+
+        /**
          * Render module
          */
         _renderModule: function(module) {
@@ -685,6 +702,22 @@ var Makeup = (function($, _) {
             return out;
         }
     };
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    function trimString(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     return Makeup;
 })(jQuery, _);
