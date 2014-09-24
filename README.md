@@ -1,3 +1,6 @@
 makeup
 ======
-Frontend developer tools
+
+[Формат входных данных](docs/format.md)
+
+
