@@ -71,17 +71,5 @@ gulp.task('js', require('./tasks/scripts')(buildOptions));
 gulp.task('img', require('./tasks/images')(buildOptions));
 gulp.task('sprite', require('./tasks/sprite')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
-
-
-gulp.task('unit', function() {
-    return (
-        gulp.src('test/*.spec.js', { read: false })
-            .pipe(mocha({
-                globals: ['DEBUG'],
-                reporter: 'landing'
-            }))
-            .on('error', function() {
-                gulp.emit('tl.fail', 'Unit tests failed!');
-            })
-    );
-});
+gulp.task('css', require('./tasks/styles')(buildOptions));
+gulp.task('test', require('./tasks/tests')(buildOptions));
