@@ -22,6 +22,17 @@ var Makeup = (function($, _) {
         mm: '_'
     };
 
+    var internalNamingRules = {
+        delimiters: {
+            be: '__',
+            bm: '--',
+            em: '--',
+            mm: '-'
+        },
+        bevis: false,
+        logic: true
+    };
+
     function Makeup(options) {
         if (typeof makeup == 'object') {
             return makeup;
@@ -32,7 +43,7 @@ var Makeup = (function($, _) {
         makeup._init(options);
     }
 
-    Makeup.prototype = {
+    Makeup.fn = Makeup.prototype = {
         constructor: Makeup,
 
         _state: {},
@@ -170,7 +181,7 @@ var Makeup = (function($, _) {
 
                 renderModule: function() {},
 
-                delimiters: internationalDelimiters
+                namingRules: internalNamingRules
 
             }, options));
 
@@ -448,7 +459,7 @@ var Makeup = (function($, _) {
                 values: [min, max],
                 stickingRadius: 5,
                 onUpdate: function(e) {
-                    makeup._state.set({ width: e.maxVal.toFixed(0) })
+                    makeup._state.set({ width: e.maxVal.toFixed(0) });
                 }
             });
 
@@ -535,160 +546,6 @@ var Makeup = (function($, _) {
 
             // User method
             this._params.renderModule(module);
-        },
-
-        /**
-         * Устанавливает модификаторы modifiers на элемент el
-         *
-         * @param {HTMLElement} el - нода, на которую будет устанавливаться можификаторы
-         * @param {Object} modifiers - одноуровневый объект модификаторов
-         */
-        _mod: function(el, modifiers) {
-            if (!el.mod) {
-                el.mod = this._parseMod(el);
-                el.blockName = this._detectBEM(el, this.delimiters).blockName;
-            }
-
-            if (!modifiers) {
-                return el.mod;
-            } else {
-                var newMods = _.merge(_.clone(el.mod), modifiers),
-                    oldMods = el.mod,
-                    operations = [];
-
-                _(newMods).forIn(function(value, key) {
-
-                    console.log(key, !oldMods[key]);
-
-                    // Add modifier
-                    if (!oldMods[key]) {
-                        operations.push({key: key, value: value, isRemove: false});
-                        return;
-                    }
-
-                    // Remove modifier
-                    if (!value) {
-                        operations.push({key: key, value: oldMods[key], isRemove: true});
-                        return;
-                    }
-
-                    // Change value
-                    operations.push(
-                        {key: key, value: oldMods[key], isRemove: true},
-                        {key: key, value: value, isRemove: false}
-                    );
-
-                });
-
-                _(operations).forEach(function(item) {
-                    var value = item.value === true ? '' : '-' + item.value,
-                        modifier = el.blockName + '--' + item.key + value;
-
-                    if (item.isRemove) {
-                        $(el).removeClass(modifier);
-                    } else {
-                        $(el).addClass(modifier);
-                    }
-                });
-
-                el.mod = newMods;
-            }
-        },
-
-        /**
-         * Пытается найти имя блока или элемента в классах, тип элемента (блок или элемент)
-         *
-         * @param {HTMLElement} el - детектируемый дом-элемент
-         * @param {Object} delimiters - объект разделителей
-         * @return {Object} - объект результата парсинга
-         */
-        _detectBEM: function(el, delimiters) {
-            delimiters = delimiters || this._params.delimiters;
-            if (delimiters.be == delimiters.bm || delimiters.be == delimiters.mm) {
-                throw new Error('Block-Element delimiter must be unique!');
-            }
-
-            var type; // el является блоком или элементом
-
-            // Пытаемся найти имя блока
-            var name = _.find(el.classList, function(cls) { // Итерируем по всем классам на элементе
-                return _.reduce(delimiters, function(result, value, key) { // И возвращаем первый попавшийся, в составе которого нет ни одного разделителя
-                    return result && cls.indexOf(value) == -1;
-                }, true);
-            });
-
-            if (name) {
-                type = 'block';
-            } else { // Если блок не нашёлся, пытаемся найти имя элемента
-                var dems = _.omit(delimiters, ['be']);
-
-                name = _.find(el.classList, function(cls) { // Итерируем по всем классам на элементе
-                    return !_.reduce(dems, function(result, value, key) { // И возвращаем первый попавшийся, в составе которого нет ни одного разделителя
-                        re = new RegExp('([A-Za-z\d]|^)' + value + '[A-Za-z\d]'); // 'awefa_qwe', '_qwew' -> true, 'freafewAWEr' -> false
-                        return result || cls.match(re);
-                    }, false);
-                });
-
-                if (name) {
-                    type = 'element';
-                } else {
-                    throw new Error('No blockname nor elementname found in classes: ' + el.classList.join(', '));
-                }
-            }
-
-            return {
-                type: type,
-                name: name,
-                blockName: name.split(delimiters.be)[0],
-                elementName: type == 'element' ? name : null
-            };
-        },
-
-        /**
-         * Парсит модификаторы по классам с дом-элемента
-         *
-         * @param {HTMLElement} el - дом-элемент, с которого будут считываться модификаторы
-         * @param {Object} delimiters - объект разделителей
-         * @param {Object} params - дополнительные параметры, например, использование бевиса
-         * @return {Object} - объект модификаторов
-         */
-        _parseMod: function(el, delimiters, params) {
-            params = params || {};
-            delimiters = delimiters || this._params.delimiters;
-            
-            var bem = this._detectBEM(el, delimiters, params);
-
-            // Переделываем классы в объект модификаторов
-            var mods = _.reduce(el.classList, function(result, cls) {
-                if (cls == bem.name) {
-                    return result;
-                }
-
-                var re;
-                var delm = bem.mode == 'block' ? delimiters.bm : delimiters.em;
-
-                if (params.bevis) {
-                    re = new RegExp('^' + delm + '([\w-]*)'); // '_state_open' -> 'state_open'
-                } else {
-                    re = new RegExp('^' + bem.name + delm + '([\w-]*)'); // '(block__)element_state_open' -> 'state_open'
-                }
-                var tail = _.compact(cls.replace(re, '').split(delimiters.mm));
-
-                if (tail) {
-                    var key = tail[0];
-                    var value = tail[1];
-
-                    if (!value) {
-                        value = 'true';
-                    }
-                    
-                    result[key] = value;
-                }
-
-                return result;
-            }, {});
-
-            return mods;
         },
 
         /**
@@ -813,7 +670,7 @@ var Makeup = (function($, _) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    if (TEST) {
+    if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.prototype;
     }
 

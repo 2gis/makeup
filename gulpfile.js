@@ -27,7 +27,7 @@ gulp.task('build', function(callback) {
 });
 
 
-gulp.task('t', ['unit']);
+gulp.task('t', ['jshint', 'unit']);
 gulp.task('test', ['unit']);
 
 

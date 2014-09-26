@@ -11,7 +11,7 @@ module.exports = function(buildOptions) {
         return (
             gulp
                 .src([
-                    'source/js/main.js',
+                    'source/js/*.js',
                     'source/blocks/*/*.js'
                 ])
                 .pipe(jshint())
