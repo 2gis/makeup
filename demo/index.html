@@ -8,102 +8,13 @@
 </head>
 <body>
 
+<script src="testData.js"></script>
 <script src="../dist/makeup.js"></script>
 <script>
 
     var makeup = new Makeup({
-
         renderModule: function(module) {},
-
-        modules: [
-            {
-                name: 'articleCard',
-                documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья', 'http://google.com']
-            },
-            {
-                name: 'articleCard articleCard articleCard',
-                documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья', 'http://google.com'],
-                items: [
-                    {
-                        label: 'vcData',
-                        items: [
-                            {
-                                label: 'full',
-                                image: 'test.png'
-                            },
-                            'default',
-                            'scroll'
-                        ]
-                    },
-                    {
-                        label: 'initData',
-                        items: [
-                            'default'
-                        ]
-                    }
-                ]
-            },
-            {
-                name: 'auth',
-                documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья'],
-                items: [
-                    {
-                        label: 'vcData',
-                        items: [
-                            'full',
-                            'signin',
-                            'signinReview',
-                            'signinCaptcha',
-                            'signup',
-                            'confirm',
-                            'responseConfirm',
-                            'resetPassword',
-                            'resetPassword2',
-                            'responseChangePass',
-                            'license',
-                            'resetPasswordError',
-                            'signupError',
-                            'signinError'
-                        ]
-                    },
-                    {
-                        label: 'initData',
-                        items: [
-                            'license'
-                        ]
-                    }
-                ]
-            },
-            {
-                name: 'autoResults',
-                documentation: ['http://confluence.2gis.local/x/PwU4Bw#id-Карточкаорганизацииβ-Рекламнаястатья'],
-                items: [
-                    {
-                        label: 'vcData',
-                        items: [
-                            'simple',
-                            'advanced',
-                            'maneuvers',
-                            'free',
-                            'oneTab',
-                            'twoTabs',
-                            'threeTabs',
-                            'fourTabs',
-                            'fiveTabs',
-                            'multiTracks',
-                            'full',
-                            'fullLeftHand'
-                        ]
-                    },
-                    {
-                        label: 'initData',
-                        items: [
-                            'apiData'
-                        ]
-                    }
-                ]
-            }
-        ]
+        data: data
     });
 </script>
 </body>

@@ -553,10 +553,24 @@ var Makeup = (function($, _) {
          */
         _viewModel: function(data) {
             var model = data || {},
-                out = model;
+                out = model,
+                that = this;
 
-            if (model && model.modules) {
-                out.modules = this._parseCollection(model.modules);
+            if (model && model.data) {
+                if (model.data instanceof Array) {
+                    out.modules = _.map(model.data, function(item, i) {
+                        console.log(item);
+                        return {
+                            label: item.label,
+                            items: that._parseCollection(item.items)
+                        };
+                    });
+                } else {
+                    out.modules = [{
+                        label: item.label,
+                        items: that._parseCollection(model.modules.items)
+                    }];
+                }
             }
 
             console.log(out);
@@ -572,7 +586,7 @@ var Makeup = (function($, _) {
             if (typeof item == 'string') {
                 out.name = item;
             } else if (item instanceof Object) {
-                var children = item.items,
+                var children = item.items || item.types,
                     documentation = item.documentation,
                     meta = item.meta;
 
@@ -611,7 +625,7 @@ var Makeup = (function($, _) {
             var out = [],
                 that = this;
 
-            _(arr).compact().forEach(function(item) {
+            _(arr).compact().each(function(item) {
                 out.push(func ? func(item) : that._parseItem(item));
             });
 
