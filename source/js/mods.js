@@ -28,12 +28,10 @@
         if (params.modKey) {
             var delimiter = namingRules.delimiters[params.element ? 'em' : 'bm'];
 
-            if (namingRules.logic) {
-                if (params.modValue === true) {
-                    str += delimiter + params.modKey;
-                } else if (params.modValue === false || params.modValue == null) {
-                    str = '';
-                }
+            if (namingRules.logic && params.modValue === true) {
+                str += delimiter + params.modKey;
+            } else if (params.modValue === false || params.modValue == null) {
+                str = '';
             } else {
                 str += delimiter + params.modKey + namingRules.delimiters.mm + params.modValue;
             }
@@ -68,7 +66,7 @@
         if (name) {
             type = 'block';
         } else { // Если блок не нашёлся, пытаемся найти имя элемента
-            var elDms = _.omit(dms, ['be']);
+            var elDms = _.omit(dms, ['be', 'mm']); // На модификаторы нам пофиг + разделитель может быть разрешённым символом в блоке и элементе, например -
 
             name = _.find(el.classList, function(cls) { // Итерируем по всем классам на элементе
                 return !_.reduce(elDms, function(result, value, key) { // И возвращаем первый попавшийся, в составе которого нет ни одного разделителя

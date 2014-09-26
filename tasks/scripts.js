@@ -29,6 +29,7 @@ module.exports = function(buildOptions) {
                     'bower_components/baron/baron.min.js',
                     'bower_components/rader/rader.min.js',
                     'temp/templates.js',
+                    'source/js/setGlobals.js',
                     'source/js/*.js',
                     'source/blocks/*/*.js'
                 ])

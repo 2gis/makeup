@@ -35,7 +35,7 @@ describe('Makeup -> mods', function() {
             be: '__',
             bm: '--',
             em: '--',
-            mm: '--'
+            mm: '-'
         },
         bevis: false,
         logic: true
@@ -130,6 +130,20 @@ describe('Makeup -> mods', function() {
             var expected = '';
 
             assert.equal(result, expected, 'Должен вернуть пустую строку');
+        });
+
+        it('Modifier for block', function() {
+            var rules = _.clone(russianNamingRules);
+            var params = {
+                block: 'block',
+                modKey: 'mode',
+                modValue: 4
+            };
+
+            var result = makeup._composeClassName(params, rules);
+            var expected = 'block_mode_4';
+
+            assert.equal(result, expected);
         });
     });
 
