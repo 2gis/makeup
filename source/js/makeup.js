@@ -27,7 +27,7 @@ var Makeup = (function($, _) {
             be: '__',
             bm: '--',
             em: '--',
-            mm: '-'
+            mm: '--'
         },
         bevis: false,
         logic: true

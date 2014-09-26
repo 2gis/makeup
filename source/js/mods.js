@@ -1,6 +1,7 @@
-(function($, _) {
-    var Makeup = Makeup || {};
-    Makeup.fn = Makeup.fn || {};
+(function($, _, Makeup) {
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup;
+    }
 
     /**
      * Создаёт CSS класс по бэму
@@ -30,7 +31,7 @@
             if (namingRules.logic) {
                 if (params.modValue === true) {
                     str += delimiter + params.modKey;
-                } else if (params.modValue === false) {
+                } else if (params.modValue === false || params.modValue == null) {
                     str = '';
                 }
             } else {
@@ -83,11 +84,13 @@
             }
         }
 
+        var blockName = name.split(dms.be)[0];
+
         return {
             type: type,
             name: name,
-            blockName: name.split(dms.be)[0],
-            elementName: type == 'element' ? name : null
+            blockName: blockName,
+            elementName: type == 'element' ? name.replace(blockName + dms.be, '') : null
         };
     };
 
@@ -144,8 +147,10 @@
      * @param {Object} modifiers - одноуровневый объект модификаторов
      */
     Makeup.fn._mod = function(el, modifiers) {
+        var self = this;
+
         if (!el.mod) {
-            var bem = this._detectBEM(el, this.delimiters);
+            var bem = this._detectBEM(el, this._params.namingRules);
             el.mod = this._parseMod(el);
             el.blockName = bem.blockName;
             el.elementName = bem.elementName;
@@ -155,55 +160,29 @@
             return el.mod;
         } else {
             var newMods = _.extend(_.clone(el.mod), modifiers),
-                oldMods = el.mod,
-                operations = [];
+                oldMods = el.mod;
 
             _.each(modifiers, function(value, key) {
-                var mod = {};
-                mod[key] = value;
-                var cls = this._composeClassName({
-                    block: el.blockname,
+                var rmCls = self._composeClassName({
+                    block: el.blockName,
                     element: el.elementName,
-                    modifier: mod,
-                    namingRules: this._params.namingRules
+                    modKey: key,
+                    modValue: oldMods[key],
+                    namingRules: self._params.namingRules
                 });
 
-                // Add modifier
-                if (!oldMods[key]) {
-                    operations.push({key: key, value: value, isRemove: false});
-                    return;
-                }
+                var addCls = self._composeClassName({
+                    block: el.blockName,
+                    element: el.elementName,
+                    modKey: key,
+                    modValue: value,
+                    namingRules: self._params.namingRules
+                });
 
-                // Remove modifier
-                if (!value) {
-                    operations.push({key: key, value: oldMods[key], isRemove: true});
-                    return;
-                }
+                $(el).addClass(addCls).removeClass(rmCls);
 
-                // Change value
-                operations.push(
-                    {key: key, value: oldMods[key], isRemove: true},
-                    {key: key, value: value, isRemove: false}
-                );
-
+                el.mod[key] = value;
             });
-
-            _(operations).forEach(function(item) {
-                var value = item.value === true ? '' : '-' + item.value,
-                    modifier = el.blockName + '--' + item.key + value;
-
-                if (item.isRemove) {
-                    $(el).removeClass(modifier);
-                } else {
-                    $(el).addClass(modifier);
-                }
-            });
-
-            el.mod = newMods;
         }
     };
-
-    if (typeof TEST != 'undefined' && TEST) {
-        module.exports = Makeup;
-    }
-})(jQuery, _);
+})(jQuery, _, Makeup);

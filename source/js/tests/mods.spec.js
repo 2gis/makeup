@@ -30,6 +30,17 @@ describe('Makeup -> mods', function() {
         logic: true,
     };
 
+    var internalNamingRules = {
+        delimiters: {
+            be: '__',
+            bm: '--',
+            em: '--',
+            mm: '--'
+        },
+        bevis: false,
+        logic: true
+    };
+
     describe('_composeClassName', function() {
         it('Block', function() {
             var params = {
@@ -89,7 +100,7 @@ describe('Makeup -> mods', function() {
             assert.equal(result, expected, 'Должен вернуть составной модификатор но без элемента');
         });
 
-        it('Remove modifier', function() {
+        it('Remove modifier false', function() {
             var rules = _.clone(russianNamingRules);
             rules.logic = true;
             var params = {
@@ -97,6 +108,22 @@ describe('Makeup -> mods', function() {
                 element: 'element',
                 modKey: 'active',
                 modValue: false
+            };
+
+            var result = makeup._composeClassName(params, rules);
+            var expected = '';
+
+            assert.equal(result, expected, 'Должен вернуть пустую строку');
+        });
+
+        it('Remove modifier undefined', function() {
+            var rules = _.clone(russianNamingRules);
+            rules.logic = true;
+            var params = {
+                block: 'block',
+                element: 'element',
+                modKey: 'active'
+                // modValue: false // undefined
             };
 
             var result = makeup._composeClassName(params, rules);
@@ -133,10 +160,27 @@ describe('Makeup -> mods', function() {
                 type: 'element',
                 name: 'block_elementWOWOWO123',
                 blockName: 'block',
-                elementName: 'block_elementWOWOWO123'
+                elementName: 'elementWOWOWO123'
             };
 
             var result = makeup._detectBEM(element, internationalNamingRules);
+
+            assert.deepEqual(result, expected);
+        });
+
+        it('Internal element', function() {
+            var element = {
+                classList: ['makeup__module-header']
+            };
+
+            var expected = {
+                type: 'element',
+                name: 'makeup__module-header',
+                blockName: 'makeup',
+                elementName: 'module-header'
+            };
+
+            var result = makeup._detectBEM(element, internalNamingRules);
 
             assert.deepEqual(result, expected);
         });
