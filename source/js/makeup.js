@@ -55,7 +55,7 @@ var Makeup = (function($, _) {
                 root: $('body'),
 
                 selectors: {
-                    element: '.makeup',
+                    container: '.makeup',
 
                     searchInput: '.makeup__search-input',
 
