@@ -55,10 +55,13 @@ var Makeup = (function($, _) {
                 selectors: {
                     element: '.makeup',
 
+                    searchInput: '.makeup__search-input',
+
                     sidebar: '.makeup__aside',
                     scroller: '.makeup__aside-in',
                     scrollerTrack: '.makeup__aside-track',
                     scrollerTrackBar: '.makeup__aside-track-bar',
+                    module: '.makeup__module',
                     moduleHeader: '.makeup__module-header',
                     moduleType: '.makeup__subnav-link',
 
@@ -84,6 +87,8 @@ var Makeup = (function($, _) {
                 },
 
                 modifiers: {
+                    hiddenModule: 'makeup__module--hidden',
+                    hiddenModuleType: 'makeup__subnav-link--hidden',
                     baron: 'makeup__aside--baron'
                 },
 
@@ -271,7 +276,7 @@ var Makeup = (function($, _) {
                     id = directory.dataset.id,
                     module = that._params.modules[id];
 
-                that._setStatus(escapeHTML(module.name) + ' → ' + escapeHTML(trimString($(this).text())));
+                that._setStatus(escapeHTML(trimString(module.name)) + ' → ' + escapeHTML(trimString($(this).text())));
 
                 setCurrent(this);
                 that._renderModule(module);
@@ -319,7 +324,54 @@ var Makeup = (function($, _) {
          * Search control listeners
          */
         _bindSearchListeners: function() {
+            var makeup = this,
+                searchInput = $(makeup._params.selectors.searchInput),
+                module = $(makeup._params.selectors.module),
+                moduleType = $(makeup._params.selectors.moduleType);
 
+            searchInput.on('keyup', function() {
+                module.removeClass(makeup._params.modifiers.hiddenModule);
+                moduleType.removeClass(makeup._params.modifiers.hiddenModuleType);
+
+                var re = searchInput.val().replace(/\s+/g, '');
+
+                if (!re) {
+                    return;
+                }
+
+                re = _(re)
+                    .reduce(function(chars, chr) {
+                        chars.push(escapeRegExp(chr));
+                        return chars;
+                    }, [])
+                    .join('.*?');
+
+                re = new RegExp('.*?' + re + '.*?', 'i');
+
+                moduleType.each(function() {
+                    if (re.test(stripTags(this.innerHTML).replace(/\s+/g, ''))) {
+                        this._shown = true;
+                    } else {
+                        this._shown = false;
+                        $(this).addClass(makeup._params.modifiers.hiddenModuleType);
+                    }
+                });
+
+                module.each(function() {
+                    var module = $(this).find(makeup._params.selectors.moduleType);
+
+                    var hasShown = false;
+
+                    module.each(function() {
+                        if (this._shown) {
+                            hasShown = true;
+                            return false;
+                        }
+                    });
+
+                    makeup._mod(this, { expanded: hasShown });
+                });
+            });
         },
 
         /**
@@ -677,11 +729,27 @@ var Makeup = (function($, _) {
     }
 
     /**
+     * @param {string} re
+     * @returns {string}
+     */
+    function escapeRegExp(re) {
+        return re.replace(/([?!\.{}[+\-\]^|$(=:)\/\\*])/g, '\\$1');
+    }
+
+    /**
      * @param {string} str
      * @returns {string}
      */
     function escapeHTML(str) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    function stripTags(str) {
+        return str.replace(/<[^>]+>/g, '');
     }
 
     if (typeof TEST != 'undefined' && TEST) {

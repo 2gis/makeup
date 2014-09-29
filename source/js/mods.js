@@ -115,9 +115,9 @@
             var delm = bem.mode == 'block' ? dms.bm : dms.em;
 
             if (namingRules.bevis) {
-                re = new RegExp('^' + delm + '([\\w-]*)'); // '_state_open' -> 'state_open'
+                re = new RegExp('^' + delm + '([\\w\\-]*)'); // '_state_open' -> 'state_open'
             } else {
-                re = new RegExp('^' + bem.name + delm + '([\\w-]*)'); // '(block__)element_state_open' -> 'state_open'
+                re = new RegExp('^' + bem.name + delm + '([\\w\\-]*)'); // '(block__)element_state_open' -> 'state_open'
             }
             var tail = _.compact(cls.match(re)[1].split(dms.mm));
 
@@ -128,7 +128,7 @@
                 if (!value) {
                     value = 'true';
                 }
-                
+
                 result[key] = value;
             }
 
@@ -177,7 +177,9 @@
                     namingRules: self._params.namingRules
                 });
 
-                $(el).addClass(addCls).removeClass(rmCls);
+                if (rmCls != addCls) {
+                    $(el).addClass(addCls).removeClass(rmCls);
+                }
 
                 el.mod[key] = value;
             });
