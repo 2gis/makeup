@@ -19,6 +19,7 @@ node_modules
 bower_components
 .idea/
 
-dist/
+dist/assets/svg
+dist/assets/png
 
 npm-debug.log
