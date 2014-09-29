@@ -52,6 +52,8 @@ var Makeup = (function($, _) {
 
             this._params = this._viewModel(_.merge({
 
+                root: $('body'),
+
                 selectors: {
                     element: '.makeup',
 
@@ -190,7 +192,7 @@ var Makeup = (function($, _) {
 
             }, options));
 
-            $('body').append(makeupTemplates.makeup(this._params));
+            this._params.root.append(makeupTemplates.makeup(this._params));
 
             this._state = new State();
             this._bindListeners();
