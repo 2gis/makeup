@@ -5,7 +5,7 @@
  * @requires jQuery
  * @requires lodash
  */
-var Makeup = (function($, _) {
+var Makeup = (function() {
     var makeup;
 
     var internationalDelimiters = {
@@ -759,4 +759,4 @@ var Makeup = (function($, _) {
     }
 
     return Makeup;
-})(jQuery, _);
+})();

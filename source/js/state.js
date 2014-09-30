@@ -3,7 +3,7 @@
  *
  * @requires jQuery
  */
-var State = (function($) {
+var State = (function() {
     var state;
 
     function State(params) {
@@ -32,7 +32,7 @@ var State = (function($) {
             var state = this,
                 jqWindow = $(window);
 
-            jqWindow.bind('hashchange.Makeup', function() {
+            jqWindow.on('hashchange.Makeup', function() {
                 state._setParams(state._path2object(state._getHash()));
 
                 jqWindow.trigger({
@@ -164,4 +164,4 @@ var State = (function($) {
     };
 
     return State;
-})(jQuery);
+})();

@@ -4,9 +4,14 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     headerfooter = require('gulp-headerfooter'),
     uglify = require('gulp-uglify')
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    fs = require('fs');
 
 module.exports = function(buildOptions) {
+    var header = fs.readFileSync('./source/jsPartials/header.js');
+    var footer = fs.readFileSync('./source/jsPartials/footer.js');
+
+
     gulp.task('jshint', function() {
         return (
             gulp
@@ -28,15 +33,12 @@ module.exports = function(buildOptions) {
                     'bower_components/jquery/dist/jquery.min.js',
                     'bower_components/baron/baron.min.js',
                     'bower_components/rader/rader.min.js',
-                    'temp/templates.js',
-                    'source/js/setGlobals.js',
                     'source/js/*.js',
-                    'source/blocks/*/*.js'
+                    'temp/templates.js'
                 ])
                 .pipe(concat('makeup.js'))
-                .pipe(headerfooter.header('(function(global) {'))
-                .pipe(headerfooter.footer('    global.Makeup = Makeup;'))
-                .pipe(headerfooter.footer('})(window);'))
+                .pipe(headerfooter.header(header))
+                .pipe(headerfooter.footer(footer))
                 .pipe(buildOptions.release ? uglify() : gutil.noop())
                 .pipe(gulp.dest('dist/'))
         );

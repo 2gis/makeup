@@ -38,6 +38,7 @@ gulp.task('watch', function(callback) {
     // Scripts
     gulp.watch('./source/blocks/**/*.js', ['js']);
     gulp.watch('./source/js/**/*.js', ['js']);
+    gulp.watch('./source/jsPartials/**/*.js', ['js']);
 
     // Images
     gulp.watch('./source/images/**/*.{jpg,jpeg,gif,png}', ['img']);

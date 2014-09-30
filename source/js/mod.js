@@ -1,4 +1,4 @@
-(function($, _, Makeup) {
+(function(Makeup) {
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup;
     }
@@ -185,4 +185,4 @@
             });
         }
     };
-})(jQuery, _, Makeup);
+})(Makeup);
