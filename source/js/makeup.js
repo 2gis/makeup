@@ -258,13 +258,15 @@ var Makeup = (function() {
                 moduleType = $(this._params.selectors.moduleType);
 
             moduleHeader.on('click', function() {
-                var directory = this.parentNode;
+                var directory = this.parentNode,
+                    list = directory.parentNode;
 
                 if (that._mod(directory).expandable) {
                     toggleMenuItem(directory);
                 } else {
                     var id = directory.dataset.id,
-                        module = that._params.modules[id];
+                        listId = list.dataset.id,
+                        module = that._params.data[listId].items[id];
 
                     that._setStatus(escapeHTML(module.name));
 
@@ -274,9 +276,21 @@ var Makeup = (function() {
             });
 
             moduleType.on('click', function() {
-                var directory = this.parentNode.parentNode,
-                    id = directory.dataset.id,
-                    module = that._params.modules[id];
+                var type = this.parentNode,
+                    directory = type.parentNode.parentNode,
+                    list = directory.parentNode,
+
+                    id = this.dataset.id,
+                    typeId = type.dataset.id,
+                    moduleId = directory.dataset.id,
+                    listId = list.dataset.id,
+
+                    module;
+
+                module = that._params.data[listId]
+                    .items[moduleId]
+                    .items[typeId]
+                    .items[id];
 
                 that._setStatus(escapeHTML(trimString(module.name)) + ' → ' + escapeHTML(trimString($(this).text())));
 

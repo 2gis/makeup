@@ -98,50 +98,54 @@
                 {{#if data}}
                     <nav class="makeup__nav-list">
                         {{#each data}}
+                            <div class="makeup__nav-list-item" data-id="{{@index}}">
 
-                            <div class="makeup__nav-title">{{label}}</div>
+                                <div class="makeup__nav-title">{{label}}</div>
 
-                            {{#each items}}
-                                <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
+                                {{#each items}}
+                                    <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
 
-                                    <header class="makeup__module-header">
-                                        <div class="makeup__module-header-in">
-                                            <div class="makeup__module-header-meta">
-                                                {{#if documentation}}
-                                                    <div class="makeup__doc">
-                                                        {{#each documentation}}
-                                                            <a href="{{link}}" title="{{label}}" class="makeup__doc-link"></a>
-                                                        {{/each}}
-                                                    </div>
-                                                {{/if}}
-                                            </div>
-                                            <div class="makeup__module-header-inner">
-                                                <div class="makeup__module-header-title">{{label}}</div>
-                                            </div>
-                                        </div>
-
-                                    </header>
-
-                                    {{#if items}}
-                                        <div class="makeup__subnav">
-                                            {{#each items}}
-                                                <div class="makeup__subnav-title">
-                                                    {{label}}
+                                        <header class="makeup__module-header">
+                                            <div class="makeup__module-header-in">
+                                                <div class="makeup__module-header-meta">
+                                                    {{#if documentation}}
+                                                        <div class="makeup__doc">
+                                                            {{#each documentation}}
+                                                                <a href="{{link}}" title="{{label}}" class="makeup__doc-link"></a>
+                                                            {{/each}}
+                                                        </div>
+                                                    {{/if}}
                                                 </div>
-                                                {{#if items}}
-                                                    {{#each items}}
-                                                        <span class="makeup__subnav-link">
+                                                <div class="makeup__module-header-inner">
+                                                    <div class="makeup__module-header-title">{{label}}</div>
+                                                </div>
+                                            </div>
+
+                                        </header>
+
+                                        {{#if items}}
+                                            <div class="makeup__subnav">
+                                                {{#each items}}
+                                                    <div class="makeup__subnav-item" data-id="{{@index}}">
+                                                        <div class="makeup__subnav-title">
                                                             {{label}}
-                                                        </span>
-                                                    {{/each}}
-                                                {{/if}}
-                                            {{/each}}
-                                        </div>
-                                    {{/if}}
+                                                        </div>
+                                                        {{#if items}}
+                                                            {{#each items}}
+                                                                <span class="makeup__subnav-link" data-id="{{@index}}">
+                                                                    {{label}}
+                                                                </span>
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    </div>
+                                                {{/each}}
+                                            </div>
+                                        {{/if}}
 
-                                </article>
-                            {{/each}}
+                                    </article>
+                                {{/each}}
 
+                            </div>
                         {{/each}}
                     </nav>
                 {{/if}}
