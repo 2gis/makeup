@@ -258,44 +258,45 @@ var Makeup = (function() {
                 moduleType = $(this._params.selectors.moduleType);
 
             moduleHeader.on('click', function() {
-                var directory = this.parentNode,
-                    list = directory.parentNode;
+                var module = this.parentNode,
+                    group = module.parentNode;
 
-                if (that._mod(directory).expandable) {
-                    toggleMenuItem(directory);
+                if (that._mod(module).expandable) {
+                    toggleMenuItem(module);
                 } else {
-                    var id = directory.dataset.id,
-                        listId = list.dataset.id,
-                        module = that._params.data[listId].items[id];
+                    var moduleId = module.dataset.id,
+                        groupId = group.dataset.id;
 
-                    that._setStatus(escapeHTML(module.name));
+                    that._setStatus(
+                        escapeHTML(that._params.data[groupId].items[moduleId].name)
+                    );
+                    that._renderModule(groupId, moduleId);
 
                     setCurrent(this);
-                    that._renderModule(module);
                 }
             });
 
             moduleType.on('click', function() {
-                var type = this.parentNode,
-                    directory = type.parentNode.parentNode,
-                    list = directory.parentNode,
+                var typeGroup = this.parentNode,
+                    module = typeGroup.parentNode.parentNode,
+                    group = module.parentNode,
 
-                    id = this.dataset.id,
-                    typeId = type.dataset.id,
-                    moduleId = directory.dataset.id,
-                    listId = list.dataset.id,
+                    typeId = this.dataset.id,
+                    typeGroupId = typeGroup.dataset.id,
+                    moduleId = module.dataset.id,
+                    groupId = group.dataset.id,
 
-                    module;
+                    data = that._params.data;
 
-                module = that._params.data[listId]
-                    .items[moduleId]
-                    .items[typeId]
-                    .items[id];
+                var moduleConfig = data[groupId].items[moduleId],
+                    typeConfig = moduleConfig.items[typeGroupId].items[typeId];
 
-                that._setStatus(escapeHTML(trimString(module.name)) + ' → ' + escapeHTML(trimString($(this).text())));
+                that._setStatus(
+                    escapeHTML(trimString(moduleConfig.name)) + ' → ' + escapeHTML(trimString(typeConfig.name))
+                );
+                that._renderModule(groupId, moduleId, typeGroupId, typeId);
 
                 setCurrent(this);
-                that._renderModule(module);
             });
 
             if (this._params.menu) {
@@ -609,11 +610,61 @@ var Makeup = (function() {
         /**
          * Render module
          */
-        _renderModule: function(module) {
-            console.log(module);
+        _renderModule: function(groupId, moduleId, typeGroupId, typeId) {
+            var data = this._params.data,
+                selector = this._params.selectors,
+                instance = {},
+
+                group = data[groupId],
+                module = group.items[moduleId],
+                typeGroup = typeGroupId && module.items[typeGroupId],
+                type = typeGroupId && typeId && typeGroup.items[typeId],
+
+                typeFields = ['name', 'label', 'data', 'image'],
+                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data'];
+
+
+            // Собираем данные о модуле
+
+            _.each(moduleFields, function(item) {
+                var prefix = item == 'name' || item == 'label' ? 'module' : '';
+                addProperty(module, instance, item, prefix + item);
+            });
+
+            if (typeGroup && type) {
+                _.each(typeFields, function(item) {
+                    var prefix = item == 'name' || item == 'label' ? 'type' : '';
+                    addProperty(type, instance, item, prefix + item);
+                });
+            }
+
+            // Устанавливаем стили
+            $(selector.container).attr('style', getStyles('wrapper'));
+            $(selector.containerImage).attr('style', getStyles('image'));
+            $(selector.containerMarkeu).attr('style', getStyles('markup'));
+
+
+            function addProperty(source, target, sourceKey, targetKey) {
+                if (!targetKey) targetKey = sourceKey;
+                if (source && source.hasOwnProperty(sourceKey)) {
+                    if (typeof source[sourceKey] == 'object') {
+                        target[targetKey] = _.clone(source[sourceKey]);
+                    } else {
+                        target[targetKey] = source[sourceKey];
+                    }
+                }
+            }
+
+            function getStyles(key) {
+                return '' +
+                    (group.styles && group.styles[key] || '') +
+                    (module.styles && module.styles[key] || '') +
+                    (typeGroup.styles && typeGroup.styles[key] || '') +
+                    (type.styles && type.styles[key] || '');
+            }
 
             // User method
-            this._params.renderModule(module);
+            this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
         },
 
         /**
