@@ -48,7 +48,10 @@ var Makeup = (function() {
 
         _state: {},
 
+        el: {},
+
         _init: function(options) {
+            var that = this;
 
             this._params = this._viewModel(_.merge({
 
@@ -85,6 +88,8 @@ var Makeup = (function() {
                     box: '.makeup__main',
                     container: '.makeup__container',
                     containerImage: '.makeup__container-image',
+                    containerImageRegular: '.makeup__container-image-regular',
+                    containerImageInverse: '.makeup__container-image-inverse',
                     containerMarkup: '.makeup__container-markup'
                 },
 
@@ -194,6 +199,10 @@ var Makeup = (function() {
 
             this._params.wrapper.append(makeupTemplates.makeup(this._params));
 
+            _.each(this._params.selectors, function(item, key) {
+                that.el[key] = $(item);
+            });
+
             this._state = new State();
             this._bindListeners();
         },
@@ -264,8 +273,8 @@ var Makeup = (function() {
                 if (that._mod(module).expandable) {
                     toggleMenuItem(module);
                 } else {
-                    var moduleId = module.dataset.id,
-                        groupId = group.dataset.id;
+                    var moduleId = +module.dataset.id,
+                        groupId = +group.dataset.id;
 
                     that._setStatus(
                         escapeHTML(that._params.data[groupId].items[moduleId].name)
@@ -281,10 +290,10 @@ var Makeup = (function() {
                     module = typeGroup.parentNode.parentNode,
                     group = module.parentNode,
 
-                    typeId = this.dataset.id,
-                    typeGroupId = typeGroup.dataset.id,
-                    moduleId = module.dataset.id,
-                    groupId = group.dataset.id,
+                    typeId = +this.dataset.id,
+                    typeGroupId = +typeGroup.dataset.id,
+                    moduleId = +module.dataset.id,
+                    groupId = +group.dataset.id,
 
                     data = that._params.data;
 
@@ -396,7 +405,7 @@ var Makeup = (function() {
          */
         _bindModesListeners: function() {
             var makeup = this,
-                makeupElement = $(makeup._params.selectors.element),
+                makeupElement = $(makeup._params.selectors.root),
                 modeControl = $(makeup._params.selectors.modeControl);
 
             modeControl.on('change', function() {
@@ -549,7 +558,8 @@ var Makeup = (function() {
             var params = this._params,
                 makeupElement = $(this._params.selectors.element),
                 box = $(this._params.selectors.box),
-                container = $(this._params.selectors.container);
+                container = $(this._params.selectors.container),
+                containerMarkup = $(this._params.selectors.containerMarkup);
 
             // Menu toggler
             if (state.hasOwnProperty('menu')) {
@@ -558,7 +568,7 @@ var Makeup = (function() {
 
             // Transparency
             if (state.hasOwnProperty('transparency')) {
-                container.css({
+                containerMarkup.css({
                     opacity: validateRangeValue(state.transparency, params.transparency.slider)
                 });
             }
@@ -639,11 +649,26 @@ var Makeup = (function() {
             }
 
             // Устанавливаем стили
+
             $(selector.container).attr('style', getStyles('wrapper'));
             $(selector.containerImage).attr('style', getStyles('image'));
             $(selector.containerMarkeu).attr('style', getStyles('markup'));
 
 
+            // Загружаем изображение
+
+            if (instance.image) {
+                this._loadImage(instance.image);
+            }
+
+            /**
+             * Скопировать свойство из одного объекта в другой
+             *
+             * @param {object} source Исходный объект
+             * @param {object} target Целевой объект
+             * @param {string} sourceKey Ключ свойства в исходном объекте
+             * @param {string} targetKey Ключ свойства в целевом объекте
+             */
             function addProperty(source, target, sourceKey, targetKey) {
                 if (!targetKey) targetKey = sourceKey;
                 if (source && source.hasOwnProperty(sourceKey)) {
@@ -655,12 +680,17 @@ var Makeup = (function() {
                 }
             }
 
+            /**
+             * Получить стили из конфига
+             *
+             * @param {string} Ключ (wrapper|image|markup)
+             */
             function getStyles(key) {
                 return '' +
                     (group.styles && group.styles[key] || '') +
                     (module.styles && module.styles[key] || '') +
-                    (typeGroup.styles && typeGroup.styles[key] || '') +
-                    (type.styles && type.styles[key] || '');
+                    (typeGroup && typeGroup.styles && typeGroup.styles[key] || '') +
+                    (type && type.styles && type.styles[key] || '');
             }
 
             // User method
@@ -668,7 +698,82 @@ var Makeup = (function() {
         },
 
         /**
+         * Загрузка изображения
+         *
+         * @param {string} src URL изображения
+         */
+        _loadImage: function(src) {
+            var that = this,
+                img = new Image(),
+                selectors = that._params.selectors,
+                container = selectors.containerImage,
+                imageClass = selectors.containerImageRegular.slice(1);
+
+            $(container).empty();
+
+            img.onload = img.onerror = function(e) {
+                img.onload = img.onerror = null;
+
+                if (e.type == 'load') {
+                    // $(container).append(img);
+                    $(this)
+                        .css({
+                            width: img.width,
+                            height: img.height
+                        })
+                        .addClass(imageClass)
+                        .appendTo(container);
+
+                    that._invertImage(img);
+                }
+            };
+
+            img.src = src;
+
+            console.log(src);
+        },
+
+        /**
+         * Строим инвертированное изображение
+         *
+         * @param {image} img изображение
+         */
+        _invertImage: function(img) {
+            var canvas = document.createElement('canvas'),
+                selectors = this._params.selectors,
+                canvasClass = selectors.containerImageInverse.slice(1);
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            if (typeof canvas['getContext'] != 'undefined') {
+                var ctx = canvas.getContext('2d'),
+                    imageData,
+                    pixels, r, g, b;
+
+                ctx.drawImage(img, 0, 0);
+
+                imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
+                pixels = imageData.data;
+
+                for (var i = 0, il = pixels.length; i < il; i += 4) {
+                    pixels[i] = 255 - pixels[i];
+                    pixels[i + 1] = 255 - pixels[i + 1];
+                    pixels[i + 2] = 255 - pixels[i + 2];
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            $(canvas)
+                .addClass(canvasClass)
+                .appendTo(selectors.containerImage);
+        },
+
+        /**
          * View model
+         *
+         * @param {object} data
          */
         _viewModel: function(data) {
             var model = data || {},
@@ -677,22 +782,20 @@ var Makeup = (function() {
 
             if (model && model.data) {
                 if (model.data instanceof Array) {
-                    out.modules = _.map(model.data, function(item, i) {
-                        console.log(item);
+                    out.data = _.map(model.data, function(item, i) {
                         return {
-                            label: item.label,
+                            label: item.label || 'Untitled group',
                             items: that._parseCollection(item.items)
                         };
                     });
                 } else {
-                    out.modules = [{
-                        label: item.label,
-                        items: that._parseCollection(model.modules.items)
+                    out.data = [{
+                        label: model.data.label || 'Blocks',
+                        items: that._parseCollection(model.data.items)
                     }];
                 }
             }
 
-            console.log(out);
             return out;
         },
 

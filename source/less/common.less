@@ -267,7 +267,6 @@ button {
         left: 2em;
         width: 400px;
         height: 300px;
-        background: #fff;
         -webkit-transform-origin: 0 0;
         transform-origin: 0 0;
         }
@@ -278,10 +277,31 @@ button {
             height: 100%;
             }
 
+            .makeup__container-image-regular {
+                display: block;
+
+                .makeup--mode-1 &,
+                .makeup--mode-4 & {
+                    display: none;
+                    }
+                }
+
+            .makeup__container-image-inverse {
+                display: none;
+
+                .makeup--mode-4 & {
+                    display: block;
+                    }
+                }
+
         .makeup__container-markup {
             position: absolute;
             width: 100%;
             height: 100%;
+
+            .makeup--mode-2 & {
+                display: none;
+                }
             }
 
 
