@@ -627,11 +627,11 @@ var Makeup = (function() {
 
                 group = data[groupId],
                 module = group.items[moduleId],
-                typeGroup = typeGroupId && module.items[typeGroupId],
-                type = typeGroupId && typeId && typeGroup.items[typeId],
+                typeGroup = typeGroupId !== undefined && module.items[typeGroupId],
+                type = typeGroupId !== undefined && typeId !== undefined && typeGroup.items[typeId],
 
-                typeFields = ['name', 'label', 'data', 'image'],
-                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data'];
+                typeFields = ['name', 'label', 'data', 'image', 'snippet'],
+                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'];
 
 
             // Собираем данные о модуле
@@ -652,7 +652,7 @@ var Makeup = (function() {
 
             $(selector.container).attr('style', getStyles('wrapper'));
             $(selector.containerImage).attr('style', getStyles('image'));
-            $(selector.containerMarkeu).attr('style', getStyles('markup'));
+            $(selector.containerMarkup).attr('style', getStyles('markup'));
 
 
             // Загружаем изображение
@@ -660,6 +660,19 @@ var Makeup = (function() {
             if (instance.image) {
                 this._loadImage(instance.image);
             }
+
+
+            // Рендер модуля
+
+            this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+
+
+            // Сниппет
+            snippet.call(this, group);
+            snippet.call(this, module);
+            snippet.call(this, typeGroup);
+            snippet.call(this, type);
+
 
             /**
              * Скопировать свойство из одного объекта в другой
@@ -693,8 +706,18 @@ var Makeup = (function() {
                     (type && type.styles && type.styles[key] || '');
             }
 
-            // User method
-            this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            /**
+             * Call snippet
+             *
+             * @param {object} module
+             */
+            function snippet(module) {
+                if (module && module.hasOwnProperty('snippet')) {
+                    if (typeof module.snippet == 'function') {
+                        module.snippet.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+                    }
+                }
+            }
         },
 
         /**
@@ -729,8 +752,6 @@ var Makeup = (function() {
             };
 
             img.src = src;
-
-            console.log(src);
         },
 
         /**
@@ -785,13 +806,17 @@ var Makeup = (function() {
                     out.data = _.map(model.data, function(item, i) {
                         return {
                             label: item.label || 'Untitled group',
+                            snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
                             items: that._parseCollection(item.items)
                         };
                     });
                 } else {
+                    var item = model.data;
+
                     out.data = [{
-                        label: model.data.label || 'Blocks',
-                        items: that._parseCollection(model.data.items)
+                        label: item.label || 'Blocks',
+                        snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
+                        items: that._parseCollection(item.items)
                     }];
                 }
             }
@@ -810,6 +835,7 @@ var Makeup = (function() {
             } else if (item instanceof Object) {
                 var children = item.items || item.types,
                     documentation = item.documentation,
+                    snippet = item.snippet,
                     meta = item.meta;
 
                 out = item;
@@ -822,6 +848,11 @@ var Makeup = (function() {
                     } else if (typeof documentation == 'string') {
                         out.documentation = [this._parseDocumentation(documentation)];
                     }
+                }
+
+                // Snippet
+                if (snippet && typeof snippet == 'function') {
+                    out.snippet = snippet;
                 }
 
                 // Meta
