@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     args = require('yargs').argv,
-    clean = require('gulp-clean'),
     connect = require('gulp-connect');
     runSequence = require('run-sequence'),
     mocha = require('gulp-mocha'),
@@ -47,15 +46,6 @@ gulp.task('watch', function(callback) {
     // Styles
     gulp.watch('./source/blocks/**/*.less', ['css']);
     gulp.watch('./source/less/**/*.less', ['css']);
-});
-
-
-gulp.task('clean', function() {
-    return (
-        gulp
-            .src(['dist/*', 'temp/*'], {read: false})
-            .pipe(clean())
-    );
 });
 
 
