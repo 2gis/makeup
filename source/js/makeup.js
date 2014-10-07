@@ -356,8 +356,14 @@ var Makeup = (function() {
                 moduleType = $(makeup._params.selectors.moduleType);
 
             searchInput.on('keyup', function() {
-                module.removeClass(makeup._params.modifiers.hiddenModule);
-                moduleType.removeClass(makeup._params.modifiers.hiddenModuleType);
+                module.each(function() {
+                    makeup._mod(this, { hidden: false });
+                });
+
+                moduleType.each(function() {
+                    this._shown = true;
+                    makeup._mod(this, { hidden: false });
+                });
 
                 var re = searchInput.val().replace(/\s+/g, '');
 
@@ -375,11 +381,9 @@ var Makeup = (function() {
                 re = new RegExp('.*?' + re + '.*?', 'i');
 
                 moduleType.each(function() {
-                    if (re.test(stripTags(this.innerHTML).replace(/\s+/g, ''))) {
-                        this._shown = true;
-                    } else {
+                    if (!re.test(stripTags(this.innerHTML).replace(/\s+/g, ''))) {
                         this._shown = false;
-                        $(this).addClass(makeup._params.modifiers.hiddenModuleType);
+                        makeup._mod(this, { hidden: true });
                     }
                 });
 
@@ -395,7 +399,11 @@ var Makeup = (function() {
                         }
                     });
 
-                    makeup._mod(this, { expanded: hasShown });
+                    if (hasShown) {
+                        makeup._mod(this, { expanded: true });
+                    } else {
+                        makeup._mod(this, { hidden: true });
+                    }
                 });
             });
         },
