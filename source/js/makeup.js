@@ -834,12 +834,16 @@ var Makeup = (function() {
 
         /**
          * Parse item
+         *
+         * @param {Object|String} item
+         * @returns {Object}
          */
         _parseItem: function(item) {
-            var out = {};
+            var out = {},
+                untitled = 'Untitled';
 
             if (typeof item == 'string') {
-                out.name = item;
+                out.name = item || untitled;
             } else if (item instanceof Object) {
                 var children = item.items || item.types,
                     documentation = item.documentation,
@@ -847,13 +851,18 @@ var Makeup = (function() {
                     meta = item.meta;
 
                 out = item;
-                out.name = out.name || 'Untitled';
+
+                if (typeof out.name != "undefined") {
+                    out.name = String(out.name) || untitled;
+                } else {
+                    out.name = untitled;
+                }
 
                 // Documentation
                 if (documentation) {
                     if (documentation instanceof Array && documentation.length) {
                         out.documentation = this._parseCollection(documentation, this._parseDocumentation);
-                    } else if (typeof documentation == 'string') {
+                    } else if (typeof documentation == 'string' || documentation instanceof Object) {
                         out.documentation = [this._parseDocumentation(documentation)];
                     }
                 }
@@ -874,7 +883,11 @@ var Makeup = (function() {
                 }
             }
 
-            out.label = out.label || out.name;
+            if (!out.name || out.name == '') {
+                out.name = untitled;
+            }
+
+            out.label = out.label || out.name || untitled;
 
             return out;
         },
@@ -897,10 +910,10 @@ var Makeup = (function() {
          * Parse documentation
          */
         _parseDocumentation: function(item) {
-            var out = {};
+            var out = { link: '', label: '' };
 
             if (typeof item == 'string') {
-                out.link = item;
+                out.link = out.label = item;
             } else if (item instanceof Object && item.link) {
                 out.link = item.link;
                 out.label = item.label || out.link;

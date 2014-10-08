@@ -1,11 +1,11 @@
 var assert = require('assert');
 
-describe('Makeup -> mods', function() {
+describe('Makeup → mod', function() {
     var makeup,
         prot;
 
     before(function() {
-        makeup = require('../mods').fn;
+        makeup = require('../mod').fn;
     });
 
     var internationalNamingRules = {
