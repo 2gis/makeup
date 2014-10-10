@@ -416,6 +416,13 @@ var Makeup = (function() {
                 makeupElement = $(makeup._params.selectors.root),
                 modeControl = $(makeup._params.selectors.modeControl);
 
+            // Set default mode
+            if (!this._state.hasOwnProperty('mode')) {
+                var defaultMode = makeup._mod(makeupElement[0]).mode || 1;
+
+                makeup._state.set({ mode: defaultMode });
+            }
+
             modeControl.on('change', function() {
                 var value;
 
@@ -570,8 +577,8 @@ var Makeup = (function() {
                 containerMarkup = $(this._params.selectors.containerMarkup);
 
             // Modes toggler
-            if (state.hasOwnProperty('menu')) {
-                this._mod(makeupElement[0], {mode: value});
+            if (state.hasOwnProperty('mode')) {
+                this._mod(makeupElement[0], {mode: state.mode});
             }
 
             // Menu toggler
