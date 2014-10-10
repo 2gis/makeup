@@ -425,7 +425,7 @@ var Makeup = (function() {
                     }
                 });
 
-                makeup._mod(makeupElement[0], {mode: value});
+                makeup._state.set({ mode: value });
             });
         },
 
@@ -568,6 +568,11 @@ var Makeup = (function() {
                 box = $(this._params.selectors.box),
                 container = $(this._params.selectors.container),
                 containerMarkup = $(this._params.selectors.containerMarkup);
+
+            // Modes toggler
+            if (state.hasOwnProperty('menu')) {
+                this._mod(makeupElement[0], {mode: value});
+            }
 
             // Menu toggler
             if (state.hasOwnProperty('menu')) {
