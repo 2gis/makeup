@@ -564,7 +564,7 @@ var Makeup = (function() {
             }
 
             var params = this._params,
-                makeupElement = $(this._params.selectors.element),
+                makeupElement = $(this._params.selectors.root),
                 box = $(this._params.selectors.box),
                 container = $(this._params.selectors.container),
                 containerMarkup = $(this._params.selectors.containerMarkup);
