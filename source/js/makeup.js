@@ -262,6 +262,7 @@ var Makeup = (function() {
          */
         _bindMenuListeners: function() {
             var that = this,
+                makeupElement = $(makeup._params.selectors.root),
                 sidebar = $(this._params.selectors.sidebar),
                 moduleHeader = $(this._params.selectors.moduleHeader),
                 moduleType = $(this._params.selectors.moduleType);
@@ -310,6 +311,13 @@ var Makeup = (function() {
 
             if (this._params.menu) {
                 var toggleMenu = $('#makeup-menu');
+
+                // Set default mode
+                if (!this._state.hasOwnProperty('menu')) {
+                    var defaultMenu = makeup._mod(makeupElement[0]).menu || true;
+
+                    makeup._state.set({ menu: defaultMenu });
+                }
 
                 toggleMenu.on('change', function() {
                     makeup._state.set({ menu: this.checked });
