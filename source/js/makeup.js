@@ -449,8 +449,15 @@ var Makeup = (function() {
          */
         _bindBackgroundsListeners: function() {
             var makeup = this,
-                makeupElement = $(makeup._params.selectors.element),
+                makeupElement = $(makeup._params.selectors.root),
                 bgControl = $(makeup._params.selectors.bgControl);
+
+            // Set default background
+            if (!this._state.hasOwnProperty('bg')) {
+                var defaultBg = makeup._mod(makeupElement[0]).bg || 'color';
+
+                makeup._state.set({ bg: defaultBg });
+            }
 
             bgControl.on('change', function() {
                 var value;
@@ -461,7 +468,7 @@ var Makeup = (function() {
                     }
                 });
 
-                makeup._mod(makeupElement[0], {bg: value});
+                makeup._state.set({ bg: value });
             });
         },
 
@@ -587,6 +594,11 @@ var Makeup = (function() {
             // Modes toggler
             if (state.hasOwnProperty('mode')) {
                 this._mod(makeupElement[0], {mode: state.mode});
+            }
+
+            // Background
+            if (state.hasOwnProperty('bg')) {
+                this._mod(makeupElement[0], {bg: state.bg});
             }
 
             // Menu toggler
