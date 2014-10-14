@@ -43,6 +43,24 @@ var Makeup = (function() {
         makeup._init(options);
     }
 
+    /**
+     * Validate range value
+     *
+     * @param {Number} value
+     * @param {Object} options
+     */
+    function validateRangeValue(value, options) {
+        if (value < options.min) {
+            return options.min;
+        }
+
+        if (value > options.max) {
+            return options.max;
+        }
+
+        return value;
+    }
+
     Makeup.fn = Makeup.prototype = {
         constructor: Makeup,
 
@@ -559,6 +577,10 @@ var Makeup = (function() {
                 i += 100;
             }
 
+            var updateTimeout;
+            var params = this._params;
+            var container = $(params.selectors.container);
+
             horizontalRuler = rulerTrack.rader({
                 trackActive: rulerTrackActive,
                 runners: rulerTrackRunner,
@@ -567,7 +589,13 @@ var Makeup = (function() {
                 values: [min, max],
                 stickingRadius: 5,
                 onUpdate: function(e) {
-                    makeup._state.set({ width: e.maxVal.toFixed(0) });
+                    container.css({
+                        width: validateRangeValue(e.maxVal.toFixed(0), params.ruler.h.slider) + 'px'
+                    });
+                    clearTimeout(updateTimeout);
+                    updateTimeout = setTimeout(function() {
+                        makeup._state.set({ width: e.maxVal.toFixed(0) });
+                    }, 1000);
                 }
             });
 
@@ -625,24 +653,6 @@ var Makeup = (function() {
                 container.css({
                     width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
                 });
-            }
-
-            /**
-             * Validate range value
-             *
-             * @param {Number} value
-             * @param {Object} options
-             */
-            function validateRangeValue(value, options) {
-                if (value < options.min) {
-                    return options.min;
-                }
-
-                if (value > options.max) {
-                    return options.max;
-                }
-
-                return value;
             }
         },
 
@@ -873,6 +883,7 @@ var Makeup = (function() {
         _parseItem: function(item) {
             var out = {},
                 untitled = 'Untitled';
+
 
             if (typeof item == 'string') {
                 out.name = item || untitled;

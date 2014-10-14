@@ -13,7 +13,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "rader": "git@github.com:2gis/rader.git#~0.2.1",
+    "rader": "git@github.com:2gis/rader.git#~0.2.2",
     "baron": "git@github.com:Diokuz/baron.git#~0.7.9",
     "jquery": "~2.1.1",
     "handlebars": "~1.3.0",
