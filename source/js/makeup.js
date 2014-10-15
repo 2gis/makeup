@@ -285,6 +285,23 @@ var Makeup = (function() {
                 moduleHeader = $(this._params.selectors.moduleHeader),
                 moduleType = $(this._params.selectors.moduleType);
 
+            // Render default module
+            var group = that._state.group || 0,
+                module = that._state.module || 0,
+                typeGroup = that._state.typeGroup,
+                type = that._state.type;
+
+            if (!this._state.hasOwnProperty('group') || !this._state.hasOwnProperty('module')) {
+                that._state.set({
+                    group: group,
+                    module: module,
+                    typeGroup: typeGroup,
+                    type: type
+                });
+            }
+
+            makeup._state.set({ mode: defaultMode });
+
             moduleHeader.on('click', function() {
                 var module = this.parentNode,
                     group = module.parentNode;
@@ -298,7 +315,11 @@ var Makeup = (function() {
                     that._setStatus(
                         escapeHTML(that._params.data[groupId].items[moduleId].name)
                     );
-                    that._renderModule(groupId, moduleId);
+
+                    that._state.set({
+                        group: groupId,
+                        module: moduleId
+                    });
 
                     setCurrent(this);
                 }
@@ -322,7 +343,13 @@ var Makeup = (function() {
                 that._setStatus(
                     escapeHTML(trimString(moduleConfig.name)) + ' → ' + escapeHTML(trimString(typeConfig.name))
                 );
-                that._renderModule(groupId, moduleId, typeGroupId, typeId);
+
+                that._state.set({
+                    group: groupId,
+                    module: moduleId,
+                    typeGroup: typeGroupId,
+                    type: typeId
+                });
 
                 setCurrent(this);
             });
