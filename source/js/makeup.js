@@ -300,8 +300,6 @@ var Makeup = (function() {
                 });
             }
 
-            makeup._state.set({ mode: defaultMode });
-
             moduleHeader.on('click', function() {
                 var module = this.parentNode,
                     group = module.parentNode;
