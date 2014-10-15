@@ -209,6 +209,11 @@ var Makeup = (function() {
                     }
                 },
 
+                smiley: {
+                    tooltip: 'Smiley styles on markup container',
+                    checked: false
+                },
+
                 renderModule: function() {},
 
                 namingRules: internalNamingRules
@@ -272,6 +277,10 @@ var Makeup = (function() {
 
             if (params.ruler) {
                 this._bindRulerListeners();
+            }
+
+            if (params.smiley) {
+                this._bindSmileyListeners();
             }
         },
 
@@ -628,6 +637,22 @@ var Makeup = (function() {
             horizontalRuler.pos(1, value);
         },
 
+        _bindSmileyListeners: function() {
+            var smiley = $('#makeup-smiley'),
+                makeupElement = $(makeup._params.selectors.root);
+
+            // Set default smiley value
+            if (!this._state.hasOwnProperty('smiley')) {
+                var defaultSmiley = makeup._mod(makeupElement[0]).smiley || smiley[0].checked;
+
+                makeup._state.set({ smiley: defaultSmiley });
+            }
+
+            smiley.on('change', function() {
+                makeup._state.set({ smiley: this.checked });
+            });
+        },
+
         /**
          * Set application state from object
          *
@@ -656,7 +681,14 @@ var Makeup = (function() {
 
             // Menu toggler
             if (state.hasOwnProperty('menu')) {
+                var menu = $('#makeup-menu')[0],
+                    menuValue = state.menu == 'true';
+
                 this._mod(makeupElement[0], {menu: state.menu});
+
+                if (menu.checked !== menuValue) {
+                    menu.checked = menuValue;
+                }
             }
 
             // Transparency
@@ -678,6 +710,18 @@ var Makeup = (function() {
                 container.css({
                     width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
                 });
+            }
+
+            // Smiley
+            if (state.hasOwnProperty('smiley')) {
+                var smiley = $('#makeup-smiley')[0],
+                    smileyValue = state.smiley == 'true';
+
+                this._mod(makeupElement[0], {smiley: state.smiley});
+
+                if (smiley.checked != smileyValue) {
+                    smiley.checked = smileyValue;
+                }
             }
         },
 

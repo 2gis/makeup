@@ -41,7 +41,7 @@
             </div>
         {{/if}}
 
-        <!-- Background -->
+        {{!-- Background --}}
         {{#if background}}
             <div class="makeup__radio">
 
@@ -59,6 +59,7 @@
             </div>
         {{/if}}
 
+        {{!-- Transparency --}}
         {{#if transparency}}
             <div class="makeup__slider makeup__slider--transparency">
 
@@ -73,6 +74,7 @@
             </div>
         {{/if}}
 
+        {{!-- Zoom --}}
         {{#if zoom}}
             <div class="makeup__slider makeup__slider--zoom">
 
@@ -84,6 +86,16 @@
                     </div>
                 </div>
 
+            </div>
+        {{/if}}
+
+        {{!-- Smiley --}}
+        {{#if smiley}}
+            <div class="makeup__btn">
+                <input type="checkbox" name="makeup-smiley" id="makeup-smiley" class="makeup__btn-checkbox"{{#if smiley.checked}} checked{{/if}}>
+                <label for="makeup-smiley" class="makeup__btn-label makeup__btn-label--smiley" title="{{smiley.tooltip}}">
+                    {{smiley.tooltip}}
+                </label>
             </div>
         {{/if}}
 

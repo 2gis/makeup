@@ -54,6 +54,8 @@ button {
         transition: transform .3s ease;
         -webkit-transform: translate(0, 0) translateZ(0);
         transform: translate(0, 0) translateZ(0);
+        color: #fff;
+        font: 20px/1 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
         .makeup--menu-false & {
             -webkit-transform: translate(-100%, 0) translateZ(0);
@@ -269,6 +271,13 @@ button {
         height: 300px;
         -webkit-transform-origin: 0 0;
         transform-origin: 0 0;
+        color: #000;
+        font: 16px/1 Times, serif;
+        }
+
+    .makeup--smiley-true .makeup__container {
+        font: 100px/1 'Comic Sans';
+        color: red;
         }
 
         .makeup__container-image {
@@ -352,6 +361,10 @@ button {
     .makeup__btn-label--menu:before {
         .bg('i_menu');
         margin: -6px 0 0 -8px;
+        }
+    .makeup__btn-label--smiley:before {
+        .bg('i_smiley');
+        margin: -8px 0 0 -8px;
         }
 
 
