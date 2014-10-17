@@ -84,9 +84,17 @@ var Makeup = (function() {
                     scroller: '.makeup__aside-in',
                     scrollerTrack: '.makeup__aside-track',
                     scrollerTrackBar: '.makeup__aside-track-bar',
+
+                    nav: '.makeup__nav',
+                    navList: '.makeup__nav-list',
+                    navListItem: '.makeup__nav-list-item',
+
                     module: '.makeup__module',
                     moduleHeader: '.makeup__module-header',
-                    moduleType: '.makeup__subnav-link',
+
+                    subnav: '.makeup__subnav',
+                    subnavItem: '.makeup__subnav-item',
+                    subnavLink: '.makeup__subnav-link',
 
                     modeControl: '.makeup__mode',
                     bgControl: '.makeup__bg',
@@ -235,23 +243,11 @@ var Makeup = (function() {
                 params = this._params,
                 win = $(window);
             /*
-            Baron
-            Rader
-            — меню
             — поиск
-            — смена режима
-            — смена фона
-            — масштаб
-            — прозрачность
-            — сворачивание/разворачивание элементов списка
             — линейки
             — дополнительно: статусбар (ховер по элементам, комментарии к модулю/типу)
             — дополнительно: настройки (масштаб)
             */
-
-            win.on('statechange', function(e) {
-                makeup._setState(e.state);
-            });
 
             this._bindMenuListeners();
 
@@ -282,6 +278,10 @@ var Makeup = (function() {
             if (params.smiley) {
                 this._bindSmileyListeners();
             }
+
+            win.on('statechange', function(e) {
+                makeup._setState(e.state);
+            });
         },
 
         /**
@@ -292,43 +292,26 @@ var Makeup = (function() {
                 makeupElement = $(makeup._params.selectors.root),
                 sidebar = $(this._params.selectors.sidebar),
                 moduleHeader = $(this._params.selectors.moduleHeader),
-                moduleType = $(this._params.selectors.moduleType);
+                moduleType = $(this._params.selectors.subnavLink),
+                win = $(window);
 
             // Render default module
-            var group = that._state.group || 0,
-                module = that._state.module || 0,
-                typeGroup = that._state.typeGroup,
-                type = that._state.type;
-
-            if (!this._state.hasOwnProperty('group') || !this._state.hasOwnProperty('module')) {
-                that._state.set({
-                    group: group,
-                    module: module,
-                    typeGroup: typeGroup,
-                    type: type
-                });
-            }
+            that._state.set(that._setDefaultMenuState(that._state));
 
             moduleHeader.on('click', function() {
                 var module = this.parentNode,
                     group = module.parentNode;
 
                 if (that._mod(module).expandable) {
-                    toggleMenuItem(module);
+                    that._toggleMenuItem(module);
                 } else {
-                    var moduleId = +module.dataset.id,
-                        groupId = +group.dataset.id;
-
-                    that._setStatus(
-                        escapeHTML(that._params.data[groupId].items[moduleId].name)
-                    );
+                    var moduleId = module.dataset.id,
+                        groupId = group.dataset.id;
 
                     that._state.set({
                         group: groupId,
                         module: moduleId
                     });
-
-                    setCurrent(this);
                 }
             });
 
@@ -336,29 +319,14 @@ var Makeup = (function() {
                 var typeGroup = this.parentNode,
                     module = typeGroup.parentNode.parentNode,
                     group = module.parentNode,
+                    state = {
+                        group: group.dataset.id,
+                        module: module.dataset.id,
+                        typeGroup: typeGroup.dataset.id,
+                        type: this.dataset.id
+                    };
 
-                    typeId = +this.dataset.id,
-                    typeGroupId = +typeGroup.dataset.id,
-                    moduleId = +module.dataset.id,
-                    groupId = +group.dataset.id,
-
-                    data = that._params.data;
-
-                var moduleConfig = data[groupId].items[moduleId],
-                    typeConfig = moduleConfig.items[typeGroupId].items[typeId];
-
-                that._setStatus(
-                    escapeHTML(trimString(moduleConfig.name)) + ' → ' + escapeHTML(trimString(typeConfig.name))
-                );
-
-                that._state.set({
-                    group: groupId,
-                    module: moduleId,
-                    typeGroup: typeGroupId,
-                    type: typeId
-                });
-
-                setCurrent(this);
+                that._state.set(state);
             });
 
             if (this._params.menu) {
@@ -374,6 +342,14 @@ var Makeup = (function() {
                 toggleMenu.on('change', function() {
                     makeup._state.set({ menu: this.checked });
                 });
+
+                win.on('keydown', function(e) {
+                    var key = makeup._getKey(e);
+
+                    if (key == 192 || key == 220) {
+                        makeup._state.set({ menu: !toggleMenu[0].checked });
+                    }
+                });
             }
 
             this._baron = sidebar.baron({
@@ -382,21 +358,94 @@ var Makeup = (function() {
                 bar:      this._params.selectors.scrollerTrackBar,
                 barOnCls: this._params.modifiers.baron
             });
+        },
+
+        _setDefaultMenuState: function(state) {
+            var data = this._params.data,
+                defaultState = {},
+                fields = ['group', 'module', 'typeGroup', 'type'];
+
+            validatePathField(data, +state.group || 0, 0);
 
             /**
-             * Toggle navigation item
+             * Validate path field
+             *
+             * @param {Array} elements
+             * @param {Number} id of element
+             * @param {Number} id of field name (e.g. 0 for 'group', 1 for 'module')
              */
-            function toggleMenuItem(directory) {
-                that._mod(directory, {expanded: !that._mod(directory).expanded});
-                that._baron.update();
+            function validatePathField(data, key, fieldKey) {
+                // Validate key
+                key = data[key] ? key : 0;
+                defaultState[fields[fieldKey]] = key;
+
+                // Check for children
+                var field = fields[fieldKey + 1];
+                if (data[key] && data[key].items && data[key].items.length && field) {
+                    validatePathField(data[key].items, +state[field] || 0, fieldKey + 1);
+                }
             }
+
+            return defaultState;
+        },
+
+        /**
+         * Apply state in aside panel
+         */
+        _setCurrentMenuItem: function(groupId, moduleId, typeGroupId, typeId) {
+            // expand if need
+            // set as current
+            var that = this,
+                data = that._params.data,
+                moduleConfig = data[groupId].items[moduleId],
+                typeConfig,
+
+                status,
+                directory,
+                current,
+                type;
+
+            if (moduleConfig && moduleConfig.items) {
+                var types = moduleConfig.items[typeGroupId];
+
+                typeConfig = types && types.items && types.items[typeId];
+            }
+
+            // Set status
+            status = escapeHTML(moduleConfig.name);
+
+            if (typeConfig && typeConfig.name) {
+                status += ' → ' + escapeHTML(trimString(typeConfig.name));
+            }
+            this._setStatus(status);
+
+            // Find current
+            directory = this.el.navListItem
+                .filter('[data-id="' + groupId + '"]')
+                .find(that._params.selectors.module)
+                .filter('[data-id="' + moduleId + '"]');
+
+            if (typeGroupId && typeId) {
+                current = directory
+                    .find(that._params.selectors.subnavItem)
+                    .filter('[data-id="' + typeGroupId + '"]')
+                    .find(that._params.selectors.subnavLink)
+                    .filter('[data-id="' + typeId + '"]');
+            }
+
+            setCurrent(current && current[0] || directory && directory[0]);
+
+            // @TODO Open parent if need
 
             /**
              * Set current menu item
              */
             function setCurrent(currentItem) {
-                moduleHeader.each(function(i) {
-                    that._mod(moduleHeader[i], {current: false});
+                var module = $(that._params.selectors.module),
+                    moduleType = $(that._params.selectors.subnavLink);
+
+                module.each(function(i) {
+                    that._mod(module[i], {current: false});
                 });
                 moduleType.each(function(i) {
                     that._mod(moduleType[i], {current: false});
@@ -404,6 +453,14 @@ var Makeup = (function() {
 
                 that._mod(currentItem, {current: true});
             }
+        },
+
+        /**
+         * Toggle navigation item
+         */
+        _toggleMenuItem: function(directory) {
+            this._mod(directory, {expanded: !this._mod(directory).expanded});
+            this._baron.update();
         },
 
         /**
@@ -654,7 +711,7 @@ var Makeup = (function() {
         },
 
         /**
-         * Set application state from object
+         * Sets application state from object
          *
          * @param {Object} state
          */
@@ -668,6 +725,17 @@ var Makeup = (function() {
                 box = $(this._params.selectors.box),
                 container = $(this._params.selectors.container),
                 containerMarkup = $(this._params.selectors.containerMarkup);
+
+            // Current Module
+            if (state.hasOwnProperty('group')) {
+                if (state.typeGroup && state.type) {
+                    this._renderModule(state.group, state.module, state.typeGroup, state.type);
+                    this._setCurrentMenuItem(state.group, state.module, state.typeGroup, state.type);
+                } else {
+                    this._renderModule(state.group, state.module);
+                    this._setCurrentMenuItem(state.group, state.module);
+                }
+            }
 
             // Modes toggler
             if (state.hasOwnProperty('mode')) {
@@ -746,11 +814,13 @@ var Makeup = (function() {
 
                 group = data[groupId],
                 module = group.items[moduleId],
-                typeGroup = typeGroupId !== undefined && module.items[typeGroupId],
-                type = typeGroupId !== undefined && typeId !== undefined && typeGroup.items[typeId],
+                typeGroup = typeGroupId !== undefined && module.items && module.items[typeGroupId],
+                type = typeGroup && typeId !== undefined && typeGroup.items && typeGroup.items[typeId],
 
                 typeFields = ['name', 'label', 'data', 'image', 'snippet'],
-                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'];
+                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'],
+
+                hint;
 
 
             // Собираем данные о модуле
@@ -773,6 +843,11 @@ var Makeup = (function() {
             $(selector.containerImage).attr('style', getStyles('image'));
             $(selector.containerMarkup).attr('style', getStyles('markup'));
 
+            // Ищем hint для модуля/типа
+            hint = type && type.hint || typeGroup && typeGroup.hint || module && module.hint || group && group.hint;
+            if (hint) {
+                this._setStatus(escapeHTML(trimString(hint)));
+            }
 
             // Загружаем изображение
 
@@ -1051,6 +1126,23 @@ var Makeup = (function() {
             }
 
             return out;
+        },
+
+        /**
+         * Returns keyCode if target is not input
+         *
+         * @param {Event} e Keyboard event
+         */
+        _getKey: function(e) {
+            var key = e.which || e.keyCode,
+                node = e.target.nodeName.toLowerCase(),
+                contenteditable = !!e.target.attributes.contenteditable;
+
+            if (node != 'input' && node != 'textarea' && node != 'select' && !contenteditable) {
+                return key;
+            }
+
+            return false;
         }
     };
 
