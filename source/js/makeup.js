@@ -400,22 +400,24 @@ var Makeup = (function() {
                 moduleConfig = data[groupId].items[moduleId],
                 typeConfig,
 
-                status,
+                status = '',
                 directory,
                 current,
                 type;
 
-            if (moduleConfig && moduleConfig.items) {
-                var types = moduleConfig.items[typeGroupId];
-
-                typeConfig = types && types.items && types.items[typeId];
-            }
-
             // Set status
-            status = escapeHTML(moduleConfig.name);
+            if (moduleConfig) {
+                if (moduleConfig.items) {
+                    var types = moduleConfig.items[typeGroupId];
 
-            if (typeConfig && typeConfig.name) {
-                status += ' → ' + escapeHTML(trimString(typeConfig.name));
+                    typeConfig = types && types.items && types.items[typeId];
+                }
+
+                status += escapeHTML(moduleConfig.name);
+
+                if (typeConfig && typeConfig.name) {
+                    status += ' → ' + escapeHTML(trimString(typeConfig.name));
+                }
             }
             this._setStatus(status);
 
@@ -451,7 +453,9 @@ var Makeup = (function() {
                     that._mod(moduleType[i], {current: false});
                 });
 
-                that._mod(currentItem, {current: true});
+                if (currentItem) {
+                    that._mod(currentItem, {current: true});
+                }
             }
         },
 
@@ -948,8 +952,8 @@ var Makeup = (function() {
              */
             function getStyles(key) {
                 return '' +
-                    (group.styles && group.styles[key] || '') +
-                    (module.styles && module.styles[key] || '') +
+                    (group && group.styles && group.styles[key] || '') +
+                    (module && module.styles && module.styles[key] || '') +
                     (typeGroup && typeGroup.styles && typeGroup.styles[key] || '') +
                     (type && type.styles && type.styles[key] || '');
             }
