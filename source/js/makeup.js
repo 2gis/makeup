@@ -333,7 +333,7 @@ var Makeup = (function() {
                 var toggleMenu = $('#makeup-menu');
 
                 // Set default mode
-                if (!this._state.hasOwnProperty('menu')) {
+                if (!this._state._params.hasOwnProperty('menu')) {
                     var defaultMenu = makeup._mod(makeupElement[0]).menu || true;
 
                     makeup._state.set({ menu: defaultMenu });
@@ -531,14 +531,17 @@ var Makeup = (function() {
         _bindModesListeners: function() {
             var makeup = this,
                 makeupElement = $(makeup._params.selectors.root),
-                modeControl = $(makeup._params.selectors.modeControl);
+                modeControl = $(makeup._params.selectors.modeControl),
+                win = $(window),
+                defaultMode;
 
             // Set default mode
-            if (!this._state.hasOwnProperty('mode')) {
-                var defaultMode = makeup._mod(makeupElement[0]).mode || 1;
-
-                makeup._state.set({ mode: defaultMode });
+            if (!this._state._params.hasOwnProperty('mode')) {
+                defaultMode = makeup._mod(makeupElement[0]).mode || 1;
+            } else {
+                defaultMode = makeup._state._params.mode;
             }
+            makeup._state.set({ mode: defaultMode });
 
             modeControl.on('change', function() {
                 var value;
@@ -551,6 +554,39 @@ var Makeup = (function() {
 
                 makeup._state.set({ mode: value });
             });
+
+            win.on('keydown', function(e) {
+                var key = makeup._getKey(e);
+
+                switch (key) {
+                    case 49:
+                        makeup._state.set({ mode: 1 });
+                        break;
+                    case 50:
+                        makeup._state.set({ mode: 2 });
+                        break;
+                    case 51:
+                        makeup._state.set({ mode: 3 });
+                        break;
+                    case 52:
+                        makeup._state.set({ mode: 4 });
+                        break;
+                }
+            });
+        },
+
+        _setCurrentMode: function(value) {
+            var modeControl = $(makeup._params.selectors.modeControl);
+
+            if (modeControl.filter('[value="' + value + '"]')[0].checked == true) {
+                return;
+            }
+
+            modeControl.each(function(i) {
+                if (modeControl[i].value == value) {
+                    modeControl[i].checked = true;
+                }
+            });
         },
 
         /**
@@ -559,14 +595,16 @@ var Makeup = (function() {
         _bindBackgroundsListeners: function() {
             var makeup = this,
                 makeupElement = $(makeup._params.selectors.root),
-                bgControl = $(makeup._params.selectors.bgControl);
+                bgControl = $(makeup._params.selectors.bgControl),
+                defaultBg;
 
             // Set default background
-            if (!this._state.hasOwnProperty('bg')) {
-                var defaultBg = makeup._mod(makeupElement[0]).bg || 'color';
-
-                makeup._state.set({ bg: defaultBg });
+            if (!this._state._params.hasOwnProperty('bg')) {
+                defaultBg = makeup._mod(makeupElement[0]).bg || 'color';
+            } else {
+                defaultBg = makeup._state._params.bg;
             }
+            makeup._state.set({ bg: defaultBg });
 
             bgControl.on('change', function() {
                 var value;
@@ -578,6 +616,20 @@ var Makeup = (function() {
                 });
 
                 makeup._state.set({ bg: value });
+            });
+        },
+
+        _setCurrentBackground: function(value) {
+            var bgControl = $(makeup._params.selectors.bgControl);
+
+            if (bgControl.filter('[value="' + value + '"]')[0].checked == true) {
+                return;
+            }
+
+            bgControl.each(function(i) {
+                if (bgControl[i].value == value) {
+                    bgControl[i].checked = true;
+                }
             });
         },
 
@@ -699,7 +751,7 @@ var Makeup = (function() {
                 makeupElement = $(makeup._params.selectors.root);
 
             // Set default smiley value
-            if (!this._state.hasOwnProperty('smiley')) {
+            if (!this._state._params.hasOwnProperty('smiley')) {
                 var defaultSmiley = makeup._mod(makeupElement[0]).smiley || smiley[0].checked;
 
                 makeup._state.set({ smiley: defaultSmiley });
@@ -739,11 +791,13 @@ var Makeup = (function() {
 
             // Modes toggler
             if (state.hasOwnProperty('mode')) {
+                this._setCurrentMode(state.mode);
                 this._mod(makeupElement[0], {mode: state.mode});
             }
 
             // Background
             if (state.hasOwnProperty('bg')) {
+                this._setCurrentBackground(state.bg);
                 this._mod(makeupElement[0], {bg: state.bg});
             }
 
