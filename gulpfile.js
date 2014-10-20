@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     config = require('./config.js');
 
 var buildOptions = {
-        release: 'r' in args || 'release' in args
+        release: 'r' in args || 'release' in args,
+        noJquery: 'noJquery' in args
     };
 
 
