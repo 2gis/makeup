@@ -296,7 +296,7 @@ var Makeup = (function() {
                 win = $(window);
 
             // Render default module
-            that._state.set(that._setDefaultMenuState(that._state));
+            that._state.set(that._setDefaultMenuState(that._state._params));
 
             moduleHeader.on('click', function() {
                 var module = this.parentNode,
@@ -381,6 +381,7 @@ var Makeup = (function() {
 
                 // Check for children
                 var field = fields[fieldKey + 1];
+
                 if (data[key] && data[key].items && data[key].items.length && field) {
                     validatePathField(data[key].items, +state[field] || 0, fieldKey + 1);
                 }
@@ -776,41 +777,42 @@ var Makeup = (function() {
                 return;
             }
 
-            var params = this._params,
+            var s = state,
+                params = this._params,
                 makeupElement = $(this._params.selectors.root),
                 box = $(this._params.selectors.box),
                 container = $(this._params.selectors.container),
                 containerMarkup = $(this._params.selectors.containerMarkup);
 
             // Current Module
-            if (state.hasOwnProperty('group')) {
-                if (state.typeGroup && state.type) {
-                    this._renderModule(state.group, state.module, state.typeGroup, state.type);
-                    this._setCurrentMenuItem(state.group, state.module, state.typeGroup, state.type);
+            if (s.hasOwnProperty('group')) {
+                if (s.typeGroup !== undefined && s.type !== undefined) {
+                    this._renderModule(+s.group, +s.module, +s.typeGroup, +s.type);
+                    this._setCurrentMenuItem(s.group, s.module, s.typeGroup, s.type);
                 } else {
-                    this._renderModule(state.group, state.module);
-                    this._setCurrentMenuItem(state.group, state.module);
+                    this._renderModule(+s.group, +s.module);
+                    this._setCurrentMenuItem(s.group, s.module);
                 }
             }
 
             // Modes toggler
-            if (state.hasOwnProperty('mode')) {
-                this._setCurrentMode(state.mode);
-                this._mod(makeupElement[0], {mode: state.mode});
+            if (s.hasOwnProperty('mode')) {
+                this._setCurrentMode(s.mode);
+                this._mod(makeupElement[0], {mode: s.mode});
             }
 
             // Background
-            if (state.hasOwnProperty('bg')) {
-                this._setCurrentBackground(state.bg);
-                this._mod(makeupElement[0], {bg: state.bg});
+            if (s.hasOwnProperty('bg')) {
+                this._setCurrentBackground(s.bg);
+                this._mod(makeupElement[0], {bg: s.bg});
             }
 
             // Menu toggler
-            if (state.hasOwnProperty('menu')) {
+            if (s.hasOwnProperty('menu')) {
                 var menu = $('#makeup-menu')[0],
-                    menuValue = state.menu == 'true';
+                    menuValue = s.menu == 'true';
 
-                this._mod(makeupElement[0], {menu: state.menu});
+                this._mod(makeupElement[0], {menu: s.menu});
 
                 if (menu.checked !== menuValue) {
                     menu.checked = menuValue;
@@ -818,32 +820,32 @@ var Makeup = (function() {
             }
 
             // Transparency
-            if (state.hasOwnProperty('transparency')) {
+            if (s.hasOwnProperty('transparency')) {
                 containerMarkup.css({
-                    opacity: validateRangeValue(state.transparency, params.transparency.slider)
+                    opacity: validateRangeValue(s.transparency, params.transparency.slider)
                 });
             }
 
             // Zoom
-            if (state.hasOwnProperty('zoom')) {
+            if (s.hasOwnProperty('zoom')) {
                 container.css({
-                    transform: 'scale(' + validateRangeValue(state.zoom, params.zoom.slider) + ')'
+                    transform: 'scale(' + validateRangeValue(s.zoom, params.zoom.slider) + ')'
                 });
             }
 
             // Width
-            if (state.hasOwnProperty('width')) {
+            if (s.hasOwnProperty('width')) {
                 container.css({
-                    width: validateRangeValue(state.width, params.ruler.h.slider) + 'px'
+                    width: validateRangeValue(s.width, params.ruler.h.slider) + 'px'
                 });
             }
 
             // Smiley
-            if (state.hasOwnProperty('smiley')) {
+            if (s.hasOwnProperty('smiley')) {
                 var smiley = $('#makeup-smiley')[0],
-                    smileyValue = state.smiley == 'true';
+                    smileyValue = s.smiley == 'true';
 
-                this._mod(makeupElement[0], {smiley: state.smiley});
+                this._mod(makeupElement[0], {smiley: s.smiley});
 
                 if (smiley.checked != smileyValue) {
                     smiley.checked = smileyValue;
@@ -908,14 +910,12 @@ var Makeup = (function() {
             }
 
             // Загружаем изображение
-
             if (instance.image) {
                 this._loadImage(instance.image);
             }
 
 
             // Рендер модуля
-
             this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
 
 
@@ -984,13 +984,13 @@ var Makeup = (function() {
                 container = selectors.containerImage,
                 imageClass = selectors.containerImageRegular.slice(1);
 
-            $(container).empty();
+            this.imageLoader = null;
 
-            img.onload = img.onerror = function(e) {
-                img.onload = img.onerror = null;
+            img.onload = img.onerror = this.imageLoader = function(e) {
+                img.onload = img.onerror = this.imageLoader = null;
 
                 if (e.type == 'load') {
-                    // $(container).append(img);
+                    $(container).empty();
                     $(this)
                         .css({
                             width: img.width,
