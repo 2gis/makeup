@@ -952,10 +952,10 @@ var Makeup = (function() {
              */
             function getStyles(key) {
                 return '' +
-                    (group && group.styles && group.styles[key] || '') +
-                    (module && module.styles && module.styles[key] || '') +
-                    (typeGroup && typeGroup.styles && typeGroup.styles[key] || '') +
-                    (type && type.styles && type.styles[key] || '');
+                    (group && group.styles && group.styles[key] + ';' || '') +
+                    (module && module.styles && module.styles[key] + ';' || '') +
+                    (typeGroup && typeGroup.styles && typeGroup.styles[key] + ';' || '') +
+                    (type && type.styles && type.styles[key] + ';' || '');
             }
 
             /**
@@ -984,6 +984,7 @@ var Makeup = (function() {
                 container = selectors.containerImage,
                 imageClass = selectors.containerImageRegular.slice(1);
 
+            $(container).empty();
             this.imageLoader = null;
 
             img.onload = img.onerror = this.imageLoader = function(e) {
