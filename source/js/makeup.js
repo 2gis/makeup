@@ -428,7 +428,7 @@ var Makeup = (function() {
                 .find(that._params.selectors.module)
                 .filter('[data-id="' + moduleId + '"]');
 
-            if (typeGroupId && typeId) {
+            if (typeGroupId !== undefined && typeId !== undefined) {
                 current = directory
                     .find(that._params.selectors.subnavItem)
                     .filter('[data-id="' + typeGroupId + '"]')
@@ -438,7 +438,10 @@ var Makeup = (function() {
 
             setCurrent(current && current[0] || directory && directory[0]);
 
-            // @TODO Open parent if need
+            // Expand parent if need
+            if (current && current[0]) {
+                this._mod(directory[0], {expanded: true});
+            }
 
             /**
              * Set current menu item
