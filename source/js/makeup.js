@@ -954,11 +954,24 @@ var Makeup = (function() {
              * @param {string} Ключ (wrapper|image|markup)
              */
             function getStyles(key) {
+
+                /**
+                 * Получить стили из указанного источника
+                 *
+                 * @param {Object} Объект-источник (group|module|typeGroup|group)
+                 * @param {String} Тип стилей (wrapper|image|markup)
+                 */
+                function getStylesLevel(obj, key) {
+                    var styles = obj && obj.styles && obj.styles[key];
+
+                    return styles ? styles + ';' : '';
+                }
+
                 return '' +
-                    (group && group.styles && group.styles[key] + ';' || '') +
-                    (module && module.styles && module.styles[key] + ';' || '') +
-                    (typeGroup && typeGroup.styles && typeGroup.styles[key] + ';' || '') +
-                    (type && type.styles && type.styles[key] + ';' || '');
+                    getStylesLevel(group, key) +
+                    getStylesLevel(module, key) +
+                    getStylesLevel(typeGroup, key) +
+                    getStylesLevel(type, key);
             }
 
             /**
