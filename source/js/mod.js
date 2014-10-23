@@ -3,6 +3,10 @@
         module.exports = Makeup;
     }
 
+    function classList(el) {
+        return el && el.className ? el.className.replace(/^\s+|\s+$/g, '').split(/\s+/) : null;
+    }
+
     /**
      * Создаёт CSS класс по бэму
      *
@@ -57,7 +61,7 @@
         var type; // el является блоком или элементом
 
         // Пытаемся найти имя блока
-        var name = _.find(el.classList, function(cls) { // Итерируем по всем классам на элементе
+        var name = _.find(classList(el), function(cls) { // Итерируем по всем классам на элементе
             return _.reduce(dms, function(result, value, key) { // И возвращаем первый попавшийся, в составе которого нет ни одного разделителя
                 return result && cls.indexOf(value) == -1;
             }, true);
@@ -68,7 +72,7 @@
         } else { // Если блок не нашёлся, пытаемся найти имя элемента
             var elDms = _.omit(dms, ['be', 'mm']); // На модификаторы нам пофиг + разделитель может быть разрешённым символом в блоке и элементе, например -
 
-            name = _.find(el.classList, function(cls) { // Итерируем по всем классам на элементе
+            name = _.find(classList(el), function(cls) { // Итерируем по всем классам на элементе
                 return !_.reduce(elDms, function(result, value, key) { // И возвращаем первый попавшийся, в составе которого нет ни одного разделителя
                     re = new RegExp('([A-Za-z\\d]|^)' + value + '[A-Za-z\\d]'); // 'awefa_qwe', '_qwew' -> true, 'freafewAWEr' -> false
                     return result || cls.match(re);
@@ -78,7 +82,7 @@
             if (name) {
                 type = 'element';
             } else {
-                throw new Error('No blockname nor elementname found in classes: ' + el.classList.join(', '));
+                throw new Error('No blockname nor elementname found in classes: ' + (classList(el) && classList(el).join(', ')));
             }
         }
 
@@ -106,7 +110,7 @@
         var bem = this._detectBEM(el, namingRules);
 
         // Переделываем классы в объект модификаторов
-        var mods = _.reduce(el.classList, function(result, cls) {
+        var mods = _.reduce(classList(el), function(result, cls) {
             if (cls == bem.name) {
                 return result;
             }
