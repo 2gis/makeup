@@ -919,7 +919,9 @@ var Makeup = (function() {
 
 
             // Рендер модуля
-            this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            if (typeof this._params.renderModule == 'function') {
+                this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            }
 
 
             // Сниппет
