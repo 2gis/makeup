@@ -42,7 +42,7 @@ module.exports = function(buildOptions) {
             .src('dist/assets/png/*.png')
             .pipe(spritesmith({
                 algorithm: 'binary-tree',
-                imgName: 'sprite.png',
+                imgName: 'makeup-sprite.png',
                 cssName: 'sprite.less',
                 cssTemplate: 'source/lessTemplates/sprite.less.mustache'
             }));

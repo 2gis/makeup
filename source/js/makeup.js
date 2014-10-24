@@ -305,8 +305,8 @@ var Makeup = (function() {
                 if (that._mod(module).expandable) {
                     that._toggleMenuItem(module);
                 } else {
-                    var moduleId = module.dataset.id,
-                        groupId = group.dataset.id;
+                    var moduleId = $(module).attr('data-id'),
+                        groupId = $(group).attr('data-id');
 
                     that._state.set({
                         group: groupId,
@@ -320,10 +320,10 @@ var Makeup = (function() {
                     module = typeGroup.parentNode.parentNode,
                     group = module.parentNode,
                     state = {
-                        group: group.dataset.id,
-                        module: module.dataset.id,
-                        typeGroup: typeGroup.dataset.id,
-                        type: this.dataset.id
+                        group: $(group).attr('data-id'),
+                        module: $(module).attr('data-id'),
+                        typeGroup: $(typeGroup).attr('data-id'),
+                        type: $(this).attr('data-id')
                     };
 
                 that._state.set(state);
