@@ -112,7 +112,7 @@ var Makeup = (function() {
                     statusBar: '.makeup__status',
 
                     box: '.makeup__main',
-                    container: '.makeup__container',
+                    container: '.makeup__container-in',
                     containerImage: '.makeup__container-image',
                     containerImageRegular: '.makeup__container-image-regular',
                     containerImageInverse: '.makeup__container-image-inverse',

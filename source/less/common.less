@@ -131,6 +131,7 @@ button {
     position: absolute;
     overflow: hidden;
     .user-select(none);
+    z-index: 10;
 
     &--h {
         top: 0;
@@ -138,7 +139,7 @@ button {
         left: 0;
         height: .75em;
         background: #242424;
-        padding: 0 0 0 2em;
+        padding: 0 0 0 40px;
         }
 
     // &--v {
@@ -256,43 +257,52 @@ button {
 
     .makeup__container {
         position: absolute;
-        top: 2em;
-        left: 2em;
-        width: 400px;
-        height: 300px;
-        -webkit-transform-origin: 0 0;
-        transform-origin: 0 0;
-        color: #000;
-        font: 16px/1 Times, serif;
+        top: .75em;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: auto;
         }
 
-    .makeup--smiley-true .makeup__container {
-        font: 100px/1 'Comic Sans';
-        color: red;
-        }
-
-        .makeup__container-image {
+        .makeup__container-in {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            top: 40px;
+            left: 40px;
+            width: 400px;
+            height: 300px;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            color: #000;
+            font: 16px/1 Times, serif;
             }
 
-            .makeup__container-image-regular {
-                display: block;
+        .makeup--smiley-true .makeup__container-in {
+            font: 100px/1 'Comic Sans';
+            color: red;
+            }
 
-                .makeup--mode-2 &,
-                .makeup--mode-4 & {
-                    display: none;
-                    }
+            .makeup__container-image {
+                position: absolute;
+                width: 100%;
+                height: 100%;
                 }
 
-            .makeup__container-image-inverse {
-                display: none;
-
-                .makeup--mode-4 & {
+                .makeup__container-image-regular {
                     display: block;
+
+                    .makeup--mode-2 &,
+                    .makeup--mode-4 & {
+                        display: none;
+                        }
                     }
-                }
+
+                .makeup__container-image-inverse {
+                    display: none;
+
+                    .makeup--mode-4 & {
+                        display: block;
+                        }
+                    }
 
         .makeup__container-markup {
             position: absolute;
