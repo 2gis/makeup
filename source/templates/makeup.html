@@ -1,7 +1,7 @@
 <div class="makeup">
 
     {{!-- Menu --}}
-    <nav class="makeup__menu">
+    <div class="makeup__menu">
 
         {{!-- Toggle menu --}}
         {{#if menu}}
@@ -99,25 +99,25 @@
             </div>
         {{/if}}
 
-    </nav>
+    </div>
 
     <!-- Sidebar -->
-    <aside class="makeup__aside">
+    <div class="makeup__aside">
         <div class="makeup__aside-in">
 
             <div class="makeup__nav">
 
                 {{#if data}}
-                    <nav class="makeup__nav-list">
+                    <div class="makeup__nav-list">
                         {{#each data}}
                             <div class="makeup__nav-list-item" data-id="{{@index}}">
 
                                 <div class="makeup__nav-title">{{label}}</div>
 
                                 {{#each items}}
-                                    <article class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
+                                    <div class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
 
-                                        <header class="makeup__module-header">
+                                        <div class="makeup__module-header">
                                             <div class="makeup__module-header-in">
                                                 <div class="makeup__module-header-meta">
                                                     {{#if documentation}}
@@ -133,7 +133,7 @@
                                                 </div>
                                             </div>
 
-                                        </header>
+                                        </div>
 
                                         {{#if items}}
                                             <div class="makeup__subnav">
@@ -154,12 +154,12 @@
                                             </div>
                                         {{/if}}
 
-                                    </article>
+                                    </div>
                                 {{/each}}
 
                             </div>
                         {{/each}}
-                    </nav>
+                    </div>
                 {{/if}}
 
             </div>
@@ -169,7 +169,7 @@
             </div>
 
         </div>
-    </aside>
+    </div>
 
     <!-- Statusbar -->
     <div class="makeup__status"></div>
