@@ -150,7 +150,7 @@ describe('Makeup → mod', function() {
     describe('_detectBEM', function() {
         it('Russian block', function() {
             var element = {
-                classList: ['bl0ck-mED-_mod', 'bl0ck-mED-_key-_value', 'bl0ck-mED-']
+                className: 'bl0ck-mED-_mod bl0ck-mED-_key-_value bl0ck-mED-'
             };
 
             var expected = {
@@ -167,7 +167,7 @@ describe('Makeup → mod', function() {
 
         it('International element', function() {
             var element = {
-                classList: ['--qwe', 'block_elementWOWOWO123', '--asd']
+                className: '--qwe block_elementWOWOWO123 --asd'
             };
 
             var expected = {
@@ -184,7 +184,7 @@ describe('Makeup → mod', function() {
 
         it('Internal element', function() {
             var element = {
-                classList: ['makeup__module-header']
+                className: 'makeup__module-header'
             };
 
             var expected = {
@@ -203,7 +203,7 @@ describe('Makeup → mod', function() {
     describe('_parseMod', function() {
         it('Russian block', function() {
             var element = {
-                classList: ['bl0ck-mED-_mod', 'bl0ck-mED-_key-_value', 'bl0ck-mED-']
+                className: 'bl0ck-mED-_mod bl0ck-mED-_key-_value bl0ck-mED-'
             };
 
             var expected = {
@@ -219,7 +219,7 @@ describe('Makeup → mod', function() {
             var rules = _.clone(russianNamingRules);
             rules.bevis = true;
             var element = {
-                classList: ['block-W__p23', '_mod3', '_aaa_90']
+                className: 'block-W__p23 _mod3 _aaa_90'
             };
 
             var expected = {
@@ -236,7 +236,7 @@ describe('Makeup → mod', function() {
             rules.bevis = true;
 
             var element = {
-                classList: ['_active', 'blockBig-ood', '_st-te_reallyOpen']
+                className: '_active blockBig-ood _st-te_reallyOpen'
             };
 
             var expected = {
@@ -252,7 +252,7 @@ describe('Makeup → mod', function() {
             var rules = _.clone(russianNamingRules);
             rules.bevis = true;
             var element = {
-                classList: ['_active', 'blockBig__elementGood', '_st-te_reallyOpen']
+                className: '_active blockBig__elementGood _st-te_reallyOpen'
             };
 
             var expected = {
@@ -266,7 +266,7 @@ describe('Makeup → mod', function() {
 
         it('International element', function() {
             var element = {
-                classList: ['c0mponenT-good_e1em', 'c0mponenT-good_e1em--active', 'c0mponenT-good_e1em--open--c_losed']
+                className: 'c0mponenT-good_e1em c0mponenT-good_e1em--active c0mponenT-good_e1em--open--c_losed'
             };
 
             var expected = {
