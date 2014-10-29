@@ -234,6 +234,7 @@ var Makeup = (function() {
                 that.el[key] = $(item);
             });
 
+            this._currentState = {};
             this._state = new State();
             this._bindListeners();
         },
@@ -280,8 +281,28 @@ var Makeup = (function() {
             }
 
             win.on('statechange', function(e) {
-                makeup._setState(e.state);
+                var diff = makeup._getStateDiff(makeup._currentState, e.state);
+
+                if (!_.isEmpty(diff)) {
+                    makeup._setState(diff);
+                    makeup._currentState = _.clone(e.state);
+                }
             });
+        },
+
+        _getStateDiff: function(oldState, newState) {
+            var out = {};
+
+            _.forEach(newState, function(item, key) {
+                var value = item.toString(),
+                    oldValue = oldState[key];
+
+                if (!oldValue || value != oldValue.toString()) {
+                    out[key] = value;
+                }
+            });
+
+            return out;
         },
 
         /**
@@ -377,7 +398,7 @@ var Makeup = (function() {
             function validatePathField(data, key, fieldKey) {
                 // Validate key
                 key = data[key] ? key : 0;
-                defaultState[fields[fieldKey]] = key;
+                defaultState[fields[fieldKey]] = key.toString();
 
                 // Check for children
                 var field = fields[fieldKey + 1];
@@ -788,30 +809,35 @@ var Makeup = (function() {
                 containerMarkup = $(this._params.selectors.containerMarkup);
 
             // Current Module
-            if (s.hasOwnProperty('group')) {
-                if (s.typeGroup !== undefined && s.type !== undefined) {
-                    this._renderModule(+s.group, +s.module, +s.typeGroup, +s.type);
-                    this._setCurrentMenuItem(s.group, s.module, s.typeGroup, s.type);
+            if (has('group') || has('module') || has('typeGroup') || has('type')) {
+                var groupId = s.group || this._currentState.group,
+                    moduleId = s.module || this._currentState.module,
+                    typeGroupId = s.typeGroup || this._currentState.typeGroup,
+                    typeId = s.type || this._currentState.type;
+
+                if (typeGroupId !== undefined && typeId !== undefined) {
+                    this._renderModule(+groupId, +moduleId, +typeGroupId, +typeId);
+                    this._setCurrentMenuItem(groupId, moduleId, typeGroupId, typeId);
                 } else {
-                    this._renderModule(+s.group, +s.module);
-                    this._setCurrentMenuItem(s.group, s.module);
+                    this._renderModule(+groupId, +moduleId);
+                    this._setCurrentMenuItem(groupId, moduleId);
                 }
             }
 
             // Modes toggler
-            if (s.hasOwnProperty('mode')) {
+            if (has('mode')) {
                 this._setCurrentMode(s.mode);
                 this._mod(makeupElement[0], {mode: s.mode});
             }
 
             // Background
-            if (s.hasOwnProperty('bg')) {
+            if (has('bg')) {
                 this._setCurrentBackground(s.bg);
                 this._mod(makeupElement[0], {bg: s.bg});
             }
 
             // Menu toggler
-            if (s.hasOwnProperty('menu')) {
+            if (has('menu')) {
                 var menu = $('#makeup-menu')[0],
                     menuValue = s.menu == 'true';
 
@@ -823,28 +849,28 @@ var Makeup = (function() {
             }
 
             // Transparency
-            if (s.hasOwnProperty('transparency')) {
+            if (has('transparency')) {
                 containerMarkup.css({
                     opacity: validateRangeValue(s.transparency, params.transparency.slider)
                 });
             }
 
             // Zoom
-            if (s.hasOwnProperty('zoom')) {
+            if (has('zoom')) {
                 container.css({
                     transform: 'scale(' + validateRangeValue(s.zoom, params.zoom.slider) + ')'
                 });
             }
 
             // Width
-            if (s.hasOwnProperty('width')) {
+            if (has('width')) {
                 container.css({
                     width: validateRangeValue(s.width, params.ruler.h.slider) + 'px'
                 });
             }
 
             // Smiley
-            if (s.hasOwnProperty('smiley')) {
+            if (has('smiley')) {
                 var smiley = $('#makeup-smiley')[0],
                     smileyValue = s.smiley == 'true';
 
@@ -853,6 +879,12 @@ var Makeup = (function() {
                 if (smiley.checked != smileyValue) {
                     smiley.checked = smileyValue;
                 }
+            }
+
+            makeup._currentState = makeup._state._params;
+
+            function has(key) {
+                return s.hasOwnProperty(key.toString());
             }
         },
 
