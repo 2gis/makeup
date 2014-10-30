@@ -562,11 +562,11 @@ var Makeup = (function() {
 
                 modeControl.each(function(i) {
                     if (modeControl[i].checked == true) {
-                        out.value = modeControl[i].value;
+                        out.mode = +modeControl[i].value;
                     }
                 });
 
-                if (out.value == 3 || out.value == 4) {
+                if (out.mode == 3 || out.mode == 4) {
                     out.transparency = 0.5;
                 }
 
