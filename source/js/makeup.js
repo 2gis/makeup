@@ -43,24 +43,6 @@ var Makeup = (function() {
         makeup._init(options);
     }
 
-    /**
-     * Validate range value
-     *
-     * @param {Number} value
-     * @param {Object} options
-     */
-    function validateRangeValue(value, options) {
-        if (value < options.min) {
-            return options.min;
-        }
-
-        if (value > options.max) {
-            return options.max;
-        }
-
-        return value;
-    }
-
     Makeup.fn = Makeup.prototype = {
         constructor: Makeup,
 
@@ -562,26 +544,33 @@ var Makeup = (function() {
                 makeupElement = $(makeup._params.selectors.root),
                 modeControl = $(makeup._params.selectors.modeControl),
                 win = $(window),
-                defaultMode;
+                defaultMode = {};
 
             // Set default mode
             if (!this._state._params.hasOwnProperty('mode')) {
-                defaultMode = makeup._mod(makeupElement[0]).mode || 1;
+                defaultMode.mode = makeup._mod(makeupElement[0]).mode || 1;
             } else {
-                defaultMode = makeup._state._params.mode;
+                defaultMode.mode = makeup._state._params.mode;
             }
-            makeup._state.set({ mode: defaultMode });
+            if (defaultMode.mode == 3 || defaultMode.mode == 4) {
+                defaultMode.transparency = 0.5;
+            }
+            makeup._state.set(defaultMode);
 
             modeControl.on('change', function() {
-                var value;
+                var out = {};
 
                 modeControl.each(function(i) {
                     if (modeControl[i].checked == true) {
-                        value = modeControl[i].value;
+                        out.value = modeControl[i].value;
                     }
                 });
 
-                makeup._state.set({ mode: value });
+                if (out.value == 3 || out.value == 4) {
+                    out.transparency = 0.5;
+                }
+
+                makeup._state.set(out);
             });
 
             win.on('keydown', function(e) {
@@ -595,10 +584,10 @@ var Makeup = (function() {
                         makeup._state.set({ mode: 2 });
                         break;
                     case 51:
-                        makeup._state.set({ mode: 3 });
+                        makeup._state.set({ mode: 3, transparency: 0.5 });
                         break;
                     case 52:
-                        makeup._state.set({ mode: 4 });
+                        makeup._state.set({ mode: 4, transparency: 0.5 });
                         break;
                 }
             });
@@ -677,8 +666,13 @@ var Makeup = (function() {
                 sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
                 sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
 
+            if (this._state._params.hasOwnProperty('transparency')) {
+                value = this._state._params.transparency;
+            }
 
-            sliderTrack.rader({
+            var updateTimeout;
+
+            this._params.transparency.rader = sliderTrack.rader({
                 points: sliderTrackPoint,
                 runners: sliderTrackRunner,
                 runnersVal: [value],
@@ -686,11 +680,30 @@ var Makeup = (function() {
                 pointsPos: [min, max],
 
                 onUpdate: function(e) {
-                    var value = Math.round(e.minVal * 100) / 100;
+                    var value = e.maxVal.toFixed(2);
 
-                    makeup._state.set({ transparency: value });
+                    makeup._applyTransparency(value);
+
+                    clearTimeout(updateTimeout);
+                    updateTimeout = setTimeout(function() {
+                        makeup._state.set({ transparency: value });
+                    }, 1000);
                 }
             });
+        },
+
+        _applyTransparency: function(val, validateControl) {
+            var params = this._params,
+                containerMarkup = $(params.selectors.containerMarkup),
+                rader = params.transparency.rader;
+
+            containerMarkup.css({
+                opacity: val
+            });
+
+            if (validateControl && rader && rader.val(0) != +val) {
+                rader.val(0, validateRangeValue(+val, params.transparency.slider));
+            }
         },
 
         /**
@@ -708,8 +721,13 @@ var Makeup = (function() {
                 sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
                 sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
 
+            if (this._state._params.hasOwnProperty('zoom')) {
+                value = this._state._params.zoom;
+            }
 
-            sliderTrack.rader({
+            var updateTimeout;
+
+            this._params.zoom.rader = sliderTrack.rader({
                 points: sliderTrackPoint,
                 runners: sliderTrackRunner,
                 runnersVal: [value],
@@ -717,11 +735,31 @@ var Makeup = (function() {
                 pointsPos: [min, max],
 
                 onUpdate: function(e) {
-                    var value = Math.round(e.minVal * 100) / 100;
+                    var value = e.maxVal.toFixed(2);
 
-                    makeup._state.set({ zoom: value });
+                    // makeup._state.set({ zoom: value });
+                    makeup._applyZoom(value);
+
+                    clearTimeout(updateTimeout);
+                    updateTimeout = setTimeout(function() {
+                        makeup._state.set({zoom: value });
+                    }, 1000);
                 }
             });
+        },
+
+        _applyZoom: function(val, validateControl) {
+            var params = this._params,
+                container = $(this._params.selectors.container),
+                rader = params.zoom.rader;
+
+            container.css({
+                transform: 'scale(' + val + ')'
+            });
+
+            if (validateControl && rader && rader.val(0) != +val) {
+                rader.val(0, validateRangeValue(+val, params.zoom.slider));
+            }
         },
 
         /**
@@ -729,16 +767,17 @@ var Makeup = (function() {
          */
         _bindRulerListeners: function() {
             var makeup = this,
+                params = makeup._params,
 
-                ruler = $(this._params.selectors.ruler),
-                rulerTrack = ruler.find(this._params.selectors.rulerTrack),
-                rulerTrackActive = ruler.find(this._params.selectors.rulerTrackActive),
-                rulerTrackRunner = ruler.find(this._params.selectors.rulerTrackRunner),
-                rulerTrackPoint = ruler.find(this._params.selectors.rulerTrackPoint),
+                ruler = $(params.selectors.ruler),
+                rulerTrack = ruler.find(params.selectors.rulerTrack),
+                rulerTrackActive = ruler.find(params.selectors.rulerTrackActive),
+                rulerTrackRunner = ruler.find(params.selectors.rulerTrackRunner),
+                rulerTrackPoint = ruler.find(params.selectors.rulerTrackPoint),
 
-                min = this._params.ruler.h.slider.min,
-                max = this._params.ruler.h.slider.max,
-                value = this._params.ruler.h.slider.value,
+                min = params.ruler.h.slider.min,
+                max = params.ruler.h.slider.max,
+                value = params.ruler.h.slider.value,
 
                 horizontalRuler,
                 pos = [],
@@ -749,9 +788,11 @@ var Makeup = (function() {
                 i += 100;
             }
 
+            if (this._state._params.hasOwnProperty('width')) {
+                value = this._state._params.width;
+            }
+
             var updateTimeout;
-            var params = this._params;
-            var container = $(params.selectors.container);
 
             horizontalRuler = rulerTrack.rader({
                 trackActive: rulerTrackActive,
@@ -761,9 +802,9 @@ var Makeup = (function() {
                 values: [min, max],
                 stickingRadius: 5,
                 onUpdate: function(e) {
-                    container.css({
-                        width: validateRangeValue(e.maxVal.toFixed(0), params.ruler.h.slider) + 'px'
-                    });
+
+                    makeup._applyRulerPosition(e.maxVal.toFixed(0));
+
                     clearTimeout(updateTimeout);
                     updateTimeout = setTimeout(function() {
                         makeup._state.set({ width: e.maxVal.toFixed(0) });
@@ -773,6 +814,15 @@ var Makeup = (function() {
 
             horizontalRuler.pos(0, 0);
             horizontalRuler.pos(1, value);
+        },
+
+        _applyRulerPosition: function(pos) {
+            var params = this._params,
+                container = $(params.selectors.container);
+
+            container.css({
+                width: validateRangeValue(pos, params.ruler.h.slider) + 'px'
+            });
         },
 
         _bindSmileyListeners: function() {
@@ -803,10 +853,7 @@ var Makeup = (function() {
 
             var s = state,
                 params = this._params,
-                makeupElement = $(this._params.selectors.root),
-                box = $(this._params.selectors.box),
-                container = $(this._params.selectors.container),
-                containerMarkup = $(this._params.selectors.containerMarkup);
+                makeupElement = $(this._params.selectors.root);
 
             // Current Module
             if (has('group') || has('module') || has('typeGroup') || has('type')) {
@@ -850,23 +897,17 @@ var Makeup = (function() {
 
             // Transparency
             if (has('transparency')) {
-                containerMarkup.css({
-                    opacity: validateRangeValue(s.transparency, params.transparency.slider)
-                });
+                this._applyTransparency(s.transparency, 1);
             }
 
             // Zoom
             if (has('zoom')) {
-                container.css({
-                    transform: 'scale(' + validateRangeValue(s.zoom, params.zoom.slider) + ')'
-                });
+                this._applyZoom(s.zoom, 1);
             }
 
             // Width
             if (has('width')) {
-                container.css({
-                    width: validateRangeValue(s.width, params.ruler.h.slider) + 'px'
-                });
+                this._applyRulerPosition(s.width);
             }
 
             // Smiley
@@ -1254,6 +1295,24 @@ var Makeup = (function() {
             return false;
         }
     };
+
+    /**
+     * Validate range value
+     *
+     * @param {Number} value
+     * @param {Object} options
+     */
+    function validateRangeValue(value, options) {
+        if (value < options.min) {
+            return options.min;
+        }
+
+        if (value > options.max) {
+            return options.max;
+        }
+
+        return value;
+    }
 
     /**
      * @param {string} str
