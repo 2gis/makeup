@@ -657,14 +657,17 @@ var Makeup = (function() {
         _bindTransparencyListeners: function() {
             var makeup = this,
 
-                min = this._params.transparency.slider.min,
-                max = this._params.transparency.slider.max,
-                value = this._params.transparency.slider.value,
+                params = makeup._params,
+                min = params.transparency.slider.min,
+                max = params.transparency.slider.max,
+                value = params.transparency.slider.value,
 
-                slider = $(this._params.selectors.slider).filter('.makeup__slider--transparency'),
-                sliderTrack = slider.find(this._params.selectors.sliderTrack),
-                sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
-                sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+                slider = $(params.selectors.slider).filter('.makeup__slider--transparency'),
+                sliderTrack = slider.find(params.selectors.sliderTrack),
+                sliderTrackRunner = slider.find(params.selectors.sliderTrackRunner),
+                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
+
+                win = $(window);
 
             if (this._state._params.hasOwnProperty('transparency')) {
                 value = this._state._params.transparency;
@@ -672,7 +675,7 @@ var Makeup = (function() {
 
             var updateTimeout;
 
-            this._params.transparency.rader = sliderTrack.rader({
+            params.transparency.rader = sliderTrack.rader({
                 points: sliderTrackPoint,
                 runners: sliderTrackRunner,
                 runnersVal: [value],
@@ -688,6 +691,28 @@ var Makeup = (function() {
                     updateTimeout = setTimeout(function() {
                         makeup._state.set({ transparency: value });
                     }, 1000);
+                }
+            });
+
+            win.on('keydown', function(e) {
+                var key = makeup._getKey(e),
+                    cur = params.transparency.rader.val(0),
+                    slider = makeup._params.transparency.slider,
+                    val;
+
+                switch (key) {
+                    case 219:
+                        val = (cur - 0.1).toFixed(2);
+                        makeup._state.set({
+                            transparency: validateRangeValue(val, slider)
+                        });
+                        break;
+                    case 221:
+                        val = (cur + 0.1).toFixed(2);
+                        makeup._state.set({
+                            transparency: validateRangeValue(val, slider)
+                        });
+                        break;
                 }
             });
         },
@@ -711,15 +736,18 @@ var Makeup = (function() {
          */
         _bindZoomListeners: function() {
             var makeup = this,
+                params = makeup._params,
 
-                min = this._params.zoom.slider.min,
-                max = this._params.zoom.slider.max,
-                value = this._params.zoom.slider.value,
+                min = params.zoom.slider.min,
+                max = params.zoom.slider.max,
+                value = params.zoom.slider.value,
 
-                slider = $(this._params.selectors.slider).filter('.makeup__slider--zoom'),
-                sliderTrack = slider.find(this._params.selectors.sliderTrack),
-                sliderTrackRunner = slider.find(this._params.selectors.sliderTrackRunner),
-                sliderTrackPoint = slider.find(this._params.selectors.sliderTrackPoint);
+                slider = $(params.selectors.slider).filter('.makeup__slider--zoom'),
+                sliderTrack = slider.find(params.selectors.sliderTrack),
+                sliderTrackRunner = slider.find(params.selectors.sliderTrackRunner),
+                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
+
+                win = $(window);
 
             if (this._state._params.hasOwnProperty('zoom')) {
                 value = this._state._params.zoom;
@@ -727,7 +755,7 @@ var Makeup = (function() {
 
             var updateTimeout;
 
-            this._params.zoom.rader = sliderTrack.rader({
+            params.zoom.rader = sliderTrack.rader({
                 points: sliderTrackPoint,
                 runners: sliderTrackRunner,
                 runnersVal: [value],
@@ -744,6 +772,28 @@ var Makeup = (function() {
                     updateTimeout = setTimeout(function() {
                         makeup._state.set({zoom: value });
                     }, 1000);
+                }
+            });
+
+            win.on('keydown', function(e) {
+                var key = makeup._getKey(e),
+                    cur = params.zoom.rader.val(0),
+                    slider = makeup._params.zoom.slider,
+                    val;
+
+                switch (key) {
+                    case 189:
+                        val = (cur - 0.25).toFixed(2);
+                        makeup._state.set({
+                            zoom: validateRangeValue(val, slider)
+                        });
+                        break;
+                    case 187:
+                        val = (cur + 0.25).toFixed(2);
+                        makeup._state.set({
+                            zoom: validateRangeValue(val, slider)
+                        });
+                        break;
                 }
             });
         },
