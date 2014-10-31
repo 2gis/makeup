@@ -573,6 +573,8 @@ var Makeup = (function() {
 
                 if (out.mode == 3 || out.mode == 4) {
                     out.transparency = 0.5;
+                } else {
+                    out.transparency = 1;
                 }
 
                 makeup._state.set(out);
@@ -583,10 +585,10 @@ var Makeup = (function() {
 
                 switch (key) {
                     case 49:
-                        makeup._state.set({ mode: 1 });
+                        makeup._state.set({ mode: 1, transparency: 1 });
                         break;
                     case 50:
-                        makeup._state.set({ mode: 2 });
+                        makeup._state.set({ mode: 2, transparency: 1 });
                         break;
                     case 51:
                         makeup._state.set({ mode: 3, transparency: 0.5 });
