@@ -36,6 +36,7 @@ module.exports = function(buildOptions) {
                     './source/less/png.less',
                     './source/less/reset.less',
                     './source/less/common.less',
+                    './source/less/ie.less',
                     './source/blocks/*/*.less'
                 ])
                 .pipe(concat('makeup.ie.css'))

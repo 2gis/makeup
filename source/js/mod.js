@@ -123,7 +123,7 @@
             } else {
                 re = new RegExp('^' + bem.name + delm + '([\\w\\-]*)'); // '(block__)element_state_open' -> 'state_open'
             }
-            var tail = _.compact(cls.match(re)[1].split(dms.mm));
+            var tail = _.compact(cls.match(re) && cls.match(re)[1].split(dms.mm));
 
             if (tail) {
                 var key = tail[0];

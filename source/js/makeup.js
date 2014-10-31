@@ -216,6 +216,11 @@ var Makeup = (function() {
                 that.el[key] = $(item);
             });
 
+            this.ieVersion = isIE();
+            if (this.ieVersion < 9) {
+                this._mod(this.el.root[0], { ie: this.ieVersion });
+            }
+
             this._currentState = {};
             this._state = new State();
             this._bindListeners();
@@ -1128,10 +1133,10 @@ var Makeup = (function() {
             $(container).empty();
             this.imageLoader = null;
 
-            img.onload = img.onerror = this.imageLoader = function(e) {
+            img.onload = img.onerror = this.imageLoader = function() {
                 img.onload = img.onerror = this.imageLoader = null;
 
-                if (e.type == 'load') {
+                if (event.type == 'load') {
                     $(container).empty();
                     $(this)
                         .css({
@@ -1345,6 +1350,15 @@ var Makeup = (function() {
             return false;
         }
     };
+
+    /**
+     * Returns IE-version or false
+     */
+    function isIE() {
+        var nav = navigator.userAgent.toLowerCase();
+
+        return (nav.indexOf('msie') != -1) ? parseInt(nav.split('msie')[1]) : false;
+    }
 
     /**
      * Validate range value
