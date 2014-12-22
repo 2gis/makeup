@@ -268,11 +268,16 @@ var Makeup = (function() {
             }
 
             win.on('statechange', function(e) {
-                var diff = makeup._getStateDiff(makeup._currentState, e.state);
+                var diff = makeup._getStateDiff(makeup._currentState, e.state),
+                    moduleChanged = has('group') || has('module') || has('typeGroup') || has('type');
 
                 if (!_.isEmpty(diff)) {
-                    makeup._setState(diff);
+                    makeup._setState(moduleChanged ? e.state : diff);
                     makeup._currentState = _.clone(e.state);
+                }
+
+                function has(key) {
+                    return diff.hasOwnProperty(key.toString());
                 }
             });
         },
