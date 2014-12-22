@@ -92,4 +92,21 @@ new Makeup({
 });
 ```
 
+## Сборка
 
+Для сборки должны быть установлены `nodejs`, `npm` и `gulp`.
+
+1. Склонируйте репозиторий
+
+    ```
+    git clone git@github.com:Chaptykov/makeup.git
+    cd makeup
+    ```
+2. Запустите сборку
+
+    ```
+    npm i
+    gulp
+    ```
+
+Демо будет доступно по адресу `http://localhost:3333/demo/`.
