@@ -29,11 +29,11 @@ module.exports = function(buildOptions) {
         return (
             gulp
                 .src(_.compact([
-                    'bower_components/handlebars/handlebars.min.js',
-                    'bower_components/lodash/dist/lodash.min.js',
-                    buildOptions.noJquery ? null : 'bower_components/jquery/dist/jquery.min.js',
-                    'bower_components/baron/baron.min.js',
-                    'bower_components/rader/rader.min.js',
+                    'node_modules/handlebars/dist/handlebars.min.js',
+                    'node_modules/lodash/dist/lodash.min.js',
+                    buildOptions.noJquery ? null : 'node_modules/jquery/dist/jquery.min.js',
+                    'node_modules/baron/baron.min.js',
+                    'node_modules/rader/rader.min.js',
                     'source/js/*.js',
                     'temp/templates.js'
                 ]))

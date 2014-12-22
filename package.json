@@ -45,5 +45,12 @@
     "node-notifier": "~3.4.1",
     "run-sequence": "^0.3.6",
     "yargs": "^1.2.6"
+  },
+  "dependencies": {
+    "jquery": "1.11.1",
+    "rader": "git://github.com/2gis/rader.git#0.2.2",
+    "baron": "git://github.com/Diokuz/baron.git#0.7.9",
+    "handlebars": "~1.3.0",
+    "lodash": "~2.4.1"
   }
 }
