@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     connect = require('gulp-connect');
     runSequence = require('run-sequence'),
     mocha = require('gulp-mocha'),
-    config = require('./config.js');
+    config = require('./config.js'),
+    del = require('del');
 
 var buildOptions = {
         release: 'r' in args || 'release' in args,
@@ -26,6 +27,9 @@ gulp.task('build', function(callback) {
     return runSequence('templates', 'js', 'sprite', 'css', callback);
 });
 
+gulp.task('clean', function(callback) {
+    del(['dist/*', 'temp/*'], callback);
+});
 
 gulp.task('t', ['jshint', 'unit']);
 gulp.task('test', ['unit']);

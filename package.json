@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/chaptykov/makeup",
   "devDependencies": {
+    "del": "^1.1.0",
     "gmsmith": "^0.4.2",
     "gulp": "^3.8.6",
     "gulp-concat": "^2.3.4",
