@@ -34,7 +34,11 @@ var Makeup = (function() {
     };
 
     function Makeup(options) {
-        if (typeof makeup == 'object') {
+        if (!(this instanceof Makeup)) { // 
+            return new Makeup(options);
+        }
+
+        if (typeof makeup == 'object') { // singleton
             return makeup;
         } else {
             makeup = this;
