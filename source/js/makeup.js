@@ -5,7 +5,7 @@
  * @requires jQuery
  * @requires lodash
  */
-var Makeup = (function() {
+var Makeup = (function(win) {
     var makeup;
 
     var internationalDelimiters = {
@@ -47,7 +47,14 @@ var Makeup = (function() {
         makeup._init(options);
     }
 
+    Makeup.init = Makeup;
+    Makeup.templating = function(fn) {
+        var html = Makeup._templating = fn;
+    };
+
     Makeup.fn = Makeup.prototype = {
+        init: Makeup,
+
         constructor: Makeup,
 
         _state: {},
@@ -56,6 +63,12 @@ var Makeup = (function() {
 
         _init: function(options) {
             var that = this;
+
+            if (_.isArray(options)) {
+                options = {
+                    data: options
+                };
+            }
 
             this._params = this._viewModel(_.merge({
 
@@ -227,6 +240,7 @@ var Makeup = (function() {
 
             this._currentState = {};
             this._state = new State();
+            this._containerMarkup = $(this._params.selectors.containerMarkup);
             this._bindListeners();
         },
 
@@ -735,10 +749,9 @@ var Makeup = (function() {
 
         _applyTransparency: function(val, validateControl) {
             var params = this._params,
-                containerMarkup = $(params.selectors.containerMarkup),
                 rader = params.transparency.rader;
 
-            containerMarkup.css({
+            this._containerMarkup.css({
                 opacity: val
             });
 
@@ -1043,7 +1056,7 @@ var Makeup = (function() {
 
             $(selector.container).attr('style', getStyles('wrapper'));
             $(selector.containerImage).attr('style', getStyles('image'));
-            $(selector.containerMarkup).attr('style', getStyles('markup'));
+            this._containerMarkup.attr('style', getStyles('markup'));
 
             // Ищем hint для модуля/типа
             hint = type && type.hint || typeGroup && typeGroup.hint || module && module.hint || group && group.hint;
@@ -1056,12 +1069,9 @@ var Makeup = (function() {
                 this._loadImage(instance.image);
             }
 
-
-            // Рендер модуля
-            if (typeof this._params.renderModule == 'function') {
-                this._params.renderModule.call(this, instance, groupId, moduleId, typeGroupId, typeId);
-            }
-
+            // data -> html
+            var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            this._containerMarkup.html(html);
 
             // Сниппет
             snippet.call(this, group);
@@ -1425,5 +1435,5 @@ var Makeup = (function() {
         module.exports = Makeup.prototype;
     }
 
-    return Makeup;
-})();
+    win.M = Makeup;
+})(this);

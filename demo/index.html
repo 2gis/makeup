@@ -19,9 +19,15 @@
 <script src="../dist/makeup.js"></script>
 <script>
 
-    var makeup = Makeup({
-        renderModule: function(module) {},
-        data: data
+    M.init(data);
+
+    M.templating(function(params) {
+        // string concatination
+        console.log('params', params);
+        // if (params.modulename == 'Hello World!') {
+            return '<div class="helloworld">Hello World!</div>';
+        // }
+        // return '<div>';
     });
 
 </script>
