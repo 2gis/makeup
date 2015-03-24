@@ -109,4 +109,4 @@ new Makeup({
     gulp
     ```
 
-Демо будет доступно по адресу `http://localhost:3333/demo/`.
+Демо будет доступно по адресу [localhost:3333/demo](http://localhost:3333/demo).
