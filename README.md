@@ -21,7 +21,7 @@ Makeup
 
 ```js
 new Makeup({
-    renderModule: function(module) {} // Функция, которая создает блок в Мейкапе,
+    renderModule: function(module) {}, // Функция, которая создает блок в Мейкапе,
     data: {}                          // Данные для инициализации
 });
 ```
