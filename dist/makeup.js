@@ -1170,14 +1170,18 @@ var Makeup = (function(win) {
             }
 
             // Загружаем изображение
-            this._loadImage(instance.image || false);
+            var src = instance.image;
+            if (!src && typeGroup && typeGroup.imagePrefix) {
+                src = typeGroup.imagePrefix + type.name + '.png';
+            }
+            this._loadImage(src || false);
 
             // data -> html
             var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
             this._containerMarkup.html(html);
 
             // Навешиваем допклассы на блок
-            if (type.cls) $(this._containerMarkup.children()).addClass(type.cls);
+            if (type && type.cls) $(this._containerMarkup.children()).addClass(type.cls);
 
             // Сниппет
             snippet.call(this, group);
