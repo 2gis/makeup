@@ -109,11 +109,13 @@
 
                 {{#if data}}
                     <div class="makeup__nav-list">
+                        {{! [modules, blocks, helpers] }}
                         {{#each data}}
                             <div class="makeup__nav-list-item" data-id="{{@index}}">
 
                                 <div class="makeup__nav-title">{{label}}</div>
 
+                                {{! [card, callout, map, ...] }}
                                 {{#each items}}
                                     <div class="makeup__module{{#if items}} makeup__module--expandable{{/if}}" data-id="{{@index}}">
 
@@ -139,9 +141,12 @@
                                             <div class="makeup__subnav">
                                                 {{#each items}}
                                                     <div class="makeup__subnav-item" data-id="{{@index}}">
-                                                        <div class="makeup__subnav-title">
-                                                            {{label}}
-                                                        </div>
+                                                        {{#if label}}
+                                                            <div class="makeup__subnav-title">
+                                                                {{label}}
+                                                            </div>
+                                                        {{/if}}
+
                                                         {{#if items}}
                                                             {{#each items}}
                                                                 <span class="makeup__subnav-link" data-id="{{@index}}">

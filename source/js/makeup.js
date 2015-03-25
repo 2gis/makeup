@@ -62,8 +62,6 @@ var Makeup = (function(win) {
         el: {},
 
         _init: function(options) {
-            var that = this;
-
             if (_.isArray(options)) {
                 options = {
                     data: options
@@ -230,8 +228,8 @@ var Makeup = (function(win) {
             this._params.wrapper.append(makeupTemplates.makeup(this._params));
 
             _.each(this._params.selectors, function(item, key) {
-                that.el[key] = $(item);
-            });
+                this.el[key] = $(item);
+            }, this);
 
             this.ieVersion = isIE();
             if (this.ieVersion < 9) {
@@ -1071,6 +1069,9 @@ var Makeup = (function(win) {
             var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
             this._containerMarkup.html(html);
 
+            // Навешиваем допклассы на блок
+            if (type.cls) $(this._containerMarkup.children()).addClass(type.cls);
+
             // Сниппет
             snippet.call(this, group);
             snippet.call(this, module);
@@ -1220,30 +1221,30 @@ var Makeup = (function(win) {
          */
         _viewModel: function(data) {
             var model = data || {},
-                out = model,
-                that = this;
+                out = model;
 
-            if (model && model.data) {
-                if (model.data instanceof Array) {
-                    out.data = _.map(model.data, function(item, i) {
-                        return {
-                            label: item.label || 'Untitled group',
-                            snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
-                            items: that._parseCollection(item.items)
-                        };
-                    });
-                } else {
-                    var item = model.data;
+            if (model.data) {
+                if (!_.isArray(model.data)) out.data = [model.data];
 
-                    out.data = [{
-                        label: item.label || 'Blocks',
-                        snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
-                        items: that._parseCollection(item.items)
-                    }];
-                }
+                out.data = _.map(model.data, function(item) {
+                    return {
+                        label: item.label || 'Untitled group',
+                        snippet: item.snippet || _.noop,
+                        items: this._parseCollection(item.items)
+                    };
+                }, this);
             }
 
             return out;
+        },
+
+        /**
+         * Парсит абстрактный массив данных (Array of items)
+         */
+        _parseCollection: function(arr, func) {
+            var handler = func || _.bind(this._parseItem, this);
+
+            return _(arr).compact().map(handler, this).value();
         },
 
         /**
@@ -1262,7 +1263,6 @@ var Makeup = (function(win) {
             } else if (item instanceof Object) {
                 var children = item.items || item.types,
                     documentation = item.documentation,
-                    snippet = item.snippet,
                     meta = item.meta;
 
                 out = item;
@@ -1283,9 +1283,7 @@ var Makeup = (function(win) {
                 }
 
                 // Snippet
-                if (snippet && typeof snippet == 'function') {
-                    out.snippet = snippet;
-                }
+                out.snippet = item.snippet || _.noop;
 
                 // Meta
                 if (item.meta && item.meta instanceof Array && item.meta.length) {
@@ -1303,20 +1301,6 @@ var Makeup = (function(win) {
             }
 
             out.label = out.label || out.name || untitled;
-
-            return out;
-        },
-
-        /**
-         * Parse collection
-         */
-        _parseCollection: function(arr, func) {
-            var out = [],
-                that = this;
-
-            _(arr).compact().each(function(item) {
-                out.push(func ? func(item) : that._parseItem(item));
-            });
 
             return out;
         },
@@ -1438,4 +1422,5 @@ var Makeup = (function(win) {
     }
 
     win.M = Makeup;
+    win.lodash = _;
 })(this);

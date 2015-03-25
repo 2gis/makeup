@@ -169,8 +169,6 @@ var Makeup = (function(win) {
         el: {},
 
         _init: function(options) {
-            var that = this;
-
             if (_.isArray(options)) {
                 options = {
                     data: options
@@ -337,8 +335,8 @@ var Makeup = (function(win) {
             this._params.wrapper.append(makeupTemplates.makeup(this._params));
 
             _.each(this._params.selectors, function(item, key) {
-                that.el[key] = $(item);
-            });
+                this.el[key] = $(item);
+            }, this);
 
             this.ieVersion = isIE();
             if (this.ieVersion < 9) {
@@ -1178,6 +1176,9 @@ var Makeup = (function(win) {
             var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
             this._containerMarkup.html(html);
 
+            // Навешиваем допклассы на блок
+            if (type.cls) $(this._containerMarkup.children()).addClass(type.cls);
+
             // Сниппет
             snippet.call(this, group);
             snippet.call(this, module);
@@ -1327,30 +1328,30 @@ var Makeup = (function(win) {
          */
         _viewModel: function(data) {
             var model = data || {},
-                out = model,
-                that = this;
+                out = model;
 
-            if (model && model.data) {
-                if (model.data instanceof Array) {
-                    out.data = _.map(model.data, function(item, i) {
-                        return {
-                            label: item.label || 'Untitled group',
-                            snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
-                            items: that._parseCollection(item.items)
-                        };
-                    });
-                } else {
-                    var item = model.data;
+            if (model.data) {
+                if (!_.isArray(model.data)) out.data = [model.data];
 
-                    out.data = [{
-                        label: item.label || 'Blocks',
-                        snippet: typeof item.snippet == 'function' ? item.snippet : undefined,
-                        items: that._parseCollection(item.items)
-                    }];
-                }
+                out.data = _.map(model.data, function(item) {
+                    return {
+                        label: item.label || 'Untitled group',
+                        snippet: item.snippet || _.noop,
+                        items: this._parseCollection(item.items)
+                    };
+                }, this);
             }
 
             return out;
+        },
+
+        /**
+         * Парсит абстрактный массив данных (Array of items)
+         */
+        _parseCollection: function(arr, func) {
+            var handler = func || _.bind(this._parseItem, this);
+
+            return _(arr).compact().map(handler, this).value();
         },
 
         /**
@@ -1369,7 +1370,6 @@ var Makeup = (function(win) {
             } else if (item instanceof Object) {
                 var children = item.items || item.types,
                     documentation = item.documentation,
-                    snippet = item.snippet,
                     meta = item.meta;
 
                 out = item;
@@ -1390,9 +1390,7 @@ var Makeup = (function(win) {
                 }
 
                 // Snippet
-                if (snippet && typeof snippet == 'function') {
-                    out.snippet = snippet;
-                }
+                out.snippet = item.snippet || _.noop;
 
                 // Meta
                 if (item.meta && item.meta instanceof Array && item.meta.length) {
@@ -1410,20 +1408,6 @@ var Makeup = (function(win) {
             }
 
             out.label = out.label || out.name || untitled;
-
-            return out;
-        },
-
-        /**
-         * Parse collection
-         */
-        _parseCollection: function(arr, func) {
-            var out = [],
-                that = this;
-
-            _(arr).compact().each(function(item) {
-                out.push(func ? func(item) : that._parseItem(item));
-            });
 
             return out;
         },
@@ -1545,6 +1529,7 @@ var Makeup = (function(win) {
     }
 
     win.M = Makeup;
+    win.lodash = _;
 })(this);
 
 (function(Makeup) {
@@ -1698,8 +1683,6 @@ var Makeup = (function(win) {
      * @param {Object} modifiers - одноуровневый объект модификаторов
      */
     Makeup.fn._mod = function(el, modifiers) {
-        var self = this;
-
         if (!el.mod) {
             var bem = this._detectBEM(el, this._params.namingRules);
             el.mod = this._parseMod(el);
@@ -1714,20 +1697,20 @@ var Makeup = (function(win) {
                 oldMods = el.mod;
 
             _.each(modifiers, function(value, key) {
-                var rmCls = self._composeClassName({
+                var rmCls = this._composeClassName({
                     block: el.blockName,
                     element: el.elementName,
                     modKey: key,
                     modValue: oldMods[key],
-                    namingRules: self._params.namingRules
+                    namingRules: this._params.namingRules
                 });
 
-                var addCls = self._composeClassName({
+                var addCls = this._composeClassName({
                     block: el.blockName,
                     element: el.elementName,
                     modKey: key,
                     modValue: value,
-                    namingRules: self._params.namingRules
+                    namingRules: this._params.namingRules
                 });
 
                 if (rmCls != addCls) {
@@ -1735,7 +1718,7 @@ var Makeup = (function(win) {
                 }
 
                 el.mod[key] = value;
-            });
+            }, this);
         }
     };
 })(this.M);
@@ -2077,7 +2060,7 @@ function program17(depth0,data) {
 function program19(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n                    <div class=\"makeup__nav-list\">\n                        ";
+  buffer += "\n                    <div class=\"makeup__nav-list\">\n                        \n                        ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                    </div>\n                ";
@@ -2092,7 +2075,7 @@ function program20(depth0,data) {
   if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</div>\n\n                                ";
+    + "</div>\n\n                                \n                                ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.items), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n                            </div>\n                        ";
@@ -2160,29 +2143,39 @@ function program27(depth0,data) {
   }
 function program28(depth0,data) {
   
-  var buffer = "", stack1, helper;
+  var buffer = "", stack1;
   buffer += "\n                                                    <div class=\"makeup__subnav-item\" data-id=\""
     + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n                                                        <div class=\"makeup__subnav-title\">\n                                                            ";
-  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\n                                                        </div>\n                                                        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.items), {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data});
+    + "\">\n                                                        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.label), {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n                                                        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.items), {hash:{},inverse:self.noop,fn:self.program(31, program31, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                                                    </div>\n                                                ";
   return buffer;
   }
 function program29(depth0,data) {
   
+  var buffer = "", stack1, helper;
+  buffer += "\n                                                            <div class=\"makeup__subnav-title\">\n                                                                ";
+  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\n                                                            </div>\n                                                        ";
+  return buffer;
+  }
+
+function program31(depth0,data) {
+  
   var buffer = "", stack1;
   buffer += "\n                                                            ";
-  stack1 = helpers.each.call(depth0, (depth0 && depth0.items), {hash:{},inverse:self.noop,fn:self.program(30, program30, data),data:data});
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.items), {hash:{},inverse:self.noop,fn:self.program(32, program32, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                                                        ";
   return buffer;
   }
-function program30(depth0,data) {
+function program32(depth0,data) {
   
   var buffer = "", stack1, helper;
   buffer += "\n                                                                <span class=\"makeup__subnav-link\" data-id=\""

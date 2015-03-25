@@ -1,12 +1,59 @@
 var data = [{
-    'label': 'Простые блоки',
-    'items': [{
+    label: 'Простые блоки',
+    items: [{
         name: 'Hello World!',
         image: "qwe.jpg"
     }, {
         name: 'Блок 2'
     }, {
         name: 'makeup'
+    }, {
+        name: 'miniCard',
+        styles: {
+            markup: 'background: white;'
+        },
+        types: [{
+            label: 'context',
+            items: [{
+                name:"full"
+            }, {
+                name:"adv"
+            }, {
+                name:"recoveryStart",
+                cls: "ads _recovery"
+            }, {
+                name:"recoveryEnd",
+                cls: "ads _recovery"
+            }, {
+                name:"booklet",
+                cls: '_photo'
+            }, {
+                name:"discount"
+            }, {
+                name:"eshop"
+            }, {
+                name:"plusOne"
+            }, {
+                name:"taxi",
+                cls: '_photo'
+            }, {
+                name:"truba"
+            }, {
+                name:"place"
+            }, {
+                name:"stop",
+                cls: '_type_station'
+            }, {
+                name:"route",
+                cls: '_type_route _transportType_bus'
+            }, {
+                name:"filials",
+                cls: '_photo'
+            }, {
+                name:"advWarning",
+                cls: '_ads _advWarning'
+            }]
+        }]
     }]
 }];
 

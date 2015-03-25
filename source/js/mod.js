@@ -149,8 +149,6 @@
      * @param {Object} modifiers - одноуровневый объект модификаторов
      */
     Makeup.fn._mod = function(el, modifiers) {
-        var self = this;
-
         if (!el.mod) {
             var bem = this._detectBEM(el, this._params.namingRules);
             el.mod = this._parseMod(el);
@@ -165,20 +163,20 @@
                 oldMods = el.mod;
 
             _.each(modifiers, function(value, key) {
-                var rmCls = self._composeClassName({
+                var rmCls = this._composeClassName({
                     block: el.blockName,
                     element: el.elementName,
                     modKey: key,
                     modValue: oldMods[key],
-                    namingRules: self._params.namingRules
+                    namingRules: this._params.namingRules
                 });
 
-                var addCls = self._composeClassName({
+                var addCls = this._composeClassName({
                     block: el.blockName,
                     element: el.elementName,
                     modKey: key,
                     modValue: value,
-                    namingRules: self._params.namingRules
+                    namingRules: this._params.namingRules
                 });
 
                 if (rmCls != addCls) {
@@ -186,7 +184,7 @@
                 }
 
                 el.mod[key] = value;
-            });
+            }, this);
         }
     };
 })(this.M);
