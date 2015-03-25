@@ -139,12 +139,12 @@ var Makeup = (function(win) {
                     items: [
                         {
                             tooltip: 'Image',
-                            value: '1',
-                            checked: true
+                            value: '1'
                         },
                         {
                             tooltip: 'Markup',
                             value: '2',
+                            checked: true
                         },
                         {
                             tooltip: 'Markup and image',
@@ -320,7 +320,7 @@ var Makeup = (function(win) {
          */
         _bindMenuListeners: function() {
             var that = this,
-                makeupElement = $(makeup._params.selectors.root),
+                makeupRootElement = $(makeup._params.selectors.root)[0],
                 sidebar = $(this._params.selectors.sidebar),
                 moduleHeader = $(this._params.selectors.moduleHeader),
                 moduleType = $(this._params.selectors.subnavLink),
@@ -365,7 +365,7 @@ var Makeup = (function(win) {
 
                 // Set default mode
                 if (!this._state._params.hasOwnProperty('menu')) {
-                    var defaultMenu = makeup._mod(makeupElement[0]).menu || true;
+                    var defaultMenu = makeup._mod(makeupRootElement).menu || true;
 
                     makeup._state.set({ menu: defaultMenu });
                 }
@@ -1065,9 +1065,7 @@ var Makeup = (function(win) {
             }
 
             // Загружаем изображение
-            if (instance.image) {
-                this._loadImage(instance.image);
-            }
+            this._loadImage(instance.image || false);
 
             // data -> html
             var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
@@ -1154,21 +1152,25 @@ var Makeup = (function(win) {
             $(container).empty();
             this.imageLoader = null;
 
-            img.onload = img.onerror = this.imageLoader = function() {
+            img.onload = this.imageLoader = function(event) {
                 img.onload = img.onerror = this.imageLoader = null;
 
-                if (event.type == 'load') {
-                    $(container).empty();
-                    $(this)
-                        .css({
-                            width: img.width,
-                            height: img.height
-                        })
-                        .addClass(imageClass)
-                        .appendTo(container);
+                $(container).empty();
+                $(this)
+                    .css({
+                        width: img.width,
+                        height: img.height
+                    })
+                    .addClass(imageClass)
+                    .appendTo(container);
 
-                    that._invertImage(img);
-                }
+                that._invertImage(img);
+            };
+
+            img.onerror = function(event) {
+                img.onerror = null;
+
+                makeup._state.set({mode: 2, transparency: 1});
             };
 
             img.src = src;

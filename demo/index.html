@@ -19,16 +19,17 @@
 <script src="../dist/makeup.js"></script>
 <script>
 
-    M.init(data);
-
     M.templating(function(params) {
-        // string concatination
-        console.log('params', params);
-        // if (params.modulename == 'Hello World!') {
+        if (params.modulename == 'makeup') {
+            return makeupTemplates.makeup(makeupCtx);
+        }
+        if (params.modulename == 'Hello World!') {
             return '<div class="helloworld">Hello World!</div>';
-        // }
-        // return '<div>';
+        }
+        return '<div></div>';
     });
+
+    M.init(data);
 
 </script>
 </body>
