@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="300px" height="200px" viewBox="0 0 300 200" enable-background="new 0 0 300 200" xml:space="preserve">
+<font horiz-adv-x="2048">
+<!-- Helvetica is a registered trademark of Linotype AG -->
+<!-- Copyright: Copyright 2015 Adobe System Incorporated. All rights reserved. -->
+<font-face font-family="Helvetica" units-per-em="2048" underline-position="-155" underline-thickness="101"/>
+<missing-glyph horiz-adv-x="1298" d="M66,0l0,1469l1166,0l0,-1469M1048,184l0,1101l-798,0l0,-1101z"/>
+<glyph unicode=" " horiz-adv-x="569"/>
+<glyph unicode="_" horiz-adv-x="1139" d="M0,-256l0,101l1139,0l0,-101z"/>
+<glyph unicode="a" horiz-adv-x="1139" d="M462,117C525,117 587,132 646,161C746,210 796,289 796,400l0,145C774,531 746,519 711,510C676,501 642,494 609,490l-109,-14C435,467 386,454 353,435C298,404 270,354 270,285C270,233 289,192 327,162C365,132 410,117 462,117M706,649C747,654 775,672 789,701C797,717 801,740 801,770C801,831 779,876 736,904C692,931 629,945 548,945C454,945 387,920 348,869C326,841 312,799 305,744l-168,0C140,876 183,968 266,1020C348,1071 443,1097 552,1097C678,1097 780,1073 859,1025C937,977 976,902 976,801l0,-617C976,165 980,150 988,139C995,128 1011,122 1036,122C1044,122 1053,123 1063,124C1073,125 1084,126 1095,128l0,-133C1067,-13 1046,-18 1031,-20C1016,-22 996,-23 971,-23C909,-23 864,-1 836,43C821,66 811,99 805,142C768,94 716,52 647,17C578,-18 503,-36 420,-36C321,-36 240,-6 177,55C114,115 82,190 82,281C82,380 113,457 175,512C237,567 318,600 419,613z"/>
+<glyph unicode="b" horiz-adv-x="1139" d="M118,1474l175,0l0,-533C332,992 379,1032 434,1059C489,1086 548,1099 612,1099C745,1099 854,1053 937,962C1020,870 1061,735 1061,556C1061,387 1020,246 938,134C856,22 742,-34 597,-34C516,-34 447,-14 391,25C358,48 322,86 284,137l0,-137l-166,0M877,547C877,660 853,753 805,827C756,901 685,938 591,938C509,938 437,908 376,847C314,786 283,686 283,547C283,446 296,365 321,302C368,184 457,125 586,125C683,125 756,164 805,241C853,318 877,420 877,547z"/>
+<glyph unicode="c" horiz-adv-x="1024" d="M976,711l-175,0C790,777 766,832 728,876C690,919 629,941 545,941C430,941 348,885 299,773C267,700 251,611 251,504C251,397 274,306 319,233C364,160 436,123 533,123C608,123 667,146 711,192C754,237 784,300 801,379l175,0C956,237 906,133 826,68C746,2 644,-31 519,-31C379,-31 267,20 184,123C101,225 59,353 59,506C59,694 105,840 196,945C287,1050 404,1102 545,1102C666,1102 764,1073 840,1014C915,955 961,854 976,711z"/>
+<glyph unicode="e" horiz-adv-x="1139" d="M962,903C998,849 1022,786 1034,714C1045,665 1050,586 1050,478l-785,0C268,369 294,282 342,217C390,151 464,118 565,118C659,118 734,149 790,211C822,247 845,289 858,336l177,0C1030,297 1015,253 989,205C962,156 933,117 900,86C845,33 778,-3 697,-22C654,-33 605,-38 550,-38C417,-38 304,11 211,108C118,205 72,340 72,515C72,687 119,827 212,934C305,1041 427,1095 578,1095C654,1095 728,1077 799,1042C870,1006 925,960 962,903M865,621C858,699 841,761 814,808C765,895 682,938 567,938C484,938 415,908 359,849C303,789 273,713 270,621z"/>
+<glyph unicode="i" horiz-adv-x="455" d="M132,1066l183,0l0,-1066l-183,0M132,1469l183,0l0,-204l-183,0z"/>
+<glyph unicode="l" horiz-adv-x="455" d="M137,1469l180,0l0,-1469l-180,0z"/>
+<glyph unicode="n" horiz-adv-x="1139" d="M132,1071l171,0l0,-152C354,982 407,1027 464,1054C521,1081 584,1095 653,1095C805,1095 908,1042 961,936C990,878 1005,795 1005,687l0,-687l-183,0l0,675C822,740 812,793 793,833C761,900 703,933 619,933C576,933 541,929 514,920C465,905 421,876 384,832C354,797 335,760 326,723C317,685 312,631 312,561l0,-561l-180,0z"/>
+<glyph unicode="o" horiz-adv-x="1139" d="M869,553C869,653 853,734 821,797C770,896 683,945 559,945C449,945 369,903 319,819C269,735 244,634 244,515C244,401 269,306 319,230C369,154 448,116 557,116C676,116 758,161 803,252C847,342 869,442 869,553M1057,558C1057,385 1015,243 931,130C847,17 717,-39 540,-39C393,-39 276,11 189,111C102,210 59,344 59,512C59,692 105,835 196,942C287,1049 410,1102 564,1102C702,1102 819,1056 914,964C1009,872 1057,737 1057,558z"/>
+<glyph unicode="t" horiz-adv-x="569" d="M168,1370l182,0l0,-299l171,0l0,-147l-171,0l0,-699C350,188 363,163 388,150C402,143 425,139 458,139C467,139 476,139 486,140C496,140 508,141 521,142l0,-142C500,-6 479,-10 457,-13C434,-16 410,-17 384,-17C300,-17 243,5 213,48C183,91 168,146 168,215l0,709l-145,0l0,147l145,0z"/>
+<glyph unicode="u" horiz-adv-x="1139" d="M312,1071l0,-711C312,305 321,261 338,226C370,162 430,130 517,130C642,130 728,186 773,298C798,358 810,440 810,545l0,526l180,0l0,-1071l-170,0l2,158C799,117 770,83 735,55C666,-1 583,-29 485,-29C332,-29 228,22 173,124C143,179 128,252 128,343l0,728z"/>
+</font>
+
+	<path id="Rectangle-369" sketch:type="MSShapeGroup" fill="#E5E4E3" d="M12,0h276c6.6,0,12,5.4,12,12v176c0,6.6-5.4,12-12,12H12
+	c-6.6,0-12-5.4-12-12V12C0,5.4,5.4,0,12,0z"/>
+<g id="short_list-2" transform="translate(429.000000, 267.000000)" sketch:type="MSLayerGroup">
+	<circle id="Oval-146" sketch:type="MSShapeGroup" fill="#4F4D4A" fill-opacity="0.7" cx="-227" cy="-167.2" r="35.5">
+	</circle>
+	<g id="Imported-Layers-5" transform="translate(6.000000, 6.000000)">
+		<g id="Mask" sketch:type="MSShapeGroup">
+			<circle id="path-5_13_" fill="#FFFFFF" cx="-233" cy="-173.2" r="25.8"/>
+		</g>
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-249.1" y="-189.4" width="32.3" height="32.3">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		<mask maskUnits="userSpaceOnUse" x="-249.1" y="-189.4" width="32.3" height="32.3" id="mask-6_2_">
+			<g filter="url(#Adobe_OpacityMaskFilter)">
+				<circle id="path-5_1_" fill="#FFFFFF" cx="-233" cy="-173.2" r="25.8"/>
+			</g>
+		</mask>
+		<g id="check-circle-outline" sketch:type="MSShapeGroup" mask="url(#mask-6_2_)">
+			<g id="Shape_1_" transform="translate(6.000000, 6.000000)">
+				<path fill="#4F4D4A" d="M-245.6-182.3l-2.3,2.3l7.3,7.3l16.1-16.1l-2.3-2.3l-13.9,13.9L-245.6-182.3L-245.6-182.3z
+					 M-226.1-179.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9c0-7.1,5.8-12.9,12.9-12.9c1.3,0,2.4,0.2,3.6,0.5l2.6-2.6
+					c-1.9-0.6-4-1.1-6.1-1.1c-8.9,0-16.1,7.3-16.1,16.1s7.3,16.1,16.1,16.1s16.1-7.3,16.1-16.1H-226.1L-226.1-179.2z"/>
+			</g>
+		</g>
+	</g>
+</g>
+<path id="Rectangle-370" sketch:type="MSShapeGroup" opacity="0.5" fill="#A6A5A3" d="M0,12C0,5.4,5.4,0,12,0l96,0l0.1,199.9L12,200
+	c-6.6,0-12-5.4-12-12V12z"/>
+<rect id="Rectangle-372" y="60" sketch:type="MSShapeGroup" fill="#FBB700" width="108.4" height="20">
+</rect>
+<text transform="matrix(1 0 0 1 26 48.0033)" fill="#4D4F4A" font-family="'Helvetica'" font-size="14">button</text>
+<text transform="matrix(1 0 0 1 26 75.0033)" fill="#4F4D4A" font-family="'Helvetica'" font-size="14">icon</text>
+<text transform="matrix(1 0 0 1 51.6826 75.0033)" fill="#D3D3D3" font-family="'Helvetica'" font-size="14"> </text>
+<text transform="matrix(1 0 0 1 26 100.0033)" fill="#FFFFFF" font-family="'Helvetica'" font-size="14">label</text>
+<text transform="matrix(1 0 0 1 55.5791 100.0033)" fill="#D3D3D3" font-family="'Helvetica'" font-size="14"> </text>
+<text transform="matrix(1 0 0 1 26 125.0033)" fill="#FFFFFF" font-family="'Helvetica'" font-size="14">icon_label</text>
+<path id="Rectangle-371" sketch:type="MSShapeGroup" fill="#4D4F4A" d="M20.3,41.7l-5.7,5.7L9,41.7H20.3z"/>
+<image overflow="visible" enable-background="new    " width="19" height="24" id="Bitmap-10_1_" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAZCAYAAADTyxWqAAAACXBIWXMAAAsSAAALEgHS3X78AAAA
+GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAnxJREFUeNqslc9rE1EQx2e7qUhp
+YpQevIk/oG6wB6+Ct57MP2BLj54EPXjwv6iFQgRBQWk09VQ95FDw2EJRD0m3SdMq3kSxlaRt0mzd
+98OZt29/5IfdEFwYdvbtvu/7zMx7swD/8TL6DY6YZuLuzH1X4uu3hdyo4JwNpU5Cs3MPpH/NoE9j
+w4qNJ9OXA7HU+SskNj7Q3D5jCcMwuvOQGFasfyKHFZNdz8nUpfoguYvFF1LCYf0bVKu7ROwWi0XI
+ZrOwXHgaX2VcPX0Okx4tQLdf2dqR9E0sbbfYaX65VOkQHCGHBlJ6pbjQUQe4EMq3rGvw+NE9oA2u
+BGkP0Sq/9n7LPTQSjBJELyGEZIxJ13XVN+12W7ZaTeWTDlUzcQcTStthYuICvFla7KEhEjJBxjlw
+tB/fbWDMVX5QTKVomtdn5x4i3b4ieLLwLCThXNH8OTmRjuPI4+OWojk6OpQHBw3ZaNT9U5Km/Dho
++8uF3NTomYT98sU8TE/fVrkhEpUjXJ3uKN8x5vmR4um90iDBcqkG9tY2ZDKTHSEJQXemfKTURmMC
+KtUduDF1MzwBWrC5WV615heeg9ATKE9+Xkg8vId0Hz/ZsLH+zsL5LHqcKNxGSdHVNAkLJvk0HhEa
+897n8+9BR+YEYj6djXSLuVfeBC1CJJ5xHToDF626/QXGkmMKhOZ3H3SPrlzDs/g1yEuUhAudRxwv
+b+7CxtqKCrGnawR0pVVrbf1zQKdoSCTIm1TPS6/DEP/VghRdHj8UugCuriRnoZBfED/Evi1IxW6a
+jpW5CpPWrZ4+Z0R8akVV+0Ps34l6/kW0uN7fRPuJAM1Tf3V4OztA82TRMP8KMAAx1mxt/4OW7AAA
+AABJRU5ErkJggg==" sketch:type="MSBitmapLayer" transform="matrix(1 0 0 1 82 73.0033)">
+</image>
+</svg>
