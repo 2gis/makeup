@@ -1,10 +1,10 @@
-var gulp = require('gulp'),
-    args = require('yargs').argv,
-    connect = require('gulp-connect');
-    runSequence = require('run-sequence'),
-    mocha = require('gulp-mocha'),
-    config = require('./config.js'),
-    del = require('del');
+var gulp = require('gulp');
+var args = require('yargs').argv;
+var connect = require('gulp-connect');
+var runSequence = require('run-sequence');
+var mocha = require('gulp-mocha');
+var config = require('./config.js');
+var del = require('del');
 
 var buildOptions = {
         release: 'r' in args || 'release' in args,
@@ -60,7 +60,6 @@ gulp.task('connect', function() {
         port: config.port
     });
 });
-
 
 gulp.task('templates', require('./tasks/templates')(buildOptions));
 gulp.task('js', require('./tasks/scripts')(buildOptions));

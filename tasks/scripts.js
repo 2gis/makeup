@@ -1,12 +1,12 @@
-var gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    jshint = require('gulp-jshint'),
-    concat = require('gulp-concat'),
-    headerfooter = require('gulp-headerfooter'),
-    uglify = require('gulp-uglify')
-    runSequence = require('run-sequence'),
-    fs = require('fs'),
-    _ = require('lodash');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var jshint = require('gulp-jshint');
+var concat = require('gulp-concat');
+var headerfooter = require('gulp-headerfooter');
+var uglify = require('gulp-uglify');
+var runSequence = require('run-sequence');
+var fs = require('fs');
+var _ = require('lodash');
 
 module.exports = function(buildOptions) {
     var header = fs.readFileSync('./source/jsPartials/header.js');
@@ -22,6 +22,14 @@ module.exports = function(buildOptions) {
                 ]))
                 .pipe(jshint())
                 .pipe(jshint.reporter('jshint-stylish'))
+        );
+    });
+
+    gulp.task('copy-scripts', function() {
+        return (
+            gulp
+                .src('node_modules/handlebars/dist/handlebars.js')
+                .pipe(gulp.dest('dist/'))
         );
     });
 
@@ -46,6 +54,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence('jshint', 'build-scripts', callback);
+        runSequence('jshint', 'build-scripts', 'copy-scripts', callback);
     };
 };
