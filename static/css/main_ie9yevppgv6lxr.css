@@ -634,7 +634,7 @@ body {
           transform-style: preserve-3d;
 }
 .promo__window_interactive {
-  width: 462px;
+  width: 470px;
   height: 480px;
   background: url('../img/assets/interactive/browser.png') 0 0 no-repeat;
 }
