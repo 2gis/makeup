@@ -84,7 +84,7 @@ new Makeup({
 1. Склонируйте репозиторий
 
     ```bash
-    git clone git@github.com:Chaptykov/makeup.git
+    git clone git@github.com:2gis/makeup.git
     cd makeup
     ```
 2. Запустите сборку
