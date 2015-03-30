@@ -1,6 +1,6 @@
 {
   "name": "makeup",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/makeup.js",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/chaptykov/makeup.git"
+    "url": "git://github.com/2gis/makeup.git"
   },
   "author": "",
   "license": "MPL 2.0",
   "bugs": {
-    "url": "https://github.com/chaptykov/makeup/issues"
+    "url": "https://github.com/2gis/makeup/issues"
   },
-  "homepage": "https://github.com/chaptykov/makeup",
+  "homepage": "https://github.com/2gis/makeup",
   "devDependencies": {
     "del": "^1.1.0",
     "gmsmith": "^0.4.2",
