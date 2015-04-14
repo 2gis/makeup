@@ -668,6 +668,7 @@ body {
 /* Design only */
 .promo--4 .promo__window-layer--design_interactive {
   -webkit-filter: invert(100%);
+  filter: invert(100%);
   opacity: .5;
 }
 .makeup {
