@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Makeup demo</title>
+
+    <link rel="stylesheet" href="demo.css"><!-- CSS всего вашего проекта, или отдельных его блоков -->
+
+    <!--[if gt IE 8]><!--><!-- CSS библиотеки makeup -->
+    <link rel="stylesheet" href="dist/makeup.css"><!--<![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="dist/makeup.ie.css"><![endif]-->
+</head>
+<body>
+
+<script src="dist/makeup.js"></script><!-- Библиотека makeup -->
+<script src="data.js"></script><!-- Контент для рендеринга блоков (тексты) -->
+<script src="dist/handlebars.js"></script><!-- Один из используемых в демке шаблонизаторов, может быть любой другой -->
+
+<script>
+
+    var miniCardTemplate;
+
+    // Скачиваем и компилируем шаблон блока miniCard
+    $.get('miniCard.hbs', function (data) {
+        miniCardTemplate = Handlebars.compile(data);
+    }, 'html');
+
+    // Передаём функцию, которая по названию блока генерирует конечный html
+    M.templating(function(params) {
+        // Можно использовать разные шаблонизаторы для разных блоков, например
+        switch (params.modulename) {
+            case 'makeup': return makeupTemplates.makeup(makeupCtx);
+            case 'Hello World!': return '<div class="helloworld">Hello World!</div>';
+            case 'miniCard':  return miniCardTemplate(miniCardCtx[params.typename]);
+        }
+
+        return 'Просто текст';
+    });
+
+    // Инициализация: makeup отрисовывает себя, навешивает события, делает список блоков
+    M.init(data);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="18px" height="17px" viewBox="0 0 18 17" enable-background="new 0 0 18 17" xml:space="preserve">
+<g>
+	<rect x="4" y="6" fill="#FAB43C" width="1" height="3"/>
+	<path fill="#FAB43C" d="M5,4h2V3H5C4.45,3,4,3.45,4,4v1h1V4z"/>
+	<polygon fill="#FAB43C" points="11,3 8,3 8,3.167 8,3.833 8,4 11,4 	"/>
+	<path fill="#FAB43C" d="M15,3h-1V1c0-0.55-0.45-1-1-1H1C0.45,0,0,0.45,0,1v12c0,0.55,0.45,1,1,1h3v2c0,0.55,0.45,1,1,1h1v-1H5v-2
+		v-1v-3H4v3H1V1h12v2h-1v1h1h1h1V3z"/>
+	<rect x="17" y="7" fill="#FAB43C" width="1" height="3"/>
+	<rect x="17" y="11" fill="#FAB43C" width="1" height="3"/>
+	<rect x="7" y="16" fill="#FAB43C" width="3" height="1"/>
+	<path fill="#FAB43C" d="M17,3h-1v1h1v2h1V4C18,3.45,17.55,3,17,3z"/>
+	<path fill="#FAB43C" d="M17,16h-2v1h2c0.55,0,1-0.45,1-1v-1h-1V16z"/>
+	<rect x="11" y="16" fill="#FAB43C" width="3" height="1"/>
+</g>
+</svg>
