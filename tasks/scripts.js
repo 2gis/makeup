@@ -42,6 +42,7 @@ module.exports = function(buildOptions) {
                     buildOptions.noJquery ? null : 'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/baron/baron.min.js',
                     'node_modules/rader/rader.min.js',
+                    'source/js/makeup.js',
                     'source/js/*.js',
                     'temp/templates.js'
                 ]))
