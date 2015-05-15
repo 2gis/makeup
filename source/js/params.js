@@ -184,4 +184,8 @@
             namingRules: internalNamingRules
         }, params);
     };
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup.fn;
+    }
 })(this.M);

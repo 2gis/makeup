@@ -325,7 +325,7 @@ describe('State:', function() {
 
     });
 
-    describe.only('diff', function() {
+    describe('diff', function() {
 
         it('From empty state to empty state', function() {
             var result = state.diff({}, {});

@@ -827,24 +827,9 @@ var Makeup = (function(win) {
             // this._loadImage(src || false);
 
             // data -> html
-            function findItem(data, chain, name) {
-                if (!_.contains(chain, name)) throw new Error('_renderModule: Chain must contain finding item name');
+            var itemsChain = this._itemsChain(chain);
 
-                var item = data;
-                var i = 0;
-                do {
-                    item = _.find(item.items, function(item) {
-                        return item.name == chain[i];
-                    });
-                    i++;
-                } while (item && name != chain[i - 1]);
-
-                return item;
-            }
-
-            var templatingParams = _.reduce(chain, function(result, value, key) {
-                var item = findItem(this._params.data[0], chain, value);
-
+            var templatingParams = _.reduce(itemsChain, function(result, item) {
                 result[item.type] = item.name;
 
                 return result;
