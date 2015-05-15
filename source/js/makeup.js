@@ -699,7 +699,6 @@ var Makeup = (function(win) {
                 makeupElement = $(this._params.selectors.root);
 
             // Current Module
-            console.log('s', s);
             if (diff.chain) {
                 this._renderModule(diff.chain);
                 // this._setCurrentMenuItem(diff.chain);
@@ -778,6 +777,13 @@ var Makeup = (function(win) {
          * Render module
          */
         _renderModule: function(chain) {
+            var itemsChain = this._itemsChain(chain);
+            var instance = _.reduce(itemsChain, function(result, item) {
+                result[item.type] = item.name;
+
+                return result;
+            }, {}, this);
+
             // var data = this._params.data,
             //     selector = this._params.selectors,
             //     instance = {},
@@ -820,21 +826,15 @@ var Makeup = (function(win) {
             // }
 
             // Загружаем изображение
-            // var src = instance.image;
-            // if (!src && typeGroup && typeGroup.imagePrefix) {
-            //     src = typeGroup.imagePrefix + type.name + '.png';
-            // }
-            // this._loadImage(src || false);
+            var src = this._find(itemsChain, 'image');
+            if (!src) {
+                var imagePrefix = this._find(itemsChain, 'imagePrefix');
+                src = imagePrefix + instance.item + '.png';
+            }
+            this._loadImage(src);
 
             // data -> html
-            var itemsChain = this._itemsChain(chain);
-
-            var templatingParams = _.reduce(itemsChain, function(result, item) {
-                result[item.type] = item.name;
-
-                return result;
-            }, {}, this);
-            var html = Makeup._templating.call(this, templatingParams);
+            var html = Makeup._templating.call(this, instance);
             this._containerMarkup.html(html);
 
             // Навешиваем допклассы на блок

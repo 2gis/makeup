@@ -30,6 +30,33 @@
         return _.compact(result);
     };
 
+    /**
+     * Mapping key value (item[key]) for all items in asc order
+     */
+    Makeup.fn._map = function(_itemsChain, key) {
+        var chain = _.clone(_itemsChain).reverse(); // parent-child => child-parent
+
+        return _(chain)
+            .map(function(item) {
+                return item[key];
+            })
+            .compact()
+            .values()
+    }
+
+    /**
+     * Trying to find closest to most descendant item key value (item[key])
+     */
+    Makeup.fn._find = function(_itemsChain, key) {
+        var chain = _.clone(_itemsChain).reverse(); // parent-child => child-parent
+
+        var thatItem = _.find(chain, function(item) {
+            return item[key];
+        });
+
+        if (thatItem) return thatItem[key];
+    }
+
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.fn;
     }
