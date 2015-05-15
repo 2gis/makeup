@@ -9,17 +9,16 @@ var Makeup = (function(win) {
     var makeup;
 
     function Makeup(options) {
-        if (!(this instanceof Makeup)) { // 
+        if (makeup) { // Singleton
+            return makeup;
+        }
+
+        if (!(this instanceof Makeup)) { // Rezig constructor
             return new Makeup(options);
         }
 
-        if (typeof makeup == 'object') { // singleton
-            return makeup;
-        } else {
-            makeup = this;
-        }
-
-        makeup._init(options);
+        makeup = this;
+        this._init(options);
     }
 
     Makeup.init = Makeup;
@@ -36,35 +35,46 @@ var Makeup = (function(win) {
 
         el: {},
 
+        // Инициализация makeup: подтягивание конфига, данных, рендеринг, навешивание событий
         _init: function(options) {
-            if (_.isArray(options)) {
-                options = {
-                    data: options
-                };
-            }
+            this._params = this._getParams(options); // @see params.js
+            this._currentState = {};
+            this._state = new State();
 
-            this._params = this._viewModel(this._getParams(options)); // @see params.js
+            this._render();
+            this._assignSelectors();
+            this._bindListeners();
+            this._misc();
 
-            this._params.wrapper.append(makeupTemplates.makeup(this._params));
+            return this;
+        },
 
-            _.each(this._params.selectors, function(item, key) {
-                this.el[key] = $(item);
-            }, this);
-
+        // Всякие дополнительные навешивания классов, браузер-специфичные вычисления
+        _misc: function() {
             this.ieVersion = isIE();
             if (this.ieVersion < 9) {
                 this._mod(this.el.root[0], { ie: this.ieVersion });
             }
+        },
 
-            this._currentState = {};
-            this._state = new State();
+        // Отрисовывает библиотеку makeup
+        _render: function() {
+            var viewContext = this._viewModel(this._params);
+            var makeupHTML = Handlebars.partials.makeup(viewContext);
+            this._params.wrapper.append(makeupHTML);
+        },
+
+        // Кэширует некоторые DOM-элементы, созданные на этапе render
+        _assignSelectors: function() {
+            _.each(this._params.selectors, function(item, key) {
+                this.el[key] = $(item);
+            }, this);
+
             this._containerMarkup = $(this._params.selectors.containerMarkup);
-            this._bindListeners();
         },
 
         _bindListeners: function() {
-            var makeup = this,
-                params = this._params,
+            var params = this._params,
                 win = $(window);
             /*
             — поиск
@@ -75,120 +85,70 @@ var Makeup = (function(win) {
 
             this._bindMenuListeners();
 
-            if (params.search) {
-                this._bindSearchListeners();
-            }
+            if (params.search) this._bindSearchListeners();
+            if (params.mode) this._bindModesListeners();
+            if (params.background) this._bindBackgroundsListeners();
+            if (params.transparency) this._bindTransparencyListeners();
+            if (params.zoom) this._bindZoomListeners();
+            if (params.ruler) this._bindRulerListeners();
+            if (params.smiley) this._bindSmileyListeners();
 
-            if (params.mode) {
-                this._bindModesListeners();
-            }
-
-            if (params.background) {
-                this._bindBackgroundsListeners();
-            }
-
-            if (params.transparency) {
-                this._bindTransparencyListeners();
-            }
-
-            if (params.zoom) {
-                this._bindZoomListeners();
-            }
-
-            if (params.ruler) {
-                this._bindRulerListeners();
-            }
-
-            if (params.smiley) {
-                this._bindSmileyListeners();
-            }
-
-            win.on('statechange', function(e) {
-                var diff = makeup._getStateDiff(makeup._currentState, e.state),
-                    moduleChanged = has('group') || has('module') || has('typeGroup') || has('type');
-
-                if (!_.isEmpty(diff)) {
-                    makeup._setState(moduleChanged ? e.state : diff);
-                    makeup._currentState = _.clone(e.state);
-                }
-
-                function has(key) {
-                    return diff.hasOwnProperty(key.toString());
-                }
-            });
+            win.on('statechange', _.bind(this._statechange, this));
         },
 
-        _getStateDiff: function(oldState, newState) {
-            var out = {};
+        /**
+         * Statechange handler
+         */
+        _statechange: function(e) {
+            var diff = this._state.diff(this._currentState, e.state);
 
-            _.forEach(newState, function(item, key) {
-                var value = item.toString(),
-                    oldValue = oldState[key];
-
-                if (!oldValue || value != oldValue.toString()) {
-                    out[key] = value;
-                }
-            });
-
-            return out;
+            if (!_.isEmpty(diff)) {
+                this._obey(diff);
+                this._currentState = _.clone(e.state);
+            }
         },
 
         /**
          * Menu
          */
         _bindMenuListeners: function() {
-            var that = this,
+            var self = this,
                 makeupRootElement = $(makeup._params.selectors.root)[0],
                 sidebar = $(this._params.selectors.sidebar),
-                moduleHeader = $(this._params.selectors.moduleHeader),
-                moduleType = $(this._params.selectors.subnavLink),
+                itemHeader = $(this._params.selectors.itemHeader),
                 win = $(window);
 
             // Render default module
-            that._state.set(that._setDefaultMenuState(that._state._params));
+            this._state.set(this._setDefaultMenuState(this._state._params));
 
-            moduleHeader.on('click', function() {
-                var module = this.parentNode,
-                    group = module.parentNode;
+            itemHeader.on('click', function() {
+                var item = this.parentNode;
 
-                if (that._mod(module).expandable) {
-                    that._toggleMenuItem(module);
-                } else {
-                    var moduleId = $(module).attr('data-id'),
-                        groupId = $(group).attr('data-id');
+                if (self._mod(item).expandable) { // Item which has a list of another items
+                    self._toggleMenuItem(item);
+                } else { // "End"-item, which has corresponding html representation
+                    var chain = _.map($(this).parents(self._params.selectors.item), function(el) {
+                        return $(el).data('name');
+                    }).reverse();
 
-                    that._state.set({
-                        group: groupId,
-                        module: moduleId
+                    self._state.set({
+                        chain: chain
                     });
                 }
             });
 
-            moduleType.on('click', function() {
-                var typeGroup = this.parentNode,
-                    module = typeGroup.parentNode.parentNode,
-                    group = module.parentNode,
-                    state = {
-                        group: $(group).attr('data-id'),
-                        module: $(module).attr('data-id'),
-                        typeGroup: $(typeGroup).attr('data-id'),
-                        type: $(this).attr('data-id')
-                    };
-
-                that._state.set(state);
-            });
-
+            // Hiding sidebar
             if (this._params.menu) {
-                var toggleMenu = $('#makeup-menu');
+                var sidebarToggler = $('#makeup-menu');
 
                 // Set default mode
-                if (!this._state._params.hasOwnProperty('menu')) {
+                if (!this._state._params.menu) {
                     var defaultMenu = makeup._mod(makeupRootElement).menu || true;
 
                     makeup._state.set({ menu: defaultMenu });
                 }
 
-                toggleMenu.on('change', function() {
+                sidebarToggler.on('change', function() {
                     makeup._state.set({ menu: this.checked });
                 });
 
@@ -196,7 +156,7 @@ var Makeup = (function(win) {
                     var key = makeup._getKey(e);
 
                     if (key == 192 || key == 220) {
-                        makeup._state.set({ menu: !toggleMenu[0].checked });
+                        makeup._state.set({ menu: !sidebarToggler[0].checked });
                     }
                 });
             }
@@ -274,7 +234,7 @@ var Makeup = (function(win) {
             // Find current
             directory = this.el.navListItem
                 .filter('[data-id="' + groupId + '"]')
-                .find(that._params.selectors.module)
+                .find(that._params.selectors.item)
                 .filter('[data-id="' + moduleId + '"]');
 
             if (typeGroupId !== undefined && typeId !== undefined) {
@@ -296,7 +256,7 @@ var Makeup = (function(win) {
              * Set current menu item
              */
             function setCurrent(currentItem) {
-                var module = $(that._params.selectors.module),
+                var module = $(that._params.selectors.item),
                     moduleType = $(that._params.selectors.subnavLink);
 
                 module.each(function(i) {
@@ -326,8 +286,8 @@ var Makeup = (function(win) {
         _bindSearchListeners: function() {
             var makeup = this,
                 searchInput = $(makeup._params.selectors.searchInput),
-                module = $(makeup._params.selectors.module),
-                moduleType = $(makeup._params.selectors.moduleType);
+                module = $(makeup._params.selectors.item),
+                moduleType = $(makeup._params.selectors.itemType);
 
             searchInput.on('keyup', function() {
                 module.each(function() {
@@ -362,7 +322,7 @@ var Makeup = (function(win) {
                 });
 
                 module.each(function() {
-                    var module = $(this).find(makeup._params.selectors.moduleType);
+                    var module = $(this).find(makeup._params.selectors.itemType);
 
                     var hasShown = false;
 
@@ -393,11 +353,7 @@ var Makeup = (function(win) {
                 defaultMode = {};
 
             // Set default mode
-            if (!this._state._params.hasOwnProperty('mode')) {
-                defaultMode.mode = makeup._mod(makeupElement[0]).mode || 1;
-            } else {
-                defaultMode.mode = makeup._state._params.mode;
-            }
+            defaultMode.mode = makeup._state._params.mode || makeup._mod(makeupElement[0]).mode || 1;
             if (defaultMode.mode == 3 || defaultMode.mode == 4) {
                 defaultMode.transparency = 0.5;
             }
@@ -459,18 +415,12 @@ var Makeup = (function(win) {
          * Background control listeners
          */
         _bindBackgroundsListeners: function() {
-            var makeup = this,
-                makeupElement = $(makeup._params.selectors.root),
-                bgControl = $(makeup._params.selectors.bgControl),
-                defaultBg;
+            var self = this,
+                makeupElement = $(this._params.selectors.root),
+                bgControl = $(this._params.selectors.bgControl);
 
             // Set default background
-            if (!this._state._params.hasOwnProperty('bg')) {
-                defaultBg = makeup._mod(makeupElement[0]).bg || 'color';
-            } else {
-                defaultBg = makeup._state._params.bg;
-            }
-            makeup._state.set({ bg: defaultBg });
+            this._state.set({ bg: this._state._params.bg || this._mod(makeupElement[0]).bg || 'color' });
 
             bgControl.on('change', function() {
                 var value;
@@ -481,7 +431,7 @@ var Makeup = (function(win) {
                     }
                 });
 
-                makeup._state.set({ bg: value });
+                self._state.set({ bg: value });
             });
         },
 
@@ -505,7 +455,7 @@ var Makeup = (function(win) {
         _bindTransparencyListeners: function() {
             var makeup = this,
 
-                params = makeup._params,
+                params = this._params,
                 min = params.transparency.slider.min,
                 max = params.transparency.slider.max,
                 value = params.transparency.slider.value,
@@ -583,7 +533,7 @@ var Makeup = (function(win) {
          */
         _bindZoomListeners: function() {
             var makeup = this,
-                params = makeup._params,
+                params = this._params,
 
                 min = params.zoom.slider.min,
                 max = params.zoom.slider.max,
@@ -739,33 +689,20 @@ var Makeup = (function(win) {
         },
 
         /**
-         * Sets application state from object
+         * Obeys application diff
          *
-         * @param {Object} state
+         * @param {Object} diff
          */
-        _setState: function(state) {
-            if (!state) {
-                return;
-            }
-
-            var s = state,
+        _obey: function(diff) {
+            var s = diff,
                 params = this._params,
                 makeupElement = $(this._params.selectors.root);
 
             // Current Module
-            if (has('group') || has('module') || has('typeGroup') || has('type')) {
-                var groupId = s.group || this._currentState.group,
-                    moduleId = s.module || this._currentState.module,
-                    typeGroupId = s.typeGroup || this._currentState.typeGroup,
-                    typeId = s.type || this._currentState.type;
-
-                if (typeGroupId !== undefined && typeId !== undefined) {
-                    this._renderModule(+groupId, +moduleId, +typeGroupId, +typeId);
-                    this._setCurrentMenuItem(groupId, moduleId, typeGroupId, typeId);
-                } else {
-                    this._renderModule(+groupId, +moduleId);
-                    this._setCurrentMenuItem(groupId, moduleId);
-                }
+            console.log('s', s);
+            if (diff.chain) {
+                this._renderModule(diff.chain);
+                // this._setCurrentMenuItem(diff.chain);
             }
 
             // Modes toggler
@@ -840,67 +777,89 @@ var Makeup = (function(win) {
         /**
          * Render module
          */
-        _renderModule: function(groupId, moduleId, typeGroupId, typeId) {
-            var data = this._params.data,
-                selector = this._params.selectors,
-                instance = {},
+        _renderModule: function(chain) {
+            // var data = this._params.data,
+            //     selector = this._params.selectors,
+            //     instance = {},
 
-                group = data[groupId],
-                module = group.items[moduleId],
-                typeGroup = typeGroupId !== undefined && module.items && module.items[typeGroupId],
-                type = typeGroup && typeId !== undefined && typeGroup.items && typeGroup.items[typeId],
+            //     group = data[groupId],
+            //     module = group.items[moduleId],
+            //     typeGroup = typeGroupId !== undefined && module.items && module.items[typeGroupId],
+            //     type = typeGroup && typeId !== undefined && typeGroup.items && typeGroup.items[typeId],
 
-                typeFields = ['name', 'label', 'data', 'image', 'snippet'],
-                moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'],
+            //     typeFields = ['name', 'label', 'data', 'image', 'snippet'],
+            //     moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'],
 
-                hint;
+            //     hint;
 
 
             // Собираем данные о модуле
 
-            _.each(moduleFields, function(item) {
-                var prefix = item == 'name' || item == 'label' ? 'module' : '';
-                addProperty(module, instance, item, prefix + item);
-            });
+            // _.each(moduleFields, function(item) {
+            //     var prefix = item == 'name' || item == 'label' ? 'module' : '';
+            //     addProperty(module, instance, item, prefix + item);
+            // });
 
-            if (typeGroup && type) {
-                _.each(typeFields, function(item) {
-                    var prefix = item == 'name' || item == 'label' ? 'type' : '';
-                    addProperty(type, instance, item, prefix + item);
-                });
-            }
+            // if (typeGroup && type) {
+            //     _.each(typeFields, function(item) {
+            //         var prefix = item == 'name' || item == 'label' ? 'type' : '';
+            //         addProperty(type, instance, item, prefix + item);
+            //     });
+            // }
 
             // Устанавливаем стили
 
-            $(selector.container).attr('style', getStyles('wrapper'));
-            $(selector.containerImage).attr('style', getStyles('image'));
-            this._containerMarkup.attr('style', getStyles('markup'));
+            // $(selector.container).attr('style', getStyles('wrapper'));
+            // $(selector.containerImage).attr('style', getStyles('image'));
+            // this._containerMarkup.attr('style', getStyles('markup'));
 
             // Ищем hint для модуля/типа
-            hint = type && type.hint || typeGroup && typeGroup.hint || module && module.hint || group && group.hint;
-            if (hint) {
-                this._setStatus(escapeHTML(trimString(hint)));
-            }
+            // hint = type && type.hint || typeGroup && typeGroup.hint || module && module.hint || group && group.hint;
+            // if (hint) {
+            //     this._setStatus(escapeHTML(trimString(hint)));
+            // }
 
             // Загружаем изображение
-            var src = instance.image;
-            if (!src && typeGroup && typeGroup.imagePrefix) {
-                src = typeGroup.imagePrefix + type.name + '.png';
-            }
-            this._loadImage(src || false);
+            // var src = instance.image;
+            // if (!src && typeGroup && typeGroup.imagePrefix) {
+            //     src = typeGroup.imagePrefix + type.name + '.png';
+            // }
+            // this._loadImage(src || false);
 
             // data -> html
-            var html = Makeup._templating.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            function findItem(data, chain, name) {
+                if (!_.contains(chain, name)) throw new Error('_renderModule: Chain must contain finding item name');
+
+                var item = data;
+                var i = 0;
+                do {
+                    item = _.find(item.items, function(item) {
+                        return item.name == chain[i];
+                    });
+                    i++;
+                } while (item && name != chain[i - 1]);
+
+                return item;
+            }
+
+            var templatingParams = _.reduce(chain, function(result, value, key) {
+                var item = findItem(this._params.data[0], chain, value);
+
+                result[item.type] = item.name;
+
+                return result;
+            }, {}, this);
+            var html = Makeup._templating.call(this, templatingParams);
             this._containerMarkup.html(html);
 
             // Навешиваем допклассы на блок
-            if (type && type.cls) $(this._containerMarkup.children()).addClass(type.cls);
+            // if (type && type.cls) $(this._containerMarkup.children()).addClass(type.cls);
 
             // Сниппет
-            snippet.call(this, group);
-            snippet.call(this, module);
-            snippet.call(this, typeGroup);
-            snippet.call(this, type);
+            // snippet.call(this, group);
+            // snippet.call(this, module);
+            // snippet.call(this, typeGroup);
+            // snippet.call(this, type);
 
 
             /**
@@ -953,13 +912,13 @@ var Makeup = (function(win) {
              *
              * @param {object} module
              */
-            function snippet(module) {
-                if (module && module.hasOwnProperty('snippet')) {
-                    if (typeof module.snippet == 'function') {
-                        module.snippet.call(this, instance, groupId, moduleId, typeGroupId, typeId);
-                    }
-                }
-            }
+            // function snippet(module) {
+            //     if (module && module.hasOwnProperty('snippet')) {
+            //         if (typeof module.snippet == 'function') {
+            //             module.snippet.call(this, instance, groupId, moduleId, typeGroupId, typeId);
+            //         }
+            //     }
+            // }
         },
 
         /**

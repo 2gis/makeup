@@ -25,26 +25,18 @@ module.exports = function(buildOptions) {
         );
     });
 
-    gulp.task('copy-scripts', function() {
-        return (
-            gulp
-                .src('node_modules/handlebars/dist/handlebars.js')
-                .pipe(gulp.dest('dist/'))
-        );
-    });
-
     gulp.task('build-scripts', function() {
         return (
             gulp
                 .src(_.compact([
                     'node_modules/handlebars/dist/handlebars.min.js',
-                    'node_modules/lodash/dist/lodash.min.js',
+                    'node_modules/lodash/index.js',
                     buildOptions.noJquery ? null : 'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/baron/baron.min.js',
                     'node_modules/rader/rader.min.js',
-                    'source/js/makeup.js',
                     'source/js/*.js',
-                    'temp/templates.js'
+                    'temp/partials.js',
+                    'source/js/makeup.js'
                 ]))
                 .pipe(concat('makeup.js'))
                 .pipe(headerfooter.header(header))
@@ -55,6 +47,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence('jshint', 'build-scripts', 'copy-scripts', callback);
+        runSequence('jshint', 'build-scripts', callback);
     };
 };

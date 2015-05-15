@@ -84,23 +84,39 @@ describe('View model:', function() {
                 return item;
             });
 
-            assert.equal(result.length, 0);
+            assert.deepEqual(result, []);
         });
 
         it('Empty elements in array: [null, undefined, 0] → []', function() {
-            var result = makeup._parseCollection([], function(item) {
+            var result = makeup._parseCollection([null, undefined, 0], function(item) {
                 return item;
             });
 
-            assert.equal(result.length, 0);
+            assert.deepEqual(result, []);
         });
 
         it('One valid item: ["one"] → [{ name: "one", label: "one" }]', function() {
             var result = makeup._parseCollection(['one']);
 
-            assert.equal(result.length, 1);
-            assert.equal(result[0].name, 'one');
-            assert.equal(result[0].label, 'one');
+            assert.deepEqual(result, [{ name: "one", label: "one" }]);
+        });
+
+        it('Многовложенная структура', function() {
+            var item = [{
+                items: [{
+                    items: [{
+                        items: [{
+                            items: [{
+                                name: 'qwe'
+                            }]
+                        }]
+                    }]
+                }]
+            }];
+            var result = makeup._parseCollection(item);
+            var expected = [{"items":[{"items":[{"items":[{"items":[{"name":"qwe","label":"qwe"}],"name":"Untitled","label":"Untitled"}],"name":"Untitled","label":"Untitled"}],"name":"Untitled","label":"Untitled"}],"name":"Untitled","label":"Untitled"}];
+
+            assert.equal(result[0].items[0].items[0].items[0].items[0].name, 'qwe');
         });
 
     });

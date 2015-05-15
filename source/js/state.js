@@ -3,19 +3,29 @@
  *
  * @requires jQuery
  */
-var State = (function() {
+var State = (function(win) {
     var state;
 
     function State(params) {
-        if (typeof state == 'object') {
+        if (typeof state == 'object') { // @TODO is singleton needed here?
             return state;
-        }
-        else {
+        } else {
             state = this;
         }
 
         state._init(params);
     }
+
+    codec = {
+        chain: {
+            serialize: function(arr) {
+                return arr.join('~');
+            },
+            parse: function(str) {
+                return str.split('~');
+            }
+        }
+    };
 
     State.prototype = {
         constructor: State,
@@ -23,7 +33,9 @@ var State = (function() {
         _init: function(params) {
             this._params = this._path2object(this._getHash()) || {};
 
-            this._bindEventListeners();
+            if (typeof window != 'undefined') {
+                this._bindEventListeners();
+            }
 
             this.set(params);
         },
@@ -58,12 +70,14 @@ var State = (function() {
                     value;
 
                 for (var i = 1; i < pathParts.length; i+=2) {
-                    key = pathParts[i];
-                    value = pathParts[i + 1];
+                    key = decodeURIComponent(pathParts[i]);
+                    value = decodeURIComponent(pathParts[i + 1]);
 
-                    if (key.length) {
-                        object[key] = decodeURIComponent(value);
+                    if (codec[key]) {
+                        value = codec[key].parse(value);
                     }
+
+                    object[key] = value;
                 }
             }
 
@@ -81,7 +95,15 @@ var State = (function() {
             var path = '!';
 
             for (var key in object) {
-                path = path + '/' + encodeURIComponent(key) + '/' + encodeURIComponent(object[key]);
+                var value = object[key];
+
+                if (codec[key]) {
+                    value = codec[key].serialize(value);
+                }
+
+                value = encodeURIComponent(value);
+
+                path = path + '/' + encodeURIComponent(key) + '/' + value;
             }
 
             return path;
@@ -93,7 +115,9 @@ var State = (function() {
          * @param {String} hash
          */
         _setHash: function(hash) {
-            window.location.hash = hash;
+            if (typeof window == 'undefined') return '';
+
+            return window.location.hash = hash;
         },
 
         /**
@@ -102,6 +126,8 @@ var State = (function() {
          * @returns {String} The hash string
          */
         _getHash: function() {
+            if (typeof window == 'undefined') return '';
+
             var hash = window.location.hash;
 
             if (hash.length) {
@@ -137,12 +163,12 @@ var State = (function() {
             this._setParams(params);
             this._setHash(this._object2path(this._params));
 
-            var jqWindow = $(window);
-
-            jqWindow.trigger({
-                type: 'statechange',
-                state: this._params
-            });
+            if (typeof window != 'undefined') {
+                $(window).trigger({
+                    type: 'statechange',
+                    state: this._params
+                });
+            }
 
             return this._params;
         },
@@ -160,8 +186,29 @@ var State = (function() {
             }
 
             return (this._params.hasOwnProperty(key)) ? this._params[key] : null;
+        },
+
+        /**
+         * State comparator
+         *
+         * @param {Object} oldState first state for comparison
+         * @param {Object} [newState] second state for comparison (actual state by default)
+         * @returns {Object} Difference between oldState and newState
+         */
+        diff: function(oldState, newState) {
+            return _.reduce(newState, function(diff, value, key) {
+                if (!_.isEqual(value, oldState[key])) {
+                    diff[key] = value;
+                }
+
+                return diff;
+            }, {}, this);
         }
     };
 
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = State;
+    }
+
     return State;
-})();
+})(this);

@@ -25,6 +25,12 @@
     };
 
     Makeup.fn._getParams = function(params) {
+        if (_.isArray(params)) { // Если переданы только данные
+            params = {
+                data: params
+            };
+        }
+
         return _.merge({
             wrapper: $('body'),
 
@@ -42,8 +48,8 @@
                 navList: '.makeup__nav-list',
                 navListItem: '.makeup__nav-list-item',
 
-                module: '.makeup__module',
-                moduleHeader: '.makeup__module-header',
+                item: '.makeup__item',
+                itemHeader: '.makeup__item-header',
 
                 subnav: '.makeup__subnav',
                 subnavItem: '.makeup__subnav-item',
@@ -73,8 +79,6 @@
             },
 
             modifiers: {
-                hiddenModule: 'makeup__module--hidden',
-                hiddenModuleType: 'makeup__subnav-link--hidden',
                 baron: 'makeup__aside--baron'
             },
 

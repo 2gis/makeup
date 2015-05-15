@@ -596,16 +596,20 @@ button {
     .makeup__nav-list { }
 
 
-/* Module */
-.makeup__module {
+/* Item (module, block, type, subtype, etc) */
+.makeup__item {
     user-select: none;
+
+    & > & {
+        padding-left: 13px;
+        }
 
     &--hidden {
         display: none;
         }
     }
 
-    .makeup__module-header {
+    .makeup__item-header {
         position: relative;
         overflow: hidden;
         padding: 0 0 0 2.5em;
@@ -614,7 +618,7 @@ button {
         font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         cursor: pointer;
 
-        .makeup__module--expandable &:before {
+        .makeup__item--expandable &:before {
             .bg('i_expand');
             position: absolute;
             top: 50%;
@@ -622,37 +626,38 @@ button {
             margin-top: -4px;
             content: '';
             }
-        .makeup__module--expanded &:before {
+
+        .makeup__item--expanded &:before {
             .bg('i_expanded');
             left: 17px;
             margin-top: -3px;
             }
 
-        .makeup__module--current & {
+        .makeup__item--current & {
             background: #656565;
             background: linear-gradient(to top, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
             }
         }
 
-        .makeup__module-header-in {
-            max-width: 100%;
+        .makeup__item-header-in {
             width: 100%;
+            max-width: 100%;
             }
 
-            .makeup__module-header-meta {
-                float: right;
+            .makeup__item-header-meta {
                 height: 1.7em;
+                float: right;
                 }
 
-            .makeup__module-header-inner { }
+            .makeup__item-header-inner { }
 
-                .makeup__module-header-inner {
+                .makeup__item-header-inner {
                     position: relative;
                     overflow: hidden;
                     white-space: nowrap;
                     }
 
-                    .makeup__module-header-title {
+                    .makeup__item-header-title {
                         display: inline-block;
                         overflow: hidden;
                         max-width: 100%;

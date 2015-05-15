@@ -4,5 +4,5 @@ global.Makeup = {
     fn: {}
 };
 
-global.jQuery = require('../bower_components/jquery/dist/jquery.js');
-global._ = require('../bower_components/lodash/dist/lodash.js');
+global.jQuery = require('../node_modules/jquery/dist/jquery.js');
+global._ = require('../node_modules/lodash/index.js');

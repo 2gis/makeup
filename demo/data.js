@@ -2,57 +2,68 @@ var data = [{
     label: 'Простые блоки',
     items: [{
         name: 'Hello World!',
-        image: "qwe.jpg"
+        image: "qwe.jpg",
+        type: 'module'
     }, {
-        name: 'Блок 2'
+        name: 'Блок 2',
+        type: 'module'
     }, {
-        name: 'makeup'
+        name: 'makeup',
+        type: 'module'
     }, {
         name: 'miniCard',
+        type: 'module',
         styles: {
             markup: 'background: white;'
         },
-        types: [{
+        items: [{
             label: 'context',
             imagePrefix: 'images/_miniCard_type_',
+            type: 'context',
             items: [{
-                name:"full"
+                name: 'full',
+                type: 'item'
             }, {
-                name:"adv"
+                name: 'adv',
+                type: 'item'
             }, {
-                name:"recoveryStart",
-                cls: "ads _recovery"
+                name: 'recoveryStart',
+                cls:  'ads _recovery',
+                type: 'item'
             }, {
-                name:"recoveryEnd",
-                cls: "ads _recovery"
+                name: 'recoveryEnd',
+                cls:  'ads _recovery'
             }, {
-                name:"booklet",
+                name: 'booklet',
                 cls: '_photo'
             }, {
-                name:"discount"
+                name: 'discount'
             }, {
-                name:"eshop"
+                name: 'eshop'
             }, {
-                name:"plusOne"
+                name: 'plusOne'
             }, {
-                name:"taxi",
+                name: 'taxi',
                 cls: '_photo'
             }, {
-                name:"truba"
+                name: 'truba'
             }, {
-                name:"place"
+                name: 'place'
             }, {
-                name:"stop",
+                name: 'stop',
                 cls: '_type_station'
             }, {
-                name:"route",
+                name: 'route',
                 cls: '_type_route _transportType_bus'
             }, {
-                name:"filials",
+                name: 'filials',
                 cls: '_photo'
             }, {
-                name:"advWarning",
-                cls: '_ads _advWarning'
+                name: 'advWarning',
+                cls: '_ads _advWarning',
+                items: [{
+                    name: 'dima'
+                }]
             }]
         }]
     }]
