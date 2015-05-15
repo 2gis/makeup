@@ -783,47 +783,22 @@ var Makeup = (function(win) {
 
                 return result;
             }, {}, this);
-
-            // var data = this._params.data,
-            //     selector = this._params.selectors,
-            //     instance = {},
-
-            //     group = data[groupId],
-            //     module = group.items[moduleId],
-            //     typeGroup = typeGroupId !== undefined && module.items && module.items[typeGroupId],
-            //     type = typeGroup && typeId !== undefined && typeGroup.items && typeGroup.items[typeId],
-
-            //     typeFields = ['name', 'label', 'data', 'image', 'snippet'],
-            //     moduleFields = ['name', 'label', 'documentation', 'meta', 'image', 'data', 'snippet'],
-
-            //     hint;
-
-
-            // Собираем данные о модуле
-
-            // _.each(moduleFields, function(item) {
-            //     var prefix = item == 'name' || item == 'label' ? 'module' : '';
-            //     addProperty(module, instance, item, prefix + item);
-            // });
-
-            // if (typeGroup && type) {
-            //     _.each(typeFields, function(item) {
-            //         var prefix = item == 'name' || item == 'label' ? 'type' : '';
-            //         addProperty(type, instance, item, prefix + item);
-            //     });
-            // }
+            var selector = this._params.selectors;
 
             // Устанавливаем стили
-
-            // $(selector.container).attr('style', getStyles('wrapper'));
-            // $(selector.containerImage).attr('style', getStyles('image'));
-            // this._containerMarkup.attr('style', getStyles('markup'));
+            var wrapperStyles = this._map(itemsChain, ['styles', 'wrapper']).join(';');
+            $(selector.container).attr('style', wrapperStyles);
+            var imageStyles = this._map(itemsChain, ['styles', 'image']).join(';');
+            $(selector.containerImage).attr('style', imageStyles);
+            var markupStyles = this._map(itemsChain, ['styles', 'markup']).join(';');
+            console.log('markupStyles', markupStyles);
+            this._containerMarkup.attr('style', markupStyles);
 
             // Ищем hint для модуля/типа
-            // hint = type && type.hint || typeGroup && typeGroup.hint || module && module.hint || group && group.hint;
-            // if (hint) {
-            //     this._setStatus(escapeHTML(trimString(hint)));
-            // }
+            var hint = this._map(itemsChain, 'hint').join(';');
+            if (hint) {
+                this._setStatus(escapeHTML(trimString(hint)));
+            }
 
             // Загружаем изображение
             var src = this._find(itemsChain, 'image');
@@ -838,72 +813,14 @@ var Makeup = (function(win) {
             this._containerMarkup.html(html);
 
             // Навешиваем допклассы на блок
-            // if (type && type.cls) $(this._containerMarkup.children()).addClass(type.cls);
+            classes = this._map(itemsChain, 'cls').join(' ');
+            if (classes) $(this._containerMarkup.children()).addClass(classes);
 
             // Сниппет
-            // snippet.call(this, group);
-            // snippet.call(this, module);
-            // snippet.call(this, typeGroup);
-            // snippet.call(this, type);
-
-
-            /**
-             * Скопировать свойство из одного объекта в другой
-             *
-             * @param {object} source Исходный объект
-             * @param {object} target Целевой объект
-             * @param {string} sourceKey Ключ свойства в исходном объекте
-             * @param {string} targetKey Ключ свойства в целевом объекте
-             */
-            function addProperty(source, target, sourceKey, targetKey) {
-                if (!targetKey) targetKey = sourceKey;
-                if (source && source.hasOwnProperty(sourceKey)) {
-                    if (typeof source[sourceKey] == 'object') {
-                        target[targetKey] = _.clone(source[sourceKey]);
-                    } else {
-                        target[targetKey] = source[sourceKey];
-                    }
-                }
-            }
-
-            /**
-             * Получить стили из конфига
-             *
-             * @param {string} Ключ (wrapper|image|markup)
-             */
-            function getStyles(key) {
-
-                /**
-                 * Получить стили из указанного источника
-                 *
-                 * @param {Object} Объект-источник (group|module|typeGroup|group)
-                 * @param {String} Тип стилей (wrapper|image|markup)
-                 */
-                function getStylesLevel(obj, key) {
-                    var styles = obj && obj.styles && obj.styles[key];
-
-                    return styles ? styles + ';' : '';
-                }
-
-                return '' +
-                    getStylesLevel(group, key) +
-                    getStylesLevel(module, key) +
-                    getStylesLevel(typeGroup, key) +
-                    getStylesLevel(type, key);
-            }
-
-            /**
-             * Call snippet
-             *
-             * @param {object} module
-             */
-            // function snippet(module) {
-            //     if (module && module.hasOwnProperty('snippet')) {
-            //         if (typeof module.snippet == 'function') {
-            //             module.snippet.call(this, instance, groupId, moduleId, typeGroupId, typeId);
-            //         }
-            //     }
-            // }
+            snippets = this._map(itemsChain, 'snippet');
+            _.each(snippets, function(snippet) {
+                snippet.call(this);
+            }, this);
         },
 
         /**

@@ -32,16 +32,23 @@
 
     /**
      * Mapping key value (item[key]) for all items in asc order
+     * [{type: 'asd'}, {type: 'qwe'}], 'type' => ['asd', 'qwe']
+     * [{type: {mode: 'asd'}}, {type: mode:{'qwe'}}], ['type', 'mode'] => ['asd', 'qwe']
      */
     Makeup.fn._map = function(_itemsChain, key) {
         var chain = _.clone(_itemsChain).reverse(); // parent-child => child-parent
 
-        return _(chain)
-            .map(function(item) {
-                return item[key];
-            })
-            .compact()
-            .values()
+        return _.compact(_.map(chain, function(item) {
+                if (_.isString(key)) {
+                    return item[key];
+                } else if (_.isArray(key)) {
+                    var value = item;
+                    _.each(key, function(str) {
+                        if (value) value = value[str];
+                    });
+                    return value;
+                }
+            }));
     }
 
     /**
