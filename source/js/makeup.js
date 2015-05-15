@@ -119,7 +119,7 @@ var Makeup = (function(win) {
                 win = $(window);
 
             // Render default module
-            this._state.set(this._setDefaultMenuState(this._state._params));
+            this._state.set(this._getDefaultMenuState(this._state._params));
 
             itemHeader.on('click', function() {
                 var item = this.parentNode;
@@ -169,34 +169,8 @@ var Makeup = (function(win) {
             });
         },
 
-        _setDefaultMenuState: function(state) {
-            var data = this._params.data,
-                defaultState = {},
-                fields = ['group', 'module', 'typeGroup', 'type'];
-
-            validatePathField(data, +state.group || 0, 0);
-
-            /**
-             * Validate path field
-             *
-             * @param {Array} elements
-             * @param {Number} id of element
-             * @param {Number} id of field name (e.g. 0 for 'group', 1 for 'module')
-             */
-            function validatePathField(data, key, fieldKey) {
-                // Validate key
-                key = data[key] ? key : 0;
-                defaultState[fields[fieldKey]] = key.toString();
-
-                // Check for children
-                var field = fields[fieldKey + 1];
-
-                if (data[key] && data[key].items && data[key].items.length && field) {
-                    validatePathField(data[key].items, +state[field] || 0, fieldKey + 1);
-                }
-            }
-
-            return defaultState;
+        _getDefaultMenuState: function(state) {
+            return {};
         },
 
         /**

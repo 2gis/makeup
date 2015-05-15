@@ -1,4 +1,10 @@
-(function(Makeup) {
+(function(global) {
+    var Makeup = global.M || {fn: {}}; // for tests
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup;
+    }
+
     var internationalDelimiters = {
         be: '__',
         bm: '--',
@@ -188,4 +194,4 @@
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.fn;
     }
-})(this.M);
+})(this);

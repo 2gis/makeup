@@ -18,6 +18,7 @@ var State = (function(win) {
 
     codec = {
         chain: {
+            priority: 10,
             serialize: function(arr) {
                 return arr.join('~');
             },
@@ -94,8 +95,20 @@ var State = (function(win) {
         _object2path: function(object) {
             var path = '!';
 
-            for (var key in object) {
-                var value = object[key];
+            var pairs = _.map(object, function(value, key) {
+                return {
+                    key: key,
+                    value: value,
+                    priority: codec[key] && codec[key].priority || 0
+                }
+            });
+            pairs = _.sortBy(pairs, function(pair) {
+                return -pair.priority;
+            });
+
+            _.each(pairs, function(pair) {
+                var value = pair.value;
+                var key = pair.key;
 
                 if (codec[key]) {
                     value = codec[key].serialize(value);
@@ -104,7 +117,7 @@ var State = (function(win) {
                 value = encodeURIComponent(value);
 
                 path = path + '/' + encodeURIComponent(key) + '/' + value;
-            }
+            });
 
             return path;
         },
@@ -177,11 +190,11 @@ var State = (function(win) {
          * @returns {String|Object} The value
          */
         get: function(key) {
-            if (typeof key == 'undefined') {
+            if (!key) {
                 return this._params;
             }
 
-            return (this._params.hasOwnProperty(key)) ? this._params[key] : null;
+            return this._params[key];
         },
 
         /**
