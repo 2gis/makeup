@@ -131,7 +131,7 @@ var State = (function(win) {
             var hash = window.location.hash;
 
             if (hash.length) {
-                return hash.split('!')[1];
+                return hash.replace(/^!/, '');
             }
 
             return '';
@@ -143,11 +143,7 @@ var State = (function(win) {
          * @param {Object} params Key-value object
          */
         _setParams: function(params) {
-            for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    this._params[key] = params[key];
-                }
-            }
+            _.extend(this._params, params);
         },
 
         /**

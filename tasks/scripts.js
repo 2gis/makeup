@@ -25,7 +25,15 @@ module.exports = function(buildOptions) {
         );
     });
 
-    gulp.task('build-scripts', function() {
+    gulp.task('scripts.copy', function() {
+        return (
+            gulp
+                .src('node_modules/handlebars/dist/handlebars.js')
+                .pipe(gulp.dest('dist/'))
+        );
+    });
+
+    gulp.task('scripts.build', function() {
         return (
             gulp
                 .src(_.compact([
@@ -47,6 +55,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence('jshint', 'build-scripts', callback);
+        runSequence('jshint', 'scripts.build', 'scripts.copy', callback);
     };
 };

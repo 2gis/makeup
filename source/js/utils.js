@@ -39,17 +39,17 @@
         var chain = _.clone(_itemsChain).reverse(); // parent-child => child-parent
 
         return _.compact(_.map(chain, function(item) {
-                if (_.isString(key)) {
-                    return item[key];
-                } else if (_.isArray(key)) {
-                    var value = item;
-                    _.each(key, function(str) {
-                        if (value) value = value[str];
-                    });
-                    return value;
-                }
-            }));
-    }
+            if (_.isString(key)) {
+                return item[key];
+            } else if (_.isArray(key)) {
+                var value = item;
+                _.each(key, function(str) {
+                    if (value) value = value[str];
+                });
+                return value;
+            }
+        }));
+    };
 
     /**
      * Trying to find closest to most descendant item key value (item[key])
@@ -62,7 +62,7 @@
         });
 
         if (thatItem) return thatItem[key];
-    }
+    };
 
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.fn;
