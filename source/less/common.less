@@ -607,7 +607,15 @@ button {
     &--hidden {
         display: none;
         }
+
+    .makeup__item--expandable > & { // nested item
+        display: none;
+        }
+    .makeup__item--expanded > & {
+        display: block;
+        }
     }
+
 
     .makeup__item-header {
         position: relative;
@@ -618,7 +626,7 @@ button {
         font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         cursor: pointer;
 
-        .makeup__item--expandable &:before {
+        .makeup__item--expandable > &:before {
             .bg('i_expand');
             position: absolute;
             top: 50%;
@@ -627,15 +635,25 @@ button {
             content: '';
             }
 
-        .makeup__item--expanded &:before {
+        .makeup__item--expanded > &:before {
             .bg('i_expanded');
             left: 17px;
             margin-top: -3px;
             }
 
-        .makeup__item--current & {
+        .makeup__item--current > &:before {
             background: #656565;
             background: linear-gradient(to top, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
+            content: '';
+            position: absolute;
+            width: 200%;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            }
+
+        .makeup__item--highlight > & {
+            font-weight: bold;
             }
         }
 
@@ -709,43 +727,5 @@ button {
 
         &:hover {
             opacity: 1;
-            }
-        }
-
-/* Subnav */
-.makeup__subnav {
-    display: none;
-    overflow: hidden;
-
-    .makeup__module--expanded & {
-        display: block;
-        }
-    }
-
-    .makeup__subnav-title {
-        padding-left: 3.4em;
-        color: #666;
-        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        }
-
-    .makeup__subnav-link {
-        display: block;
-        padding-left: 3.4em;
-        color: #eee;
-        text-decoration: none;
-        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        cursor: pointer;
-
-        &:hover {
-            color: #fff;
-            }
-
-        &--current {
-            background: #656565;
-            background: linear-gradient(to top, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
-            }
-
-        &--hidden {
-            display: none;
             }
         }

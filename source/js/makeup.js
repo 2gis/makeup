@@ -258,6 +258,51 @@ var Makeup = (function(win) {
         },
 
         /**
+         * Search
+         */
+        _search: function(query) {
+            var makeup = this,
+                items = $(makeup._params.selectors.item);
+
+            items.each(function() {
+                this._shown = !query; // if no query, show all, else hide
+                this._highlight = false;
+            });
+
+            if (query) {
+                query = query.split(/[\s\/]+/); // split by slash and space
+                var selector = _.reduce(query, function(sel, part) {
+                    if (part) {
+                        sel += '[data-index*="' + part.toLowerCase() + '"] ';
+                    }
+                    return sel;
+                }, '');
+
+                items.filter(selector).each(function() {
+                    this._shown = true;
+                    this._highlight = true;
+                    // show and expand all parent items
+                    $(this).parents(makeup._params.selectors.item).each(function() {
+                        this._shown = true;
+                        this._expanded = true;
+                    });
+                    // show all child items
+                    $(this).find(makeup._params.selectors.item).each(function() {
+                        this._shown = true;
+                    });
+                });
+            }
+
+            items.each(function() {
+                makeup._mod(this, {
+                    hidden: !this._shown,
+                    highlight: this._highlight,
+                    expanded: this._expanded
+                });
+            });
+        },
+
+        /**
          * Search control listeners
          */
         _bindSearchListeners: function() {
@@ -267,55 +312,7 @@ var Makeup = (function(win) {
                 moduleType = $(makeup._params.selectors.itemType);
 
             searchInput.on('keyup', function() {
-                module.each(function() {
-                    makeup._mod(this, { hidden: false });
-                });
-
-                moduleType.each(function() {
-                    this._shown = true;
-                    makeup._mod(this, { hidden: false });
-                });
-
-                var re = searchInput.val().replace(/\s+/g, '');
-
-                if (!re) {
-                    return;
-                }
-
-                re = _(re)
-                    .reduce(function(chars, chr) {
-                        chars.push(escapeRegExp(chr));
-                        return chars;
-                    }, [])
-                    .join('.*?');
-
-                re = new RegExp('.*?' + re + '.*?', 'i');
-
-                moduleType.each(function() {
-                    if (!re.test(stripTags(this.innerHTML).replace(/\s+/g, ''))) {
-                        this._shown = false;
-                        makeup._mod(this, { hidden: true });
-                    }
-                });
-
-                module.each(function() {
-                    var module = $(this).find(makeup._params.selectors.itemType);
-
-                    var hasShown = false;
-
-                    module.each(function() {
-                        if (this._shown) {
-                            hasShown = true;
-                            return false;
-                        }
-                    });
-
-                    if (hasShown) {
-                        makeup._mod(this, { expanded: true });
-                    } else {
-                        makeup._mod(this, { hidden: true });
-                    }
-                });
+                makeup._search(searchInput.val());
             });
         },
 
@@ -950,6 +947,9 @@ var Makeup = (function(win) {
             }
 
             out.label = out.label || out.name || untitled;
+
+            // Item name for search ("Hello World 2" --> "helloworld2")
+            out.index = out.label.toLowerCase().replace(/\s/g, '');
 
             return out;
         },
