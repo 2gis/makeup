@@ -64,6 +64,114 @@
         if (thatItem) return thatItem[key];
     };
 
+    /**
+     * Парсит абстрактный массив данных (Array of items)
+     */
+    Makeup.fn._parseCollection = function(arr, func) {
+        var handler = func || _.bind(this._parseItem, this);
+
+        return _(arr).compact().map(handler, this).value();
+    };
+
+    /**
+     * Parse item
+     *
+     * @param {Object|String} item
+     * @returns {Object}
+     */
+    Makeup.fn._parseItem = function(item) {
+        var out = {},
+            untitled = 'Untitled';
+
+
+        if (typeof item == 'string') {
+            out.name = item || untitled;
+        } else if (item instanceof Object) {
+            var children = item.items || item.types,
+                documentation = item.documentation,
+                meta = item.meta;
+
+            out = item;
+
+            if (typeof out.name != "undefined") {
+                out.name = String(out.name) || untitled;
+            } else {
+                out.name = untitled;
+            }
+
+            // Documentation
+            if (documentation) {
+                if (documentation instanceof Array && documentation.length) {
+                    out.documentation = this._parseCollection(documentation, this._parseDocumentation);
+                } else if (typeof documentation == 'string' || documentation instanceof Object) {
+                    out.documentation = [this._parseDocumentation(documentation)];
+                }
+            }
+
+            // Snippet
+            out.snippet = item.snippet || _.noop;
+
+            // Meta
+            if (item.meta && item.meta instanceof Array && item.meta.length) {
+                out.meta = this._parseCollection(meta, this._parseMeta);
+            }
+
+            // Children
+            if (children && children instanceof Array && children.length) {
+                out.items = this._parseCollection(children);
+            }
+        }
+
+        if (!out.name || out.name == '') {
+            out.name = untitled;
+        }
+
+        out.label = out.label || out.name || untitled;
+
+        // Item name for search ("Hello World 2" --> "helloworld2")
+        out.index = out.label.toLowerCase().replace(/\s/g, '');
+
+        return out;
+    };
+
+    Makeup.fn._ie = function() {
+        var nav = navigator.userAgent.toLowerCase();
+
+        return (nav.indexOf('msie') != -1) ? parseInt(nav.split('msie')[1]) : false;
+    };
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    Makeup.fn._trimString = function(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    };
+
+    /**
+     * @param {string} re
+     * @returns {string}
+     */
+    // Makeup.fn.escapeRegExp = function(re) {
+    //     return re.replace(/([?!\.{}[+\-\]^|$(=:)\/\\*])/g, '\\$1');
+    // };
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    Makeup.fn._escapeHTML = function(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    };
+
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    // Makeup.fn.stripTags = function(str) {
+    //     return str.replace(/<[^>]+>/g, '');
+    // };
+
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.fn;
     }
