@@ -5,9 +5,13 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     csso = require('gulp-csso'),
     runSequence = require('run-sequence'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    postcss = require('gulp-postcss'),
+    sourcemaps = require('gulp-sourcemaps'),
+    autoprefixer = require('autoprefixer-core');
 
 module.exports = function(buildOptions) {
+
     gulp.task('css.modern', function() {
         return (
             gulp
@@ -15,14 +19,18 @@ module.exports = function(buildOptions) {
                     './temp/sprite.less',
                     './source/less/mixins.less',
                     './source/less/svg.less',
-                    './source/less/reset.less',
                     './source/less/common.less',
                     './source/blocks/*/*.less'
                 ])
                 .pipe(concat('makeup.css'))
                 .pipe(plumber())
+                .pipe(sourcemaps.init())
                 .pipe(less())
+                .pipe(postcss([
+                    autoprefixer({ browsers: ['last 2 version', '> 5%'] })
+                ]))
                 .pipe(buildOptions.release ? csso() : gutil.noop())
+                .pipe(sourcemaps.write('.'))
                 .pipe(gulp.dest('dist/'))
         );
     });
@@ -34,15 +42,19 @@ module.exports = function(buildOptions) {
                     './temp/sprite.less',
                     './source/less/mixins.less',
                     './source/less/png.less',
-                    './source/less/reset.less',
                     './source/less/common.less',
                     './source/less/ie.less',
                     './source/blocks/*/*.less'
                 ])
                 .pipe(concat('makeup.ie.css'))
                 .pipe(plumber())
+                .pipe(sourcemaps.init())
                 .pipe(less())
+                .pipe(postcss([
+                    autoprefixer({ browsers: ['last 2 version', '> 5%', 'ie >= 8'] })
+                ]))
                 .pipe(buildOptions.release ? csso() : gutil.noop())
+                .pipe(sourcemaps.write('.'))
                 .pipe(gulp.dest('dist/'))
         );
     });

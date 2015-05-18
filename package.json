@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/2gis/makeup",
   "devDependencies": {
+    "autoprefixer-core": "^5.1.11",
     "del": "^1.1.0",
     "gulp": "^3.8.6",
     "gulp-concat": "^2.3.4",
@@ -33,7 +34,9 @@
     "gulp-mocha": "~1.1.0",
     "gulp-newer": "^0.3.0",
     "gulp-plumber": "^0.6.4",
+    "gulp-postcss": "^5.1.6",
     "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.5.2",
     "gulp-spritesmith": "0.0.2",
     "gulp-svgmin": "^0.4.6",
     "gulp-uglify": "^0.3.1",
