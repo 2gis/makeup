@@ -45,7 +45,6 @@ gulp.task('watch', function(callback) {
     gulp.watch('./source/jsPartials/**/*.js', ['js']);
 
     // Images
-    gulp.watch('./source/images/**/*.{jpg,jpeg,gif,png}', ['img']);
     gulp.watch('./source/svg/**/*.svg', ['sprite', 'css']);
 
     // Styles
@@ -63,7 +62,6 @@ gulp.task('connect', function() {
 
 gulp.task('templates', require('./tasks/templates')(buildOptions));
 gulp.task('js', require('./tasks/scripts')(buildOptions));
-gulp.task('img', require('./tasks/images')(buildOptions));
 gulp.task('sprite', require('./tasks/sprite')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
