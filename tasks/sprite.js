@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
-    svg2png = require('gulp-svg2png'),
     spritesmith = require('gulp.spritesmith'),
     imagemin = require('gulp-imagemin'),
     svgmin = require('gulp-svgmin'),
@@ -8,15 +7,15 @@ var gulp = require('gulp'),
     newer = require('gulp-newer');
 
 module.exports = function(buildOptions) {
-    gulp.task('rasterize-svg', function() {
+
+    gulp.task('copy-png', function() {
         return (
             gulp
                 .src([
-                    'source/svg/**/*.svg',
-                    '!source/svg/**/_*.svg'
+                    'source/png/**/*.png',
+                    '!source/png/**/_*.png'
                 ])
                 .pipe(newer({ dest: 'dist/assets/png/', ext: '.png' }))
-                .pipe(svg2png())
                 .pipe(buildOptions.release ? imagemin() : gutil.noop())
                 .pipe(gulp.dest('dist/assets/png/'))
         );
@@ -39,7 +38,10 @@ module.exports = function(buildOptions) {
         var sprite;
 
         sprite = gulp
-            .src('dist/assets/png/*.png')
+            .src([
+                'source/png/**/*.png',
+                '!source/png/**/_*.png'
+            ])
             .pipe(spritesmith({
                 algorithm: 'binary-tree',
                 imgName: 'makeup-sprite.png',
@@ -55,6 +57,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence('copy-svg', 'rasterize-svg', 'build-sprite', callback);
+        runSequence('copy-svg', 'copy-png', 'build-sprite', callback);
     };
 };
