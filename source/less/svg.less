@@ -1,11 +1,13 @@
+@mime: 'image/svg+xml;charset=UTF-8';
+
 .bgi(@file) {
-    background-image: data-uri('../dist/assets/svg/@{file}.svg');
+    background-image: data-uri(@mime, '../dist/assets/svg/@{file}.svg');
     }
 
 .bg(@file) {
     @sprite: 'sprite-@{file}';
 
-    background-image: data-uri('../dist/assets/svg/@{file}.svg');
+    background-image: data-uri(@mime, '../dist/assets/svg/@{file}.svg');
     background-repeat: no-repeat;
 
     .sprite-width(@@sprite);
