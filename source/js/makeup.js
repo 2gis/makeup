@@ -6,18 +6,18 @@
  * @requires lodash
  */
 var Makeup = (function(win) {
-    var makeup;
+    var _makeup;
 
     function Makeup(options) {
-        if (makeup) { // Singleton
-            return makeup;
+        if (_makeup) { // Singleton
+            return _makeup;
         }
 
         if (!(this instanceof Makeup)) { // Rezig constructor
             return new Makeup(options);
         }
 
-        makeup = this;
+        _makeup = this;
         this._init(options);
     }
 
@@ -310,7 +310,7 @@ var Makeup = (function(win) {
         },
 
         _setCurrentMode: function(value) {
-            var modeControl = $(makeup._params.selectors.modeControl);
+            var modeControl = this.el.modeControl;
 
             if (modeControl.filter('[value="' + value + '"]')[0].checked == true) {
                 return;
@@ -348,13 +348,11 @@ var Makeup = (function(win) {
         },
 
         _setCurrentBackground: function(value) {
-            var bgControl = $(makeup._params.selectors.bgControl);
-
-            if (bgControl.filter('[value="' + value + '"]')[0].checked == true) {
+            if (this.el.bgControl.filter('[value="' + value + '"]')[0].checked == true) {
                 return;
             }
 
-            bgControl.each(function(i) {
+            this.el.bgControl.each(function(i) {
                 if (bgControl[i].value == value) {
                     bgControl[i].checked = true;
                 }
