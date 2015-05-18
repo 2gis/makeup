@@ -40,8 +40,8 @@ module.exports = function(buildOptions) {
                     'node_modules/handlebars/dist/handlebars.min.js',
                     'node_modules/lodash/index.js',
                     buildOptions.noJquery ? null : 'node_modules/jquery/dist/jquery.min.js',
-                    'node_modules/baron/baron.min.js',
-                    'node_modules/rader/rader.min.js',
+                    'node_modules/baron/baron.js',
+                    'node_modules/rader/rader.js',
                     'source/js/*.js',
                     'temp/partials.js',
                     'source/js/makeup.js'

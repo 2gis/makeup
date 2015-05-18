@@ -32,13 +32,15 @@ var State = (function(win) {
         constructor: State,
 
         _init: function(params) {
-            this._params = this._path2object(this._getHash()) || {};
+            this.actualState = this._path2object(this._getHash()) || {};
 
             if (typeof window != 'undefined') {
                 this._bindEventListeners();
             }
 
-            this.set(params);
+            this.wantedState = {};
+
+            this.want(params);
         },
 
         _bindEventListeners: function() {
@@ -46,11 +48,11 @@ var State = (function(win) {
                 jqWindow = $(window);
 
             jqWindow.on('hashchange.Makeup', function() {
-                state._setParams(state._path2object(state._getHash()));
+                state._setActualState(state._path2object(state._getHash()));
 
                 jqWindow.trigger({
                     type: 'statechange',
-                    state: state._params
+                    state: state.actualState
                 });
             });
         },
@@ -100,7 +102,7 @@ var State = (function(win) {
                     key: key,
                     value: value,
                     priority: codec[key] && codec[key].priority || 0
-                }
+                };
             });
             pairs = _.sortBy(pairs, function(pair) {
                 return -pair.priority;
@@ -151,12 +153,46 @@ var State = (function(win) {
         },
 
         /**
-         * Sets state params according to `params`,
+         * Sets state state according to `state`,
          *
-         * @param {Object} params Key-value object
+         * @param {Object} state Key-value object
          */
-        _setParams: function(params) {
-            _.extend(this._params, params);
+        _setActualState: function(state) {
+            return this.actualState = _.clone(state);
+        },
+
+        /**
+         * Public methods
+         */
+
+        /**
+         * Sets state according to `params`, but didnt push it
+         *
+         * @param {Object} diff
+         *
+         * @returns {Object} State object
+         */
+        want: function(diff) {
+            return _.extend(this.wantedState, diff);
+        },
+
+        /**
+         * Sets accumulated wanted state to actual state
+         */
+        push: function() {
+            if (this.diff()) {
+                this._setActualState(this.wantedState);
+                this._setHash(this._object2path(this.actualState));
+
+                if (typeof window != 'undefined') {
+                    $(window).trigger({
+                        type: 'statechange',
+                        state: this.actualState
+                    });
+                }
+            } else {
+                // do nothing
+            }
         },
 
         /**
@@ -164,22 +200,15 @@ var State = (function(win) {
          * changes hash value,
          * triggers 'statechange' event
          *
-         * @param {Object} params Key-value object
+         * @param {Object} diff Key-value object
          *
          * @returns {Object} State object
          */
-        set: function(params) {
-            this._setParams(params);
-            this._setHash(this._object2path(this._params));
+        set: function(diff) {
+            _.extend(this.wantedState, diff);
+            this.push();
 
-            if (typeof window != 'undefined') {
-                $(window).trigger({
-                    type: 'statechange',
-                    state: this._params
-                });
-            }
-
-            return this._params;
+            return this.actualState;
         },
 
         /**
@@ -191,10 +220,10 @@ var State = (function(win) {
          */
         get: function(key) {
             if (!key) {
-                return this._params;
+                return this.actualState;
             }
 
-            return this._params[key];
+            return this.actualState[key];
         },
 
         /**
@@ -205,13 +234,18 @@ var State = (function(win) {
          * @returns {Object} Difference between oldState and newState
          */
         diff: function(oldState, newState) {
-            return _.reduce(newState, function(diff, value, key) {
+            oldState = oldState || this.actualState;
+            newState = newState || this.wantedState;
+
+            var ret = _.reduce(newState, function(diff, value, key) {
                 if (!_.isEqual(value, oldState[key])) {
                     diff[key] = value;
                 }
 
                 return diff;
             }, {}, this);
+
+            return _.isEmpty(ret) ? undefined : ret;
         }
     };
 

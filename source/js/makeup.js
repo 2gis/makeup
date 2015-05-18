@@ -46,6 +46,8 @@ var Makeup = (function(win) {
             this._bindListeners();
             this._misc();
 
+            this._state.push(); // wanted state -> actual state
+
             return this;
         },
 
@@ -61,6 +63,7 @@ var Makeup = (function(win) {
         _render: function() {
             var viewContext = this._viewModel(this._params);
             var makeupHTML = Handlebars.partials.makeup(viewContext);
+
             this._params.wrapper.append(makeupHTML);
         },
 
@@ -113,13 +116,13 @@ var Makeup = (function(win) {
          */
         _bindMenuListeners: function() {
             var self = this,
-                makeupRootElement = $(makeup._params.selectors.root)[0],
+                makeupRootElement = $(this._params.selectors.root)[0],
                 sidebar = $(this._params.selectors.sidebar),
                 itemHeader = $(this._params.selectors.itemHeader),
                 win = $(window);
 
             // Render default module
-            this._state.set(this._getDefaultMenuState(this._state._params));
+            this._state.want(this._getDefaultMenuState(this._state.get()));
 
             itemHeader.on('click', function() {
                 var item = this.parentNode;
@@ -142,21 +145,21 @@ var Makeup = (function(win) {
                 var sidebarToggler = $('#makeup-menu');
 
                 // Set default mode
-                if (!this._state._params.menu) {
-                    var defaultMenu = makeup._mod(makeupRootElement).menu || true;
+                if (!this._state.get('menu')) {
+                    var defaultMenu = this._mod(makeupRootElement).menu || true;
 
-                    makeup._state.set({ menu: defaultMenu });
+                    this._state.want({ menu: defaultMenu });
                 }
 
                 sidebarToggler.on('change', function() {
-                    makeup._state.set({ menu: this.checked });
+                    self._state.set({ menu: this.checked });
                 });
 
                 win.on('keydown', function(e) {
-                    var key = makeup._getKey(e);
+                    var key = self._getKey(e);
 
                     if (key == 192 || key == 220) {
-                        makeup._state.set({ menu: !sidebarToggler[0].checked });
+                        self._state.set({ menu: !sidebarToggler[0].checked });
                     }
                 });
             }
@@ -327,11 +330,11 @@ var Makeup = (function(win) {
                 defaultMode = {};
 
             // Set default mode
-            defaultMode.mode = makeup._state._params.mode || makeup._mod(makeupElement[0]).mode || 1;
+            defaultMode.mode = makeup._state.get('mode') || makeup._mod(makeupElement[0]).mode || 1;
             if (defaultMode.mode == 3 || defaultMode.mode == 4) {
                 defaultMode.transparency = 0.5;
             }
-            makeup._state.set(defaultMode);
+            makeup._state.want(defaultMode);
 
             modeControl.on('change', function() {
                 var out = {};
@@ -394,7 +397,7 @@ var Makeup = (function(win) {
                 bgControl = $(this._params.selectors.bgControl);
 
             // Set default background
-            this._state.set({ bg: this._state._params.bg || this._mod(makeupElement[0]).bg || 'color' });
+            this._state.want({ bg: this._state.get('bg') || this._mod(makeupElement[0]).bg || 'color' });
 
             bgControl.on('change', function() {
                 var value;
@@ -432,7 +435,7 @@ var Makeup = (function(win) {
                 params = this._params,
                 min = params.transparency.slider.min,
                 max = params.transparency.slider.max,
-                value = params.transparency.slider.value,
+                value = this._state.get('transparency') || params.transparency.slider.value,
 
                 slider = $(params.selectors.slider).filter('.makeup__slider--transparency'),
                 sliderTrack = slider.find(params.selectors.sliderTrack),
@@ -440,10 +443,6 @@ var Makeup = (function(win) {
                 sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
 
                 win = $(window);
-
-            if (this._state._params.hasOwnProperty('transparency')) {
-                value = this._state._params.transparency;
-            }
 
             var updateTimeout;
 
@@ -511,7 +510,7 @@ var Makeup = (function(win) {
 
                 min = params.zoom.slider.min,
                 max = params.zoom.slider.max,
-                value = params.zoom.slider.value,
+                value = this._state.get('zoom') || params.zoom.slider.value,
 
                 slider = $(params.selectors.slider).filter('.makeup__slider--zoom'),
                 sliderTrack = slider.find(params.selectors.sliderTrack),
@@ -519,10 +518,6 @@ var Makeup = (function(win) {
                 sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
 
                 win = $(window);
-
-            if (this._state._params.hasOwnProperty('zoom')) {
-                value = this._state._params.zoom;
-            }
 
             var updateTimeout;
 
@@ -536,7 +531,6 @@ var Makeup = (function(win) {
                 onUpdate: function(e) {
                     var value = e.maxVal.toFixed(2);
 
-                    // makeup._state.set({ zoom: value });
                     makeup._applyZoom(value);
 
                     clearTimeout(updateTimeout);
@@ -598,7 +592,7 @@ var Makeup = (function(win) {
 
                 min = params.ruler.h.slider.min,
                 max = params.ruler.h.slider.max,
-                value = params.ruler.h.slider.value,
+                value = this._state.get('width') || params.ruler.h.slider.value,
 
                 horizontalRuler,
                 pos = [],
@@ -607,10 +601,6 @@ var Makeup = (function(win) {
             while (i <= 2000) {
                 pos.push(i);
                 i += 100;
-            }
-
-            if (this._state._params.hasOwnProperty('width')) {
-                value = this._state._params.width;
             }
 
             var updateTimeout;
@@ -647,18 +637,19 @@ var Makeup = (function(win) {
         },
 
         _bindSmileyListeners: function() {
-            var smiley = $('#makeup-smiley'),
-                makeupElement = $(makeup._params.selectors.root);
+            var self = this,
+                smiley = $('#makeup-smiley'),
+                makeupElement = $(this._params.selectors.root);
 
             // Set default smiley value
-            if (!this._state._params.hasOwnProperty('smiley')) {
-                var defaultSmiley = makeup._mod(makeupElement[0]).smiley || smiley[0].checked;
+            if (!this._state.get('smiley')) {
+                var defaultSmiley = this._mod(makeupElement[0]).smiley || smiley[0].checked;
 
-                makeup._state.set({ smiley: defaultSmiley });
+                this._state.want({ smiley: defaultSmiley });
             }
 
             smiley.on('change', function() {
-                makeup._state.set({ smiley: this.checked });
+                self._state.set({ smiley: this.checked });
             });
         },
 
@@ -729,7 +720,7 @@ var Makeup = (function(win) {
                 }
             }
 
-            makeup._currentState = makeup._state._params;
+            makeup._currentState = makeup._state.get();
 
             function has(key) {
                 return s.hasOwnProperty(key.toString());
@@ -765,7 +756,6 @@ var Makeup = (function(win) {
             var imageStyles = this._map(itemsChain, ['styles', 'image']).join(';');
             $(selector.containerImage).attr('style', imageStyles);
             var markupStyles = this._map(itemsChain, ['styles', 'markup']).join(';');
-            console.log('markupStyles', markupStyles);
             this._containerMarkup.attr('style', markupStyles);
 
             // Ищем hint для модуля/типа
@@ -803,9 +793,9 @@ var Makeup = (function(win) {
          * @param {string} src URL изображения
          */
         _loadImage: function(src) {
-            var that = this,
+            var self = this,
                 img = new Image(),
-                selectors = that._params.selectors,
+                selectors = self._params.selectors,
                 container = selectors.containerImage,
                 imageClass = selectors.containerImageRegular.slice(1);
 
@@ -824,13 +814,13 @@ var Makeup = (function(win) {
                     .addClass(imageClass)
                     .appendTo(container);
 
-                that._invertImage(img);
+                self._invertImage(img);
             };
 
             img.onerror = function(event) {
                 img.onerror = null;
 
-                makeup._state.set({mode: 2, transparency: 1});
+                self._state.set({mode: 2, transparency: 1});
             };
 
             img.src = src;
