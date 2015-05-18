@@ -4,7 +4,6 @@ button {
     -moz-osx-font-smoothing: grayscale;
     }
 
-
 /* Layout */
 
 .makeup {
@@ -24,40 +23,37 @@ button {
         top: 0;
         right: 0;
         left: 0;
+        z-index: 2;
+        overflow: hidden;
         height: 2em;
         background: #363535;
-        z-index: 2;
-        .user-select(none);
-        overflow: hidden;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .7);
+        user-select: none;
         }
 
     .makeup__aside {
-        .user-select(none);
         position: absolute;
         top: 2em;
         bottom: 1.1em;
         left: 0;
+        z-index: 1;
+        overflow: hidden;
         width: 10em;
         background: #1e1e1e;
-        z-index: 1;
-        -webkit-transition: -webkit-transform .3s ease;
-        transition: transform .3s ease;
-        -webkit-transform: translate(0, 0) translateZ(0);
-        transform: translate(0, 0) translateZ(0);
         color: #fff;
         font: 20px/1 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        overflow: hidden;
+        transition: transform .3s ease;
+        transform: translate(0, 0) translateZ(0);
+        user-select: none;
 
         .makeup--menu-false & {
-            -webkit-transform: translate(-100%, 0) translateZ(0);
             transform: translate(-100%, 0) translateZ(0);
             }
         }
 
         .makeup__aside-in {
-            height: 100%;
             overflow-y: scroll;
+            height: 100%;
 
             &::-webkit-scrollbar {
                 width: 0;
@@ -65,11 +61,11 @@ button {
             }
 
             .makeup__aside-track {
-                display: none;
                 position: absolute;
-                right: 1px;
                 top: 1px;
+                right: 1px;
                 bottom: 1px;
+                display: none;
                 width: 4px;
 
                 .makeup__aside--baron & {
@@ -79,41 +75,40 @@ button {
 
                 .makeup__aside-track-bar {
                     position: absolute;
-                    z-index: 1;
                     right: 0;
+                    z-index: 1;
                     width: 4px;
                     background: rgba(255, 255, 255, .4);
                     }
 
 
     .makeup__status {
-        .user-select(none);
         position: absolute;
         right: 0;
         bottom: 0;
         left: 0;
         z-index: 2;
         overflow: hidden;
+        padding: 0 1em;
         height: 1.8em;
         background: #363535;
         box-shadow:
             0 -1px 0 0 rgba(0, 0, 0, .4),
             inset 0 1px 0 0 rgba(255, 255, 255, .1);
-        font: .6em/1.9 Helvetica, Arial, sans-serif;
-        padding: 0 1em;
         color: #bbb;
+        font: .6em/1.9 Helvetica, Arial, sans-serif;
+        user-select: none;
         }
 
     .makeup__main {
         position: absolute;
         top: 2em;
-        left: 10em;
         right: 0;
         bottom: .75em;
+        left: 10em;
         overflow-x: hidden;
         overflow-y: auto;
         transition: left .3s ease;
-        -webkit-transform: translateZ(0);
         transform: translateZ(0);
 
         .makeup--menu-false & {
@@ -130,17 +125,17 @@ button {
 
 .makeup__ruler {
     position: absolute;
-    overflow: hidden;
-    .user-select(none);
     z-index: 10;
+    overflow: hidden;
+    user-select: none;
 
     &--h {
         top: 0;
         right: 0;
         left: 0;
+        padding: 0 0 0 40px;
         height: .75em;
         background: #242424;
-        padding: 0 0 0 40px;
         }
 
     // &--v {
@@ -205,9 +200,9 @@ button {
 
             .makeup__ruler-track-point {
                 position: absolute;
+                z-index: 1;
                 width: 0;
                 height: .75em;
-                z-index: 1;
 
                 &:first-child {
                     visibility: hidden;
@@ -216,14 +211,14 @@ button {
 
             .makeup__ruler-track-point:before {
                 display: inline-block;
-                vertical-align: top;
-                width: 3em;
-                text-align: center;
                 margin-left: -1.5em;
+                width: 3em;
                 content: counter(scale)'00';
                 counter-increment: scale;
-                font: .5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                vertical-align: top;
+                text-align: center;
                 letter-spacing: -.1ex;
+                font: .5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 }
 
             .makeup__ruler-track-active {
@@ -239,15 +234,15 @@ button {
                 position: absolute;
                 top: 0;
                 left: 0;
+                z-index: 2;
                 width: 0;
                 height: 0;
-                z-index: 2;
 
                 &:before {
+                    .bg('i_dragger-h');
                     position: absolute;
                     top: 1px;
                     left: -7px;
-                    .bg('i_dragger-h');
                     content: '';
                     }
                 }
@@ -271,15 +266,14 @@ button {
             left: 40px;
             width: 400px;
             height: 300px;
-            -webkit-transform-origin: 0 0;
-            transform-origin: 0 0;
             color: #000;
             font: 16px/1 Times, serif;
+            transform-origin: 0 0;
             }
 
         .makeup--smiley-true .makeup__container-in {
-            font: 100px/1 'Comic Sans';
             color: red;
+            font: 100px/1 'Comic Sans';
             }
 
             .makeup__container-image {
@@ -324,9 +318,9 @@ button {
 
 .makeup__btn {
     display: inline-block;
-    vertical-align: middle;
-    height: 1.6em;
     margin: .2em;
+    height: 1.6em;
+    vertical-align: middle;
     white-space: nowrap;
     }
 
@@ -336,14 +330,14 @@ button {
 
     .makeup__btn-label {
         position: relative;
-        .box-sizing(border-box);
         display: inline-block;
-        vertical-align: middle;
+        overflow: hidden;
+        box-sizing: border-box;
         width: 1.6em;
         height: 100%;
         border-radius: 2px;
+        vertical-align: middle;
         text-indent: -999em;
-        overflow: hidden;
         cursor: pointer;
         transition: background .2s ease;
 
@@ -379,47 +373,48 @@ button {
 .makeup__search {
     position: relative;
     display: inline-block;
-    vertical-align: middle;
     margin: 0 0 0 -.25em;
     width: 8em;
     height: 1.6em;
+    vertical-align: middle;
     }
 
     .makeup__search-input {
-        .box-sizing(border-box);
         display: inline-block;
+        box-sizing: border-box;
+        padding: .3em 1em .3em 1.5em;
         width: 100%;
         height: 100%;
         border: 1px solid #444242;
-        padding: .3em 1em .3em 1.5em;
-        -webkit-font-smoothing: antialiased;
-        background: #2b2a29;
-        font: .7em/1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        color: #efefef;
         border-radius: 3px;
+        background: #2b2a29;
         box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, .6);
-        // transition:
-        //     border-color .05s ease,
-        //     box-shadow .05s ease,
-        //     background-color .05s ease;
+        color: #efefef;
+        font: .7em/1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        transition:
+            border-color .05s ease,
+            box-shadow .05s ease,
+            background-color .05s ease;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
 
         &:focus {
             outline: none;
-            // border-color: #64b4c8;
-            // box-shadow:
-            //     inset 0 1px 2px 0 rgba(0, 0, 0, .6),
-            //     0 0 4px 0 #5996a5;
-            // background: #4e4d4b;
+            border-color: #64b4c8;
+            background: #4e4d4b;
+            box-shadow:
+                inset 0 1px 2px 0 rgba(0, 0, 0, .6),
+                0 0 4px 0 #5996a5;
             }
         }
 
     .makeup__search-icon {
+        .bg('i_search');
         position: absolute;
         top: 50%;
         left: .3em;
-        margin-top: -5px;
-        .bg('i_search');
         z-index: 1;
+        margin-top: -5px;
         }
 
 
@@ -427,16 +422,16 @@ button {
 
 .makeup__radio {
     display: inline-block;
-    vertical-align: middle;
     padding: 0 .25em 0 .75em;
+    vertical-align: middle;
     }
 
     .makeup__radio-title {
         display: inline-block;
+        margin-right: .4em;
+        color: #ccc;
         vertical-align: middle;
         font-size: .7em;
-        color: #ccc;
-        margin-right: .4em;
         }
 
     .makeup__radio-item {
@@ -451,14 +446,14 @@ button {
         .makeup__radio-item-label {
             position: relative;
             display: inline-block;
-            vertical-align: middle;
+            overflow: hidden;
+            margin: .2em -.15em;
             width: 1.6em;
             height: 1.6em;
-            margin: .2em -.15em;
-            text-indent: -999em;
-            overflow: hidden;
-            cursor: pointer;
             border-radius: 2px;
+            vertical-align: middle;
+            text-indent: -999em;
+            cursor: pointer;
 
             &:before {
                 position: absolute;
@@ -472,9 +467,9 @@ button {
                 }
 
             .makeup__radio-item-input:checked + & {
+                border-radius: 3px;
                 background: #000;
                 box-shadow: inset 0 0 0 1px #202020;
-                border-radius: 3px;
                 }
             }
 
@@ -510,8 +505,8 @@ button {
             .bg('i_bg-transparency');
             }
         .makeup__radio-item-label--bg-map:before {
-            margin: -7px 0 0 -8px;
             .bg('i_bg-map');
+            margin: -7px 0 0 -8px;
             }
 
 
@@ -519,50 +514,49 @@ button {
 
 .makeup__slider {
     display: inline-block;
-    vertical-align: middle;
     padding: 0 .25em 0 .2em;
+    vertical-align: middle;
 
     &:before {
         display: inline-block;
-        vertical-align: middle;
         height: 1.6em;
         content: '';
+        vertical-align: middle;
         }
     }
 
     .makeup__slider-title {
         display: inline-block;
+        margin-right: .4em;
+        color: #ccc;
         vertical-align: middle;
         font-size: .7em;
-        color: #ccc;
-        margin-right: .4em;
         }
 
     .makeup__slider-track {
         position: relative;
         display: inline-block;
-        vertical-align: middle;
+        margin: 0 0 0 8px;
+        width: 60px;
         height: 1px;
         border-top: 1px solid #000;
         background: #444;
-        width: 60px;
-        margin: 0 0 0 8px;
+        vertical-align: middle;
         }
 
-        .makeup__slider-track-in {}
+        .makeup__slider-track-in { }
 
             .makeup__slider-track-runner {
                 position: absolute;
+                z-index: 1;
                 width: 0;
                 height: 0;
-                z-index: 1;
 
                 &:active {
                     z-index: 2;
                     }
 
                 &:before {
-                    content: '';
                     position: absolute;
                     top: -8px;
                     left: -7px;
@@ -572,18 +566,19 @@ button {
                     background: #555;
                     background: linear-gradient(to top, #555, #444);
                     box-shadow: 0 1px 3px 0 #000;
+                    content: '';
                     }
                 &:after {
-                    content: '';
                     position: absolute;
                     top: -4px;
                     left: -3px;
                     width: 5px;
                     height: 8px;
-                    border-left: 1px solid #252525;
                     border-right: 1px solid #252525;
+                    border-left: 1px solid #252525;
                     background: linear-gradient(to right, #252525, #252525) center center repeat-y;
                     background-size: 1px 1px;
+                    content: '';
                     }
                 }
 
@@ -594,16 +589,16 @@ button {
     }
 
     .makeup__nav-title {
-        font: bold .8em/1.25em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         margin: .875em 0 .625em 1em;
+        font: bold .8em/1.25em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
-    .makeup__nav-list {}
+    .makeup__nav-list { }
 
 
 /* Module */
 .makeup__module {
-    .user-select(none);
+    user-select: none;
 
     &--hidden {
         display: none;
@@ -612,24 +607,24 @@ button {
 
     .makeup__module-header {
         position: relative;
-        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        color: #eee;
-        padding: 0 0 0 2.5em;
-        white-space: nowrap;
         overflow: hidden;
+        padding: 0 0 0 2.5em;
+        color: #eee;
+        white-space: nowrap;
+        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         cursor: pointer;
 
         .makeup__module--expandable &:before {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            margin-top: -4px;
             .bg('i_expand');
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            margin-top: -4px;
             content: '';
             }
         .makeup__module--expanded &:before {
-            left: 17px;
             .bg('i_expanded');
+            left: 17px;
             margin-top: -3px;
             }
 
@@ -640,16 +635,16 @@ button {
         }
 
         .makeup__module-header-in {
-            width: 100%;
             max-width: 100%;
+            width: 100%;
             }
 
             .makeup__module-header-meta {
-                height: 1.7em;
                 float: right;
+                height: 1.7em;
                 }
 
-            .makeup__module-header-inner {}
+            .makeup__module-header-inner { }
 
                 .makeup__module-header-inner {
                     position: relative;
@@ -668,42 +663,42 @@ button {
 /* Module rating */
 .makeup__rating {
     display: inline-block;
+    padding: 0 1em 0 0;
+    width: 1.5em;
+    color: #666;
     vertical-align: middle;
     font: bold .75em/2.2em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #666;
-    width: 1.5em;
-    padding: 0 1em 0 0;
     }
 
 /* Module doc links */
 .makeup__doc {
+    padding: 0 10px 0 0;
+    height: 100%;
     font-size: 0;
     line-height: 0;
-    height: 100%;
-    padding: 0 10px 0 0;
 
     &:before {
         display: inline-block;
-        vertical-align: middle;
-        height: 100%;
         width: 2px;
+        height: 100%;
         content: '';
+        vertical-align: middle;
         }
     }
     .makeup__doc-link {
         position: relative;
         display: inline-block;
-        vertical-align: middle;
         width: 16px;
         height: 16px;
+        vertical-align: middle;
         opacity: .5;
         transition: opacity .2s linear;
 
         &:before {
+            .bg('i_info');
             position: absolute;
             top: 3px;
             left: 3px;
-            .bg('i_info');
             content: '';
             }
 
@@ -723,17 +718,17 @@ button {
     }
 
     .makeup__subnav-title {
+        padding-left: 3.4em;
         color: #666;
         font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        padding-left: 3.4em;
         }
 
     .makeup__subnav-link {
         display: block;
-        text-decoration: none;
-        color: #eee;
-        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         padding-left: 3.4em;
+        color: #eee;
+        text-decoration: none;
+        font: .6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
         cursor: pointer;
 
         &:hover {
