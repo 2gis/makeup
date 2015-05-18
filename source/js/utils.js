@@ -4,8 +4,8 @@
     Makeup.fn._itemsChain = function(chain, item) {
         item = item || this._params.data[0];
 
-        if (!_.isArray(chain)) throw new TypeError('Makeup.fn._parents: chain must be an array');
-        if (!_.isObject(item)) throw new TypeError('Makeup.fn._parents: item must be an object');
+        if (!_.isArray(chain)) throw new TypeError('Makeup.fn._itemsChain: chain must be an array');
+        if (!_.isObject(item)) throw new TypeError('Makeup.fn._itemsChain: item must be an object');
 
         var result = [];
         var i = 0;
@@ -25,7 +25,7 @@
             }
         }
 
-        if (result.length != chain.length) throw new Error('Makeup.fn._parents: parents.length must be equal to chain.length ' + result.length + ' ' + chain.length);
+        if (result.length != chain.length) throw new Error('Makeup.fn._itemsChain: parents.length must be equal to chain.length ' + result.length + ' ' + chain.length);
 
         return _.compact(result);
     };

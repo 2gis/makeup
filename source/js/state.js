@@ -16,7 +16,7 @@ var State = (function(win) {
         state._init(params);
     }
 
-    codec = {
+    var codec = {
         chain: {
             priority: 10,
             serialize: function(arr) {
@@ -28,33 +28,27 @@ var State = (function(win) {
         }
     };
 
+    var validators = {
+        transparency: function(value) {
+            return Number(value).toFixed(2);
+        },
+        all: function(value) {
+            if (_.isObject(value)) {
+                return value;
+            } else {
+                return String(value);
+            }
+        }
+    };
+
     State.prototype = {
         constructor: State,
 
         _init: function(params) {
             this.actualState = this._path2object(this._getHash()) || {};
+            this._validateState(this.actualState);
 
-            if (typeof window != 'undefined') {
-                this._bindEventListeners();
-            }
-
-            this.wantedState = {};
-
-            this.want(params);
-        },
-
-        _bindEventListeners: function() {
-            var state = this,
-                jqWindow = $(window);
-
-            jqWindow.on('hashchange.Makeup', function() {
-                state._setActualState(state._path2object(state._getHash()));
-
-                jqWindow.trigger({
-                    type: 'statechange',
-                    state: state.actualState
-                });
-            });
+            this.wantedState = _.cloneDeep(this.actualState);
         },
 
         /**
@@ -161,6 +155,18 @@ var State = (function(win) {
             return this.actualState = _.clone(state);
         },
 
+        _validateState: function(state) {
+            _.each(state, function(value, key) {
+                if (validators[key]) {
+                    state[key] = validators[key](value);
+                }
+
+                state[key] = validators.all(state[key]);
+            });
+
+            return state;
+        },
+
         /**
          * Public methods
          */
@@ -173,21 +179,27 @@ var State = (function(win) {
          * @returns {Object} State object
          */
         want: function(diff) {
-            return _.extend(this.wantedState, diff);
+            _.extend(this.wantedState, diff);
+            this._validateState(this.wantedState);
+
+            return this.wantedState;
         },
 
         /**
          * Sets accumulated wanted state to actual state
          */
         push: function() {
-            if (this.diff()) {
+            var diff = this.diff();
+
+            if (diff) {
                 this._setActualState(this.wantedState);
                 this._setHash(this._object2path(this.actualState));
 
                 if (typeof window != 'undefined') {
                     $(window).trigger({
                         type: 'statechange',
-                        state: this.actualState
+                        state: _.cloneDeep(this.actualState),
+                        diff: _.cloneDeep(diff)
                     });
                 }
             } else {
@@ -206,6 +218,7 @@ var State = (function(win) {
          */
         set: function(diff) {
             _.extend(this.wantedState, diff);
+            this._validateState(this.wantedState);
             this.push();
 
             return this.actualState;

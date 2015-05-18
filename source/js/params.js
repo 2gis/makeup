@@ -37,7 +37,7 @@
             };
         }
 
-        return _.merge({
+        var out = _.merge({
             wrapper: $('body'),
 
             selectors: {
@@ -189,6 +189,23 @@
 
             namingRules: internalNamingRules
         }, params);
+
+        var i = 0;
+        function makeIds(item) {
+            if (_.isArray(item)) {
+                _.each(item, makeIds);
+            } else if (!item) {
+                return;
+            }
+
+            item._id = i++;
+
+            makeIds(item.items);
+        }
+
+        makeIds(out.data[0].items);
+
+        return out;
     };
 
     if (typeof TEST != 'undefined' && TEST) {

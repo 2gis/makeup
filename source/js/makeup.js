@@ -38,7 +38,6 @@ var Makeup = (function(win) {
         // Инициализация makeup: подтягивание конфига, данных, рендеринг, навешивание событий
         _init: function(options) {
             this._params = this._getParams(options); // @see params.js
-            this._currentState = {};
             this._state = new State();
 
             this._render();
@@ -47,6 +46,7 @@ var Makeup = (function(win) {
             this._misc();
 
             this._state.push(); // wanted state -> actual state
+            this._obey(this._state.get()); // init actual state
 
             return this;
         },
@@ -103,12 +103,7 @@ var Makeup = (function(win) {
          * Statechange handler
          */
         _statechange: function(e) {
-            var diff = this._state.diff(this._currentState, e.state);
-
-            if (!_.isEmpty(diff)) {
-                this._obey(diff);
-                this._currentState = _.clone(e.state);
-            }
+            this._obey(e.diff);
         },
 
         /**
@@ -120,9 +115,6 @@ var Makeup = (function(win) {
                 sidebar = $(this._params.selectors.sidebar),
                 itemHeader = $(this._params.selectors.itemHeader),
                 win = $(window);
-
-            // Render default module
-            this._state.want(this._getDefaultMenuState(this._state.get()));
 
             itemHeader.on('click', function() {
                 var item = this.parentNode;
@@ -172,81 +164,27 @@ var Makeup = (function(win) {
             });
         },
 
-        _getDefaultMenuState: function(state) {
-            return {};
-        },
-
         /**
          * Apply state in aside panel
          */
-        _setCurrentMenuItem: function(groupId, moduleId, typeGroupId, typeId) {
-            // expand if need
-            // set as current
-            var that = this,
-                data = that._params.data,
-                moduleConfig = data[groupId].items[moduleId],
-                typeConfig,
+        _setCurrentMenuItem: function(chain) {
+            var self = this;
+            var itemsChain = this._itemsChain(chain);
+            var youngestItem = _.last(itemsChain);
 
-                status = '',
-                directory,
-                current,
-                type;
-
-            // Set status
-            if (moduleConfig) {
-                if (moduleConfig.items) {
-                    var types = moduleConfig.items[typeGroupId];
-
-                    typeConfig = types && types.items && types.items[typeId];
-                }
-
-                status += escapeHTML(moduleConfig.name);
-
-                if (typeConfig && typeConfig.name) {
-                    status += ' → ' + escapeHTML(trimString(typeConfig.name));
-                }
-            }
-            this._setStatus(status);
-
-            // Find current
-            directory = this.el.navListItem
-                .filter('[data-id="' + groupId + '"]')
-                .find(that._params.selectors.item)
-                .filter('[data-id="' + moduleId + '"]');
-
-            if (typeGroupId !== undefined && typeId !== undefined) {
-                current = directory
-                    .find(that._params.selectors.subnavItem)
-                    .filter('[data-id="' + typeGroupId + '"]')
-                    .find(that._params.selectors.subnavLink)
-                    .filter('[data-id="' + typeId + '"]');
-            }
-
-            setCurrent(current && current[0] || directory && directory[0]);
-
-            // Expand parent if need
-            if (current && current[0]) {
-                this._mod(directory[0], {expanded: true});
-            }
-
-            /**
-             * Set current menu item
-             */
-            function setCurrent(currentItem) {
-                var module = $(that._params.selectors.item),
-                    moduleType = $(that._params.selectors.subnavLink);
-
-                module.each(function(i) {
-                    that._mod(module[i], {current: false});
+            if (!youngestItem.items) { // last item in hierarchy
+                var item = itemsChain.pop();
+                this.el.item.each(function() {
+                    self._mod(this, {current: false});
                 });
-                moduleType.each(function(i) {
-                    that._mod(moduleType[i], {current: false});
-                });
-
-                if (currentItem) {
-                    that._mod(currentItem, {current: true});
-                }
+                this._mod($('#item-' + item._id)[0], {current: true});
             }
+
+            _.each(itemsChain, function(item, key) {
+                var element = $('#item-' + item._id)[0];
+
+                this._mod(element, {expanded: true});
+            }, this);
         },
 
         /**
@@ -663,7 +601,7 @@ var Makeup = (function(win) {
             // Current Module
             if (diff.chain) {
                 this._renderModule(diff.chain);
-                // this._setCurrentMenuItem(diff.chain);
+                this._setCurrentMenuItem(diff.chain);
             }
 
             // Modes toggler
@@ -716,8 +654,6 @@ var Makeup = (function(win) {
                     smiley.checked = smileyValue;
                 }
             }
-
-            makeup._currentState = makeup._state.get();
 
             function has(key) {
                 return s.hasOwnProperty(key.toString());
