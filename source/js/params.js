@@ -37,58 +37,59 @@
             };
         }
 
+        var controlsPrefix = '.makeup[data-makeup=true] > .makeup__menu ';
+
         var out = _.merge({
             wrapper: $('body'),
 
             selectors: {
                 root: '.makeup',
 
-                searchInput: '.makeup__search-input',
+                searchInput:    '.makeup__search-input',
 
-                sidebar: '.makeup__aside',
-                scroller: '.makeup__aside-in',
-                scrollerTrack: '.makeup__aside-track',
+                sidebar:        '.makeup__aside',
+                sidebarToggler: controlsPrefix + '.makeup__sidebarToggler',
+                scroller:       '.makeup__aside-in',
+                scrollerTrack:  '.makeup__aside-track',
                 scrollerTrackBar: '.makeup__aside-track-bar',
 
-                nav: '.makeup__nav',
-                navList: '.makeup__nav-list',
-                navListItem: '.makeup__nav-list-item',
+                nav:            '.makeup__nav',
+                navList:        '.makeup__nav-list',
+                navListItem:    '.makeup__nav-list-item',
 
-                item: '.makeup__item',
-                itemHeader: '.makeup__item-header',
+                item:           '.makeup__item',
+                itemHeader:     '.makeup__item-header',
 
-                subnav: '.makeup__subnav',
-                subnavItem: '.makeup__subnav-item',
-                subnavLink: '.makeup__subnav-link',
+                modeControl:        controlsPrefix + '.makeup__mode',
+                bgControl:          controlsPrefix + '.makeup__bg',
 
-                modeControl: '.makeup__mode',
-                bgControl: '.makeup__bg',
+                slider:             controlsPrefix + '.makeup__slider',
+                sliderTrack:        '.makeup__slider-track',
+                sliderTrackRunner:  '.makeup__slider-track-runner',
 
-                slider: '.makeup__slider',
-                sliderTrack: '.makeup__slider-track',
-                sliderTrackRunner: '.makeup__slider-track-runner',
+                ruler:              '.makeup[data-makeup=true] > .makeup__main > .makeup__ruler > .makeup__ruler-track',
+                rulerTrack:         '.makeup__ruler-track-in',
+                rulerTrackActive:   '.makeup__ruler-track-active',
+                rulerTrackRunner:   '.makeup__ruler-track-runner',
+                rulerTrackPoint:    '.makeup__ruler-track-point',
 
-                ruler: '.makeup__ruler-track',
-                rulerTrack: '.makeup__ruler-track-in',
-                rulerTrackActive: '.makeup__ruler-track-active',
-                rulerTrackRunner: '.makeup__ruler-track-runner',
-                rulerTrackPoint: '.makeup__ruler-track-point',
+                smiley:             '.makeup__smiley',
 
-                statusBar: '.makeup__status',
+                statusBar:              '.makeup__status',
 
-                box: '.makeup__main',
-                container: '.makeup__container-in',
-                containerImage: '.makeup__container-image',
-                containerImageRegular: '.makeup__container-image-regular',
-                containerImageInverse: '.makeup__container-image-inverse',
-                containerMarkup: '.makeup__container-markup'
+                box:                    '.makeup__main',
+                container:              '.makeup__container-in',
+                containerImage:         '.makeup__container-image',
+                containerImageRegular:  '.makeup__container-image-regular',
+                containerImageInverse:  '.makeup__container-image-inverse',
+                containerMarkup:        '.makeup__container-markup'
             },
 
             modifiers: {
                 baron: 'makeup__aside--baron'
             },
 
-            menu: {
+            sidebar: {
                 tooltip: 'Toggle menu',
                 checked: true
             },

@@ -36,7 +36,7 @@ gulp.task('test', ['unit']);
 
 gulp.task('watch', function(callback) {
     // Templates
-    gulp.watch('./source/templates/*.html', ['templates', 'js']);
+    gulp.watch('./source/templates/*.hbs', ['templates', 'js']);
 
     // Scripts
     gulp.watch('./source/blocks/**/*.js', ['js']);

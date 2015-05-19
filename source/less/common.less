@@ -46,7 +46,7 @@ button {
         transform: translate(0, 0) translateZ(0);
         user-select: none;
 
-        .makeup--menu-false & {
+        .makeup--sidebar-false > & {
             transform: translate(-100%, 0) translateZ(0);
             }
         }
@@ -111,7 +111,7 @@ button {
         transition: left .3s ease;
         transform: translateZ(0);
 
-        .makeup--menu-false & {
+        .makeup--sidebar-false > & {
             left: 0;
             }
 
@@ -358,7 +358,7 @@ button {
             }
         }
 
-    .makeup__btn-label--menu:before {
+    .makeup__btn-label--sidebar:before {
         .bg('i_menu');
         margin: -6px 0 0 -8px;
         }
