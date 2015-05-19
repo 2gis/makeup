@@ -1,4 +1,6 @@
-(function(Makeup) {
+(function(global) {
+    var Makeup = global.M || {fn: {}}; // for tests
+
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup;
     }
@@ -187,4 +189,4 @@
             }, this);
         }
     };
-})(this.M);
+})(this);

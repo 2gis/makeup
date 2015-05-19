@@ -34,7 +34,6 @@ gulp.task('clean', function(callback) {
 gulp.task('t', ['jshint', 'unit']);
 gulp.task('test', ['unit']);
 
-
 gulp.task('watch', function(callback) {
     // Templates
     gulp.watch('./source/templates/*.html', ['templates', 'js']);
@@ -51,7 +50,6 @@ gulp.task('watch', function(callback) {
     gulp.watch('./source/blocks/**/*.less', ['css']);
     gulp.watch('./source/less/**/*.less', ['css']);
 });
-
 
 gulp.task('connect', function() {
     connect.server({

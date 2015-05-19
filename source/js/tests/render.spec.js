@@ -22,7 +22,7 @@ describe('Render module:', function() {
 
     describe('User callback →', function() {
 
-        describe('Module object →', function() {
+        describe.skip('Module object →', function() {
 
             before(function() {
 
@@ -140,7 +140,7 @@ describe('Render module:', function() {
 
         });
 
-        describe('Snippet →', function() {
+        describe.skip('Snippet →', function() {
 
             before(function() {
 

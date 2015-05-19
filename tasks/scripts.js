@@ -25,7 +25,7 @@ module.exports = function(buildOptions) {
         );
     });
 
-    gulp.task('copy-scripts', function() {
+    gulp.task('scripts.copy', function() {
         return (
             gulp
                 .src('node_modules/handlebars/dist/handlebars.js')
@@ -33,18 +33,18 @@ module.exports = function(buildOptions) {
         );
     });
 
-    gulp.task('build-scripts', function() {
+    gulp.task('scripts.build', function() {
         return (
             gulp
                 .src(_.compact([
                     'node_modules/handlebars/dist/handlebars.min.js',
-                    'node_modules/lodash/dist/lodash.min.js',
+                    'node_modules/lodash/index.js',
                     buildOptions.noJquery ? null : 'node_modules/jquery/dist/jquery.min.js',
-                    'node_modules/baron/baron.min.js',
-                    'node_modules/rader/rader.min.js',
-                    'source/js/makeup.js',
+                    'node_modules/baron/baron.js',
+                    'node_modules/rader/rader.js',
                     'source/js/*.js',
-                    'temp/templates.js'
+                    'temp/partials.js',
+                    'source/js/makeup.js'
                 ]))
                 .pipe(concat('makeup.js'))
                 .pipe(headerfooter.header(header))
@@ -55,6 +55,6 @@ module.exports = function(buildOptions) {
     });
 
     return function(callback) {
-        runSequence('jshint', 'build-scripts', 'copy-scripts', callback);
+        runSequence('jshint', 'scripts.build', 'scripts.copy', callback);
     };
 };

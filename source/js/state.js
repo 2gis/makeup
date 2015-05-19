@@ -3,43 +3,52 @@
  *
  * @requires jQuery
  */
-var State = (function() {
+var State = (function(win) {
     var state;
 
     function State(params) {
-        if (typeof state == 'object') {
+        if (typeof state == 'object') { // @TODO is singleton needed here?
             return state;
-        }
-        else {
+        } else {
             state = this;
         }
 
         state._init(params);
     }
 
+    var codec = {
+        chain: {
+            priority: 10,
+            serialize: function(arr) {
+                return arr.join('~');
+            },
+            parse: function(str) {
+                return str.split('~');
+            }
+        }
+    };
+
+    var validators = {
+        transparency: function(value) {
+            return Number(value).toFixed(2);
+        },
+        all: function(value) {
+            if (_.isObject(value)) {
+                return value;
+            } else {
+                return String(value);
+            }
+        }
+    };
+
     State.prototype = {
         constructor: State,
 
         _init: function(params) {
-            this._params = this._path2object(this._getHash()) || {};
+            this.actualState = this._path2object(this._getHash()) || {};
+            this._validateState(this.actualState);
 
-            this._bindEventListeners();
-
-            this.set(params);
-        },
-
-        _bindEventListeners: function() {
-            var state = this,
-                jqWindow = $(window);
-
-            jqWindow.on('hashchange.Makeup', function() {
-                state._setParams(state._path2object(state._getHash()));
-
-                jqWindow.trigger({
-                    type: 'statechange',
-                    state: state._params
-                });
-            });
+            this.wantedState = _.cloneDeep(this.actualState);
         },
 
         /**
@@ -58,12 +67,14 @@ var State = (function() {
                     value;
 
                 for (var i = 1; i < pathParts.length; i+=2) {
-                    key = pathParts[i];
-                    value = pathParts[i + 1];
+                    key = decodeURIComponent(pathParts[i]);
+                    value = decodeURIComponent(pathParts[i + 1]);
 
-                    if (key.length) {
-                        object[key] = decodeURIComponent(value);
+                    if (codec[key]) {
+                        value = codec[key].parse(value);
                     }
+
+                    object[key] = value;
                 }
             }
 
@@ -80,9 +91,29 @@ var State = (function() {
         _object2path: function(object) {
             var path = '!';
 
-            for (var key in object) {
-                path = path + '/' + encodeURIComponent(key) + '/' + encodeURIComponent(object[key]);
-            }
+            var pairs = _.map(object, function(value, key) {
+                return {
+                    key: key,
+                    value: value,
+                    priority: codec[key] && codec[key].priority || 0
+                };
+            });
+            pairs = _.sortBy(pairs, function(pair) {
+                return -pair.priority;
+            });
+
+            _.each(pairs, function(pair) {
+                var value = pair.value;
+                var key = pair.key;
+
+                if (codec[key]) {
+                    value = codec[key].serialize(value);
+                }
+
+                value = encodeURIComponent(value);
+
+                path = path + '/' + encodeURIComponent(key) + '/' + value;
+            });
 
             return path;
         },
@@ -93,7 +124,9 @@ var State = (function() {
          * @param {String} hash
          */
         _setHash: function(hash) {
-            window.location.hash = hash;
+            if (typeof window == 'undefined') return '';
+
+            return window.location.hash = hash;
         },
 
         /**
@@ -102,25 +135,75 @@ var State = (function() {
          * @returns {String} The hash string
          */
         _getHash: function() {
+            if (typeof window == 'undefined') return '';
+
             var hash = window.location.hash;
 
             if (hash.length) {
-                return hash.split('!')[1];
+                return hash.replace(/^!/, '');
             }
 
             return '';
         },
 
         /**
-         * Sets state params according to `params`,
+         * Sets state state according to `state`,
          *
-         * @param {Object} params Key-value object
+         * @param {Object} state Key-value object
          */
-        _setParams: function(params) {
-            for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    this._params[key] = params[key];
+        _setActualState: function(state) {
+            return this.actualState = _.clone(state);
+        },
+
+        _validateState: function(state) {
+            _.each(state, function(value, key) {
+                if (validators[key]) {
+                    state[key] = validators[key](value);
                 }
+
+                state[key] = validators.all(state[key]);
+            });
+
+            return state;
+        },
+
+        /**
+         * Public methods
+         */
+
+        /**
+         * Sets state according to `params`, but didnt push it
+         *
+         * @param {Object} diff
+         *
+         * @returns {Object} State object
+         */
+        want: function(diff) {
+            _.extend(this.wantedState, diff);
+            this._validateState(this.wantedState);
+
+            return this.wantedState;
+        },
+
+        /**
+         * Sets accumulated wanted state to actual state
+         */
+        push: function() {
+            var diff = this.diff();
+
+            if (diff) {
+                this._setActualState(this.wantedState);
+                this._setHash(this._object2path(this.actualState));
+
+                if (typeof window != 'undefined') {
+                    $(window).trigger({
+                        type: 'statechange',
+                        state: _.cloneDeep(this.actualState),
+                        diff: _.cloneDeep(diff)
+                    });
+                }
+            } else {
+                // do nothing
             }
         },
 
@@ -129,22 +212,16 @@ var State = (function() {
          * changes hash value,
          * triggers 'statechange' event
          *
-         * @param {Object} params Key-value object
+         * @param {Object} diff Key-value object
          *
          * @returns {Object} State object
          */
-        set: function(params) {
-            this._setParams(params);
-            this._setHash(this._object2path(this._params));
+        set: function(diff) {
+            _.extend(this.wantedState, diff);
+            this._validateState(this.wantedState);
+            this.push();
 
-            var jqWindow = $(window);
-
-            jqWindow.trigger({
-                type: 'statechange',
-                state: this._params
-            });
-
-            return this._params;
+            return this.actualState;
         },
 
         /**
@@ -155,13 +232,39 @@ var State = (function() {
          * @returns {String|Object} The value
          */
         get: function(key) {
-            if (typeof key == 'undefined') {
-                return this._params;
+            if (!key) {
+                return this.actualState;
             }
 
-            return (this._params.hasOwnProperty(key)) ? this._params[key] : null;
+            return this.actualState[key];
+        },
+
+        /**
+         * State comparator
+         *
+         * @param {Object} oldState first state for comparison
+         * @param {Object} [newState] second state for comparison (actual state by default)
+         * @returns {Object} Difference between oldState and newState
+         */
+        diff: function(oldState, newState) {
+            oldState = oldState || this.actualState;
+            newState = newState || this.wantedState;
+
+            var ret = _.reduce(newState, function(diff, value, key) {
+                if (!_.isEqual(value, oldState[key])) {
+                    diff[key] = value;
+                }
+
+                return diff;
+            }, {}, this);
+
+            return _.isEmpty(ret) ? undefined : ret;
         }
     };
 
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = State;
+    }
+
     return State;
-})();
+})(this);

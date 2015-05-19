@@ -147,18 +147,18 @@
 <script>
 
     M.templating(function(params) {
-        if (params.modulename == 'makeup') {
-            return makeupTemplates.makeup(makeupCtx);
+        if (params.module == 'makeup') {
+            return Handlebars.partials.makeup(makeupCtx);
         }
 
-        if (params.modulename == 'Hello World!') {
+        if (params.module == 'Hello World!') {
             return '<div class="helloworld">Hello World!</div>';
         }
 
-        if (params.modulename == 'miniCard') {
+        if (params.module == 'miniCard') {
             var source   = $("#miniCard").html();
             var template = Handlebars.compile(source);
-            var html = template(miniCardCtx[params.typename]);
+            var html = template(miniCardCtx[params.item]);
             return html;
         }
         return 'Просто текст';

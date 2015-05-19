@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/makeup.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "gulp unit",
     "start": "gulp"
   },
   "repository": {
@@ -41,6 +41,7 @@
     "gulp-svgmin": "^0.4.6",
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^3.0.0",
+    "gulp-wrap": "^0.11.0",
     "gulp.spritesmith": "^1.2.0",
     "html-minifier": "^0.6.6",
     "jshint-stylish": "^0.4.0",
@@ -51,7 +52,7 @@
     "jquery": "1.11.1",
     "rader": "git://github.com/2gis/rader.git#0.2.2",
     "baron": "git://github.com/Diokuz/baron.git#0.7.9",
-    "handlebars": "~1.3.0",
-    "lodash": "~2.4.1"
+    "handlebars": "~3.0.3",
+    "lodash": "~3.8.0"
   }
 }

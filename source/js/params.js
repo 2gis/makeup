@@ -1,4 +1,10 @@
-(function(Makeup) {
+(function(global) {
+    var Makeup = global.M || {fn: {}}; // for tests
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup;
+    }
+
     var internationalDelimiters = {
         be: '__',
         bm: '--',
@@ -25,7 +31,13 @@
     };
 
     Makeup.fn._getParams = function(params) {
-        return _.merge({
+        if (_.isArray(params)) { // Если переданы только данные
+            params = {
+                data: params
+            };
+        }
+
+        var out = _.merge({
             wrapper: $('body'),
 
             selectors: {
@@ -42,8 +54,8 @@
                 navList: '.makeup__nav-list',
                 navListItem: '.makeup__nav-list-item',
 
-                module: '.makeup__module',
-                moduleHeader: '.makeup__module-header',
+                item: '.makeup__item',
+                itemHeader: '.makeup__item-header',
 
                 subnav: '.makeup__subnav',
                 subnavItem: '.makeup__subnav-item',
@@ -73,8 +85,6 @@
             },
 
             modifiers: {
-                hiddenModule: 'makeup__module--hidden',
-                hiddenModuleType: 'makeup__subnav-link--hidden',
                 baron: 'makeup__aside--baron'
             },
 
@@ -179,5 +189,26 @@
 
             namingRules: internalNamingRules
         }, params);
+
+        var i = 0;
+        function makeIds(item) {
+            if (_.isArray(item)) {
+                _.each(item, makeIds);
+            } else if (!item) {
+                return;
+            }
+
+            item._id = i++;
+
+            makeIds(item.items);
+        }
+
+        makeIds(out.data[0].items);
+
+        return out;
     };
-})(this.M);
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup.fn;
+    }
+})(this);
