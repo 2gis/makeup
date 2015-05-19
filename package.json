@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/makeup.js",
   "scripts": {
-    "test": "gulp unit",
-    "start": "gulp"
+    "start": "gulp",
+    "test": "gulp t"
   },
   "repository": {
     "type": "git",
