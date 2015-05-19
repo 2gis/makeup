@@ -6,6 +6,7 @@ describe('View model:', function() {
 
     before(function() {
         makeup = require('../makeup');
+        _.extend(makeup, require('../utils'));
     });
 
     describe('_parseItem', function() {
@@ -98,7 +99,7 @@ describe('View model:', function() {
         it('One valid item: ["one"] → [{ name: "one", label: "one" }]', function() {
             var result = makeup._parseCollection(['one']);
 
-            assert.deepEqual(result, [{ name: "one", label: "one" }]);
+            assert.deepEqual(result, [{ name: "one", label: "one", index: "one" }]);
         });
 
         it('Многовложенная структура', function() {
