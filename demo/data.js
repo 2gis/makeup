@@ -77,7 +77,7 @@ var makeupCtx = {
         baron: 'makeup__aside--baron'
     },
 
-    menu: {
+    sidebar: {
         tooltip: 'Toggle menu',
         checked: true
     },

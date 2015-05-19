@@ -45,6 +45,8 @@ var Makeup = (function(win) {
             this._bindListeners();
             this._misc();
 
+            // No user blocks in dom allowed before this line
+
             this._state.push(); // wanted state -> actual state
             this._obey(this._state.get()); // init actual state
 
@@ -69,6 +71,8 @@ var Makeup = (function(win) {
 
         // Кэширует некоторые DOM-элементы, созданные на этапе render
         _assignSelectors: function() {
+            $(this._params.selectors.root).attr('data-makeup', true);
+
             _.each(this._params.selectors, function(item, key) {
                 this.el[key] = $(item);
             }, this);
@@ -133,25 +137,25 @@ var Makeup = (function(win) {
             });
 
             // Hiding sidebar
-            if (this._params.menu) {
-                var sidebarToggler = $('#makeup-menu');
+            if (this._params.sidebar) {
+                var sidebarToggler = this.el.sidebarToggler;
 
                 // Set default mode
-                if (!this._state.get('menu')) {
-                    var defaultMenu = this._mod(makeupRootElement).menu || true;
+                if (!this._state.get('sidebar')) {
+                    var defaultSidebarState = this._mod(makeupRootElement).sidebar || true;
 
-                    this._state.want({ menu: defaultMenu });
+                    this._state.want({ sidebar: defaultSidebarState });
                 }
 
                 sidebarToggler.on('change', function() {
-                    self._state.set({ menu: this.checked });
+                    self._state.set({ sidebar: this.checked });
                 });
 
                 win.on('keydown', function(e) {
                     var key = self._getKey(e);
 
                     if (key == 192 || key == 220) {
-                        self._state.set({ menu: !sidebarToggler[0].checked });
+                        self._state.set({ sidebar: !sidebarToggler[0].checked });
                     }
                 });
             }
@@ -271,6 +275,7 @@ var Makeup = (function(win) {
             }
             makeup._state.want(defaultMode);
 
+            console.log('modeControl', modeControl);
             modeControl.on('change', function() {
                 var out = {};
 
@@ -348,13 +353,15 @@ var Makeup = (function(win) {
         },
 
         _setCurrentBackground: function(value) {
-            if (this.el.bgControl.filter('[value="' + value + '"]')[0].checked == true) {
+            var bgControl = this.el.bgControl;
+
+            if (bgControl.filter('[value="' + value + '"]')[0].checked == true) {
                 return;
             }
 
-            this.el.bgControl.each(function(i) {
-                if (bgControl[i].value == value) {
-                    bgControl[i].checked = true;
+            bgControl.each(function() {
+                if (this.value == value) {
+                    this.checked = true;
                 }
             });
         },
@@ -571,7 +578,7 @@ var Makeup = (function(win) {
 
         _bindSmileyListeners: function() {
             var self = this,
-                smiley = $('#makeup-smiley'),
+                smiley = this.el.smiley,
                 makeupElement = $(this._params.selectors.root);
 
             // Set default smiley value
@@ -614,15 +621,15 @@ var Makeup = (function(win) {
                 this._mod(makeupElement[0], {bg: s.bg});
             }
 
-            // Menu toggler
-            if (diff.menu) {
-                var menu = $('#makeup-menu')[0],
-                    menuValue = s.menu == 'true';
+            // Sidebar toggler
+            if (diff.sidebar) {
+                var sidebarToggler = this.el.sidebarToggler,
+                    sidebarValue = s.sidebar == 'true';
 
-                this._mod(makeupElement[0], {menu: s.menu});
+                this._mod(makeupElement[0], {sidebar: s.sidebar});
 
-                if (menu.checked !== menuValue) {
-                    menu.checked = menuValue;
+                if (sidebarToggler.checked !== sidebarValue) {
+                    sidebarToggler.checked = sidebarValue;
                 }
             }
 
@@ -643,7 +650,7 @@ var Makeup = (function(win) {
 
             // Smiley
             if (diff.smiley) {
-                var smiley = $('#makeup-smiley')[0],
+                var smiley = this.el.smiley[0],
                     smileyValue = s.smiley == 'true';
 
                 this._mod(makeupElement[0], {smiley: s.smiley});
@@ -810,6 +817,15 @@ var Makeup = (function(win) {
                     };
                 }, this);
             }
+
+            var inc = 0;
+            out.next = function() {
+                return ++inc;
+            };
+            out.current = function() {
+                return inc;
+            };
+            out.id = new Date().getTime();
 
             return out;
         },
