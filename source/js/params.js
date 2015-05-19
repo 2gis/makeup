@@ -192,19 +192,28 @@
         }, params);
 
         var i = 0;
-        function makeIds(item) {
+        /**
+         * Tree traversal — make uniq ids & build chains
+         */
+        function traverseItems(item, parent, index) {
+            if (!item) return;
+
             if (_.isArray(item)) {
-                _.each(item, makeIds);
-            } else if (!item) {
-                return;
+                return _.each(item, function(item, index) {
+                    traverseItems(item, parent, index);
+                });
             }
 
-            item._id = i++;
+            item._id = parent._id + (parent._id ? '-' : '') + index; // ids like "#1-0-0-4"
+            item._chain = parent._chain.slice(0).concat(item.name || 'Untitled'); // slice to clone array
 
-            makeIds(item.items);
+            traverseItems(item.items, item, index);
         }
 
-        makeIds(out.data[0].items);
+        traverseItems(out.data[0].items, {
+            _id: '',
+            _chain: []
+        }, 0);
 
         return out;
     };
