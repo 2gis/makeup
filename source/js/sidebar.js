@@ -2,7 +2,10 @@
  * Sidebar logic: search, item navigation
  */
 (function(global) {
-    var Makeup = global.M || {fn: {}}; // for tests
+    var Makeup = global.Makeup || {fn: {}}; // for tests
+    var $ = Makeup.$;
+    var _ = Makeup._;
+    var Handlebars = Makeup.Handlebars;
 
     /**
      * Sidebar
@@ -11,8 +14,7 @@
         var self = this,
             makeupRootElement = $(this._params.selectors.root)[0],
             sidebar = $(this._params.selectors.sidebar),
-            itemHeader = $(this._params.selectors.itemHeader),
-            win = $(window);
+            itemHeader = $(this._params.selectors.itemHeader);
 
         itemHeader.on('click', function() {
             var item = self._getItemById(this.parentNode.id);
@@ -41,13 +43,15 @@
                 self._state.set({ sidebar: this.checked });
             });
 
-            win.on('keydown', function(e) {
-                var key = self._getKey(e);
+            if (typeof window != 'undefined') {
+                $(window).on('keydown', function(e) {
+                    var key = self._getKey(e);
 
-                if (key == 192 || key == 220) {
-                    self._state.set({ sidebar: !sidebarToggler[0].checked });
-                }
-            });
+                    if (key == 192 || key == 220) {
+                        self._state.set({ sidebar: !sidebarToggler[0].checked });
+                    }
+                });
+            }
         }
 
         this._baron = sidebar.baron({

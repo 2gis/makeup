@@ -1,3 +1,13 @@
+(function(global) {
+
+var lodash, hbs;
+
+if (typeof window != 'undefined') {
+    lodash = global._.noConflict();
+    hbs = global.Handlebars;
+    hbs && hbs.noConflict(); // doesnt return anything
+}
+
 /**
  * Wake up!
  * Grab a brush and put a little makeup!
@@ -5,25 +15,36 @@
  * @requires jQuery
  * @requires lodash
  */
-var Makeup = (function(win) {
+(function(global) {
     var _makeup;
 
-    function Makeup(options) {
+    var $;
+    if (global.jQuery) {
+        $ = Makeup.$ = global.jQuery.noConflict();
+    }
+    var _ = Makeup._ = lodash;
+    var Handlebars = Makeup.Handlebars = hbs;
+
+    function Makeup(options, templating) {
         if (_makeup) { // Singleton
             return _makeup;
         }
 
         if (!(this instanceof Makeup)) { // Rezig constructor
-            return new Makeup(options);
+            return new Makeup(options, templating);
         }
 
         _makeup = this;
+        if (_.isFunction(templating)) {
+            this._templating = templating;
+        }
         this._init(options);
     }
 
-    Makeup.init = Makeup;
     Makeup.templating = function(fn) {
-        var html = Makeup._templating = fn;
+        if (!_.isFunction(fn)) throw new TypeError('Makeup.templating: fn must be a function.');
+
+        Makeup._templating = fn;
     };
 
     Makeup.fn = Makeup.prototype = {
@@ -41,7 +62,7 @@ var Makeup = (function(win) {
 
             this._params = this._getParams(options); // @see params.js
             this._items = this._params.data && this._params.data[0] && this._params.data[0].items; // @TODO use all data, root groups must work as regular groups
-            this._state = new State();
+            this._state = new this._State();
 
             this._render();
             this._assignSelectors();
@@ -51,7 +72,10 @@ var Makeup = (function(win) {
             // No user blocks in dom allowed before this line
 
             this._state.push(); // wanted state -> actual state
-            this._obey(this._state.get()); // init actual state
+
+            // setTimeout(_.bind(function() {
+                this._obey(this._state.get()); // init actual state
+            // }, this), 0); // async call for initializing _templating variable
 
             return this;
         },
@@ -84,8 +108,7 @@ var Makeup = (function(win) {
         },
 
         _bindListeners: function() {
-            var params = this._params,
-                win = $(window);
+            var params = this._params;
             /*
             — поиск
             — линейки
@@ -103,7 +126,7 @@ var Makeup = (function(win) {
             if (params.ruler) this._bindRulerListeners();
             if (params.smiley) this._bindSmileyListeners();
 
-            win.on('statechange', _.bind(this._statechange, this));
+            $(window).on('statechange', _.bind(this._statechange, this));
         },
 
         /**
@@ -120,7 +143,6 @@ var Makeup = (function(win) {
             var makeup = this,
                 makeupElement = $(makeup._params.selectors.root),
                 modeControl = $(makeup._params.selectors.modeControl),
-                win = $(window),
                 defaultMode = {};
 
             // Set default mode
@@ -148,7 +170,7 @@ var Makeup = (function(win) {
                 makeup._state.set(out);
             });
 
-            win.on('keydown', function(e) {
+            $(window).on('keydown', function(e) {
                 var key = makeup._getKey(e);
 
                 switch (key) {
@@ -234,9 +256,7 @@ var Makeup = (function(win) {
                 slider = $(params.selectors.slider).filter('.makeup__slider--transparency'),
                 sliderTrack = slider.find(params.selectors.sliderTrack),
                 sliderTrackRunner = slider.find(params.selectors.sliderTrackRunner),
-                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
-
-                win = $(window);
+                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint);
 
             var updateTimeout;
 
@@ -259,7 +279,7 @@ var Makeup = (function(win) {
                 }
             });
 
-            win.on('keydown', function(e) {
+            $(window).on('keydown', function(e) {
                 var key = makeup._getKey(e),
                     cur = params.transparency.rader.val(0),
                     slider = makeup._params.transparency.slider,
@@ -309,9 +329,7 @@ var Makeup = (function(win) {
                 slider = $(params.selectors.slider).filter('.makeup__slider--zoom'),
                 sliderTrack = slider.find(params.selectors.sliderTrack),
                 sliderTrackRunner = slider.find(params.selectors.sliderTrackRunner),
-                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint),
-
-                win = $(window);
+                sliderTrackPoint = slider.find(params.selectors.sliderTrackPoint);
 
             var updateTimeout;
 
@@ -334,7 +352,7 @@ var Makeup = (function(win) {
                 }
             });
 
-            win.on('keydown', function(e) {
+            $(window).on('keydown', function(e) {
                 var key = makeup._getKey(e),
                     cur = params.zoom.rader.val(0),
                     slider = makeup._params.zoom.slider,
@@ -561,7 +579,7 @@ var Makeup = (function(win) {
             this._loadImage(src);
 
             // data -> html
-            var html = Makeup._templating.call(this, instance);
+            var html = this._templating(instance);
             this._containerMarkup.html(html);
 
             // Навешиваем допклассы на блок
@@ -786,8 +804,11 @@ var Makeup = (function(win) {
 
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.prototype;
+        Handlebars = require('handlebars');
+        _ = require('lodash');
     }
 
-    win.M = Makeup;
-    win.lodash = _;
+    global.Makeup = Makeup;
+})(global);
+
 })(this);

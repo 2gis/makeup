@@ -1,5 +1,8 @@
 (function(global) {
-    var Makeup = global.M || {fn: {}}; // for tests
+    var Makeup = global.Makeup || {fn: {}}; // for tests
+    var $ = Makeup.$;
+    var _ = Makeup._;
+    var Handlebars = Makeup.Handlebars;
 
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup;

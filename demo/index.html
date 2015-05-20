@@ -142,13 +142,12 @@
 </script>
 
 <script src="data.js"></script>
-<script src="../dist/handlebars.js"></script>
 <script src="../dist/makeup.js"></script>
 <script>
 
-    M.templating(function(params) {
+    Makeup(data, function(params) {
         if (params.module == 'makeup') {
-            return Handlebars.partials.makeup(makeupCtx);
+            return Makeup.Handlebars.partials.makeup(makeupCtx);
         }
 
         if (params.module == 'Hello World!') {
@@ -156,15 +155,15 @@
         }
 
         if (params.module == 'miniCard') {
-            var source   = $("#miniCard").html();
-            var template = Handlebars.compile(source);
+            var source   = Makeup.$("#miniCard").html();
+            var template = Makeup.Handlebars.compile(source);
             var html = template(miniCardCtx[params.item]);
+
             return html;
         }
-        return 'Просто текст';
-    });
 
-    M.init(data);
+        return 'Hello World!';
+    });
 
 </script>
 </body>
