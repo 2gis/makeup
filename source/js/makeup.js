@@ -758,7 +758,8 @@ if (typeof window != 'undefined') {
 
         /**
          * Gets item by id
-         * @param {String} id - element's id attribute in format "1234567-item-1-3-3-7"
+         * @param {String} id - element's id attribute in format "1234567-item-1-3-3-7" or "1-3-3-7"
+         * @param {Boolean} isInternal - if true, get item by _id, else my element id
          * @return {Object}
          */
         _getItemById: function(id) {
@@ -766,7 +767,11 @@ if (typeof window != 'undefined') {
                 items: this._items
             };
 
-            var ids = id.split('-').slice(2); // '1234567-item-1-3-3-7' --> ['1','3','3','7']
+            var ids = id.split('-');
+
+            if (ids[1] == 'item') { // if '1234567-item-1-3-3-7'
+                ids = ids.slice(2); // '1234567-item-1-3-3-7' --> ['1','3','3','7']
+            }
 
             return _.reduce(ids, function(item, id) {
                 items = item.items;

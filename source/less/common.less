@@ -604,16 +604,19 @@ button {
         padding-left: 13px;
         }
 
-    &--hidden {
-        display: none;
-        }
-
     .makeup__item--expandable > & { // nested item
         display: none;
         }
     .makeup__item--expanded > & {
         display: block;
         }
+
+    &--hidden,
+    .makeup__item--expanded > &--hidden { // need specify 020+ for hiding children of expanded items
+        display: none;
+        }
+
+
     }
 
 
@@ -652,6 +655,11 @@ button {
             }
 
         .makeup__item--highlight > & {
+            font-weight: bold;
+            }
+
+        .makeup__item--matched > & {
+            color: #fff;
             font-weight: bold;
             }
         }
