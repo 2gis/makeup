@@ -37,7 +37,10 @@ var Makeup = (function(win) {
 
         // Инициализация makeup: подтягивание конфига, данных, рендеринг, навешивание событий
         _init: function(options) {
+            this._instanceId = new Date().getTime() % 100000000; // ~ 1 day
+
             this._params = this._getParams(options); // @see params.js
+            this._items = this._params.data && this._params.data[0] && this._params.data[0].items; // @TODO use all data, root groups must work as regular groups
             this._state = new State();
 
             this._render();
@@ -111,154 +114,6 @@ var Makeup = (function(win) {
         },
 
         /**
-         * Menu
-         */
-        _bindMenuListeners: function() {
-            var self = this,
-                makeupRootElement = $(this._params.selectors.root)[0],
-                sidebar = $(this._params.selectors.sidebar),
-                itemHeader = $(this._params.selectors.itemHeader),
-                win = $(window);
-
-            itemHeader.on('click', function() {
-                var item = this.parentNode;
-
-                if (self._mod(item).expandable) { // Item which has a list of another items
-                    self._toggleMenuItem(item);
-                } else { // "End"-item, which has corresponding html representation
-                    var chain = _.map($(this).parents(self._params.selectors.item), function(el) {
-                        return $(el).data('name');
-                    }).reverse();
-
-                    self._state.set({
-                        chain: chain
-                    });
-                }
-            });
-
-            // Hiding sidebar
-            if (this._params.sidebar) {
-                var sidebarToggler = this.el.sidebarToggler;
-
-                // Set default mode
-                if (!this._state.get('sidebar')) {
-                    var defaultSidebarState = this._mod(makeupRootElement).sidebar || true;
-
-                    this._state.want({ sidebar: defaultSidebarState });
-                }
-
-                sidebarToggler.on('change', function() {
-                    self._state.set({ sidebar: this.checked });
-                });
-
-                win.on('keydown', function(e) {
-                    var key = self._getKey(e);
-
-                    if (key == 192 || key == 220) {
-                        self._state.set({ sidebar: !sidebarToggler[0].checked });
-                    }
-                });
-            }
-
-            this._baron = sidebar.baron({
-                scroller: this._params.selectors.scroller,
-                track:    this._params.selectors.scrollerTrack,
-                bar:      this._params.selectors.scrollerTrackBar,
-                barOnCls: this._params.modifiers.baron
-            });
-        },
-
-        /**
-         * Apply state in aside panel
-         */
-        _setCurrentMenuItem: function(chain) {
-            var self = this;
-            var itemsChain = this._itemsChain(chain);
-            var youngestItem = _.last(itemsChain);
-
-            if (!youngestItem.items) { // last item in hierarchy
-                var item = itemsChain.pop();
-                this.el.item.each(function() {
-                    self._mod(this, {current: false});
-                });
-                this._mod($('#item-' + item._id)[0], {current: true});
-            }
-
-            _.each(itemsChain, function(item, key) {
-                var element = $('#item-' + item._id)[0];
-
-                this._mod(element, {expanded: true});
-            }, this);
-        },
-
-        /**
-         * Toggle navigation item
-         */
-        _toggleMenuItem: function(directory) {
-            this._mod(directory, {expanded: !this._mod(directory).expanded});
-            this._baron.update();
-        },
-
-        /**
-         * Search
-         */
-        _search: function(query) {
-            var makeup = this,
-                items = $(makeup._params.selectors.item);
-
-            items.each(function() {
-                this._shown = !query; // if no query, show all, else hide
-                this._highlight = false;
-            });
-
-            if (query) {
-                query = query.split(/[\s\/]+/); // split by slash and space
-                var selector = _.reduce(query, function(sel, part) {
-                    if (part) {
-                        sel += '[data-index*="' + part.toLowerCase() + '"] ';
-                    }
-                    return sel;
-                }, '');
-
-                items.filter(selector).each(function() {
-                    this._shown = true;
-                    this._highlight = true;
-                    // show and expand all parent items
-                    $(this).parents(makeup._params.selectors.item).each(function() {
-                        this._shown = true;
-                        this._expanded = true;
-                    });
-                    // show all child items
-                    $(this).find(makeup._params.selectors.item).each(function() {
-                        this._shown = true;
-                    });
-                });
-            }
-
-            items.each(function() {
-                makeup._mod(this, {
-                    hidden: !this._shown,
-                    highlight: this._highlight,
-                    expanded: this._expanded
-                });
-            });
-        },
-
-        /**
-         * Search control listeners
-         */
-        _bindSearchListeners: function() {
-            var makeup = this,
-                searchInput = $(makeup._params.selectors.searchInput),
-                module = $(makeup._params.selectors.item),
-                moduleType = $(makeup._params.selectors.itemType);
-
-            searchInput.on('keyup', function() {
-                makeup._search(searchInput.val());
-            });
-        },
-
-        /**
          * Mode control listeners
          */
         _bindModesListeners: function() {
@@ -275,7 +130,6 @@ var Makeup = (function(win) {
             }
             makeup._state.want(defaultMode);
 
-            console.log('modeControl', modeControl);
             modeControl.on('change', function() {
                 var out = {};
 
@@ -603,9 +457,9 @@ var Makeup = (function(win) {
                 params = this._params,
                 makeupElement = $(this._params.selectors.root);
 
-            // Current Module
+            // Current item
             if (diff.chain) {
-                this._renderModule(diff.chain);
+                this._renderItem(diff.chain);
                 this._setCurrentMenuItem(diff.chain);
             }
 
@@ -673,9 +527,9 @@ var Makeup = (function(win) {
         },
 
         /**
-         * Render module
+         * Render item
          */
-        _renderModule: function(chain) {
+        _renderItem: function(chain) {
             var itemsChain = this._itemsChain(chain);
             var instance = _.reduce(itemsChain, function(result, item) {
                 result[item.type] = item.name;
@@ -825,7 +679,8 @@ var Makeup = (function(win) {
             out.current = function() {
                 return inc;
             };
-            out.id = new Date().getTime();
+
+            out.instanceId = this._instanceId;
 
             return out;
         },
@@ -880,6 +735,34 @@ var Makeup = (function(win) {
             }
 
             return false;
+        },
+
+
+        /**
+         * Gets item by id
+         * @param {String} id - element's id attribute in format "1234567-item-1-3-3-7"
+         * @return {Object}
+         */
+        _getItemById: function(id) {
+            var rootItem = {
+                items: this._items
+            };
+
+            var ids = id.split('-').slice(2); // '1234567-item-1-3-3-7' --> ['1','3','3','7']
+
+            return _.reduce(ids, function(item, id) {
+                items = item.items;
+                return items && items[id] ? items[id] : null;
+            }, rootItem);
+        },
+
+        /**
+         * Gets item element by item._id
+         * @param {String} id - item's id in format "1-3-3-7"
+         * @return {Element}
+         */
+        _getItemElementById: function(id) {
+            return $('#' + this._instanceId + '-item-' + id)[0];
         }
     };
 
