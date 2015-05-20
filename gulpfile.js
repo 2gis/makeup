@@ -7,19 +7,16 @@ var config = require('./config.js');
 var del = require('del');
 
 var buildOptions = {
-        release: 'r' in args || 'release' in args,
-        noJquery: 'noJquery' in args
-    };
+    release: 'r' in args || 'release' in args
+};
 
 
 gulp.task('default', function() {
     return gulp.start('dev');
 });
 
-
-gulp.task('d', ['dev']);
 gulp.task('dev', function(callback) {
-    return runSequence('build', 'connect', 'watch', callback);
+    return runSequence('hooks.install', 'build', 'connect', 'watch', callback);
 });
 
 
@@ -64,3 +61,4 @@ gulp.task('sprite', require('./tasks/sprite')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
 gulp.task('test', require('./tasks/tests')(buildOptions));
+require('./tasks/hooks')(buildOptions);
