@@ -1,5 +1,13 @@
 (function(global) {
-    var Makeup = global.M || {fn: {}}; // for tests
+    var Makeup = global.Makeup || {fn: {}}; // for tests
+    var $ = Makeup.$;
+    var _ = Makeup._;
+    var Handlebars = Makeup.Handlebars;
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = Makeup.fn;
+        _ = require('lodash');
+    }
 
     Makeup.fn._itemsChain = function(chain, item) {
         item = item || this._params.data[0];
@@ -149,30 +157,10 @@
     };
 
     /**
-     * @param {string} re
-     * @returns {string}
-     */
-    // Makeup.fn.escapeRegExp = function(re) {
-    //     return re.replace(/([?!\.{}[+\-\]^|$(=:)\/\\*])/g, '\\$1');
-    // };
-
-    /**
      * @param {string} str
      * @returns {string}
      */
     Makeup.fn._escapeHTML = function(str) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     };
-
-    /**
-     * @param {string} str
-     * @returns {string}
-     */
-    // Makeup.fn.stripTags = function(str) {
-    //     return str.replace(/<[^>]+>/g, '');
-    // };
-
-    if (typeof TEST != 'undefined' && TEST) {
-        module.exports = Makeup.fn;
-    }
 })(this);

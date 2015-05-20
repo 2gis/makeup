@@ -3,17 +3,28 @@
  *
  * @requires jQuery
  */
-var State = (function(win) {
-    var state;
+(function(global) {
+    var Makeup = global.Makeup || {fn: {}}; // for tests
+    var _state;
+    var $ = Makeup.$;
+    var _ = Makeup._;
+    var Handlebars = Makeup.Handlebars;
+
+    if (typeof TEST != 'undefined' && TEST) {
+        module.exports = State;
+        _ = require('lodash');
+    }
+
+    Makeup.fn._State = State;
 
     function State(params) {
-        if (typeof state == 'object') { // @TODO is singleton needed here?
-            return state;
+        if (typeof _state == 'object') { // @TODO is singleton needed here?
+            return _state;
         } else {
-            state = this;
+            _state = this;
         }
 
-        state._init(params);
+        _state._init(params);
     }
 
     var codec = {
@@ -261,10 +272,6 @@ var State = (function(win) {
             return _.isEmpty(ret) ? undefined : ret;
         }
     };
-
-    if (typeof TEST != 'undefined' && TEST) {
-        module.exports = State;
-    }
 
     return State;
 })(this);

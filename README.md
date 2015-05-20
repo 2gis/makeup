@@ -58,22 +58,11 @@ Makeup предназначен
 
 
 ```js
-new Makeup({
-
-    renderModule: function(module) {
-        var containerSelector = this._params.selectors.containerMarkup,
-            html = document.querySelector('.' + module.modulename).outerHTML;
-
-        document.querySelector(containerSelector).innerHTML = html;
-    },
-
-    data: {
-        name: 'Blocks',
-        items: [{
-            name: 'button',
-            image: 'button.png'
-        }]
-    }
+Makeup([{
+    name: 'button',
+    image: 'button.png'
+}], function(params) {
+    return '<div>Hello World!</div>';
 });
 ```
 
