@@ -137,7 +137,7 @@
         out.label = out.label || out.name || untitled;
 
         // Item name for search ("Hello World 2" --> "helloworld2")
-        out.index = out.label.toLowerCase().replace(/\s/g, '');
+        out.index = encodeURIComponent(out.label.toLowerCase().replace(/\s/g, ''));
 
         return out;
     };

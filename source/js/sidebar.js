@@ -67,31 +67,32 @@
      * Apply state in aside panel
      */
     Makeup.fn._setCurrentMenuItem = function(chain) {
-        var self = this;
+        var makeup = this;
         var itemsChain = this._itemsChain(chain);
         var youngestItem = _.last(itemsChain);
 
         if (!youngestItem.items) { // last item in hierarchy
             var item = itemsChain.pop();
-            this.el.item.each(function() {
-                self._mod(this, {current: false});
+            makeup.el.item.each(function() {
+                makeup._mod(this, {current: false});
             });
-            this._mod(this._getItemElementById(item._id), {current: true});
+            makeup._mod(makeup._getItemElementById(item._id), {current: true});
         }
 
-        _.each(itemsChain, function(item, key) {
-            var element = self._getItemElementById(item._id);
-
-            this._mod(element, {expanded: true});
-        }, this);
+        _.each(itemsChain, function(item) { // expand parents
+            makeup._toggleMenuItem(item, true);
+        });
     };
 
     /**
      * Toggle navigation item
      */
-    Makeup.fn._toggleMenuItem = function(item) {
+    Makeup.fn._toggleMenuItem = function(item, expand) {
         var elem = this._getItemElementById(item._id);
-        this._mod(elem, {expanded: !this._mod(elem).expanded});
+        this._mod(elem, {expanded: expand === undefined ? !this._mod(elem).expanded : expand});
+        if (elem.mod.expanded && item.items && item.items.length == 1 && item.items[0].items) { // if only one expandable child, expand it
+            this._toggleMenuItem(item.items[0], true);
+        }
         this._baron.update();
     };
 
@@ -100,43 +101,44 @@
      */
     Makeup.fn._search = function(query) {
         var makeup = this,
-            items = $(makeup._params.selectors.item);
+            items = makeup.el.item;
 
         items.each(function() {
-            this._shown = !query; // if no query, show all, else hide
-            this._highlight = false;
+            this._state = {
+                hidden: !!query, // if no query, show all, else hide
+                highlight: false,
+                matched: false
+            };
         });
 
         if (query) {
             query = query.split(/[\s\/]+/); // split by slash and space
             var selector = _.reduce(query, function(sel, part) {
                 if (part) {
-                    sel += '[data-index*="' + part.toLowerCase() + '"] ';
+                    sel += '[data-index*="' + encodeURIComponent(part.toLowerCase()) + '"] ';
                 }
                 return sel;
             }, '');
 
             items.filter(selector).each(function() {
-                this._shown = true;
-                this._highlight = true;
+                this._state.hidden = false;
+                this._state.matched = true;
+                highlight.call(makeup, this);
+
                 // show and expand all parent items
                 $(this).parents(makeup._params.selectors.item).each(function() {
-                    this._shown = true;
-                    this._expanded = true;
+                    this._state.hidden = false;
+                    this._state.expanded = true;
                 });
                 // show all child items
                 $(this).find(makeup._params.selectors.item).each(function() {
-                    this._shown = true;
+                    this._state.hidden = false;
                 });
             });
         }
 
         items.each(function() {
-            makeup._mod(this, {
-                hidden: !this._shown,
-                highlight: this._highlight,
-                expanded: this._expanded
-            });
+            makeup._mod(this, this._state);
         });
     };
 
@@ -175,5 +177,21 @@
             makeup._search(searchInput.val());
         });
     };
+
+    /**
+     * Recursively highlight items
+     */
+    function highlight(itemElem) {
+        var makeup = this;
+        var nestedItems = $(itemElem).find(makeup._params.selectors.item);
+
+        if (!nestedItems.length) {
+            itemElem._state.highlight = true;
+        } else {
+            nestedItems.each(function() {
+                highlight.call(makeup, this);
+            });
+        }
+    }
 
 })(this);
