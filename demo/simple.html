@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Makeup simple mode demo</title>
+    <link rel="stylesheet" href="demo.css">
+
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="../dist/makeup.css">
+    <!--<![endif]-->
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="../dist/makeup.ie.css">
+    <![endif]-->
+
+    <script src="../dist/makeup.js"></script>
+
+    <script>
+        Makeup(['miniCard']);
+    </script>
+
+</head>
+<body>
+
+<!-- Your any html code -->
+<div class="miniCard">
+    <div class="miniCard__content">
+        <div class="miniCard__contentWrap">
+            <div class="miniCard__icon miniCard__icon_ads"></div>
+
+            <header class="miniCard__header">
+                <h2 class="miniCard__headerTitle">
+                    <a href="" class="miniCard__headerLink">Отдых, ночной клуб</a>
+                </h2>
+            </header>
+
+            <div class="miniCard__micro">Ночной клуб, банкетный зал, праздничное агентство</div>
+            <div class="miniCard__desc">
+                <address class="miniCard__descAddress">
+                    Богдана Хмельницкого, 19
+                </address>
+            </div>
+            <footer class="miniCard__footer">
+                <ul class="miniCard__footerBlockattrs">
+                    <li class="miniCard__footerBlockattrsItem">Коктейль 200 Р.</li>
+                    <li class="miniCard__footerBlockattrsItem">Фейсконтроль.</li>
+                    <li class="miniCard__footerBlockattrsItem">Дресс-Код.</li>
+                </ul>
+            </footer>
+        </div>
+        <div class="miniCard__warning">Чрезмерное употребление алкоголя вредит вашему здоровью</div>
+    </div>
+</div>
+<!-- / Your any html code -->
+
+</body>
+</html>

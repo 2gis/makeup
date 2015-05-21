@@ -35,6 +35,17 @@
 
     Makeup.fn._getParams = function(params) {
         if (_.isArray(params)) { // Если переданы только данные
+            if (_.isString(params[0])) {
+                params = [{
+                    items: _.map(params, function(str, i) {
+                        return {
+                            name: str,
+                            type: 'block'
+                        };
+                    })
+                }];
+            }
+
             params = {
                 data: params
             };
@@ -219,6 +230,16 @@
         }, 0);
 
         return out;
+    };
+
+    Makeup.fn._templating = function(params) {
+        var node = $('.' + params.block)[0];
+
+        if (node) {
+            return node.outerHTML;
+        }
+
+        return '418. I am a teapot.';
     };
 
     if (typeof TEST != 'undefined' && TEST) {
