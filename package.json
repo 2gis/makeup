@@ -44,6 +44,7 @@
     "gulp.spritesmith": "^1.2.0",
     "html-minifier": "^0.6.6",
     "jshint-stylish": "^0.4.0",
+    "rimraf": "^2.3.4",
     "run-sequence": "^0.3.6",
     "yargs": "^1.2.6"
   },
