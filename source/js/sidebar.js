@@ -55,6 +55,7 @@
         }
 
         this._baron = sidebar.baron({
+            $: $,
             scroller: this._params.selectors.scroller,
             track:    this._params.selectors.scrollerTrack,
             bar:      this._params.selectors.scrollerTrackBar,

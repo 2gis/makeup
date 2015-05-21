@@ -1,11 +1,16 @@
 (function(global) {
 
-var lodash, hbs;
+var lodash, hbs, onload;
 
 if (typeof window != 'undefined') {
     lodash = global._.noConflict();
     hbs = global.Handlebars;
     hbs && hbs.noConflict(); // doesnt return anything
+
+    onload = $.Deferred();
+    $(window).on('load', function() {
+        onload.resolve();
+    });
 }
 
 /**
@@ -16,29 +21,33 @@ if (typeof window != 'undefined') {
  * @requires lodash
  */
 (function(global) {
-    var _makeup;
+    var _makeup = global.Makeup;
+    var singleton;
 
     var $;
     if (global.jQuery) {
-        $ = Makeup.$ = global.jQuery.noConflict();
+        $ = Makeup.$ = global.jQuery.noConflict(true); // to restore window.$ _and_ window.jQuery
     }
     var _ = Makeup._ = lodash;
     var Handlebars = Makeup.Handlebars = hbs;
 
     function Makeup(options, templating) {
-        if (_makeup) { // Singleton
-            return _makeup;
+        if (singleton) {
+            return singleton;
         }
 
         if (!(this instanceof Makeup)) { // Rezig constructor
             return new Makeup(options, templating);
         }
 
-        _makeup = this;
+        singleton = this;
         if (_.isFunction(templating)) {
             this._templating = templating;
         }
-        this._init(options);
+
+        onload.done(function() {
+            singleton._init(options);
+        });
     }
 
     Makeup.templating = function(fn) {
@@ -781,6 +790,12 @@ if (typeof window != 'undefined') {
          */
         _getItemElementById: function(id) {
             return $('#' + this._instanceId + '-item-' + id)[0];
+        },
+
+        noConflict: function() {
+            global.Makeup = _makeup;
+
+            return this;
         }
     };
 
