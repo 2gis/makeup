@@ -92,10 +92,12 @@
             'login',
             'form',
             'table',
-            'profile'
+            'profile',
+            'gadget',
+            'dashboard'
         ];
 
-        $(root).find('.' + commonBlockNames.join(',.')).each(function() {
+        $(root).find('.' + commonBlockNames.join(',.')).not('script, link, iframe, object, svg').each(function() {
             var classes = _.compact(this.className.split(' '));
             var blockName = _.intersection(classes, commonBlockNames)[0];
 
