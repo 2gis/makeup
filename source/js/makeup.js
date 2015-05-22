@@ -514,6 +514,7 @@ if (typeof window != 'undefined') {
                 this._renderItem(diff.chain);
                 this._setCurrentMenuItem(diff.chain);
                 this._fullHtmlBackup = null;
+                this._applyRulerPosition(this._state.get('width'));
             }
 
             // Modes toggler
@@ -653,13 +654,6 @@ if (typeof window != 'undefined') {
             var html = item.html || this._templating(instance);
 
             var width = this._find(itemsChain, ['width']);
-
-            if (typeof html != 'string') {
-                if (html.html) {
-                    width = html.data && html.data.width;
-                    html = html.html;
-                }
-            }
 
             this._containerMarkup.html(cutScripts(html));
 
