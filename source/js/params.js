@@ -88,6 +88,7 @@
                 rulerTrackPoint:    '.makeup__ruler-track-point',
 
                 smiley:             '.makeup__smiley',
+                full:               '.makeup__full',
 
                 statusBar:              '.makeup__status',
 
@@ -197,6 +198,11 @@
 
             smiley: {
                 tooltip: 'Smiley styles on markup container',
+                checked: false
+            },
+
+            full: {
+                tooltip: 'Try your markup with full content',
                 checked: false
             },
 
