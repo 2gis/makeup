@@ -647,7 +647,7 @@ if (typeof window != 'undefined') {
                 }
             }
 
-            this._containerMarkup.html(html);
+            this._containerMarkup.html(cutScripts(html));
 
             if (width) {
                 this._state.set({ width: width });
@@ -882,6 +882,15 @@ if (typeof window != 'undefined') {
         }
 
         return value;
+    }
+
+    function cutScripts(html) {
+        var stripped = $('<div>').html(html);
+        stripped.find('script').remove();
+        stripped.find('[onload]').attr('onload', null);
+        stripped.find('[onerror]').attr('onerror', null);
+
+        return stripped.html();
     }
 
     if (typeof TEST != 'undefined' && TEST) {
