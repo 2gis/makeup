@@ -637,7 +637,21 @@ if (typeof window != 'undefined') {
 
             // data -> html
             var html = this._templating(instance);
+
+            var width;
+
+            if (typeof html != 'string') {
+                if (html.html) {
+                    width = html.data && html.data.width;
+                    html = html.html;
+                }
+            }
+
             this._containerMarkup.html(html);
+
+            if (width) {
+                this._state.set({ width: width });
+            }
 
             // Навешиваем допклассы на блок
             classes = this._map(itemsChain, 'cls').join(' ');
