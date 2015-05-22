@@ -899,7 +899,7 @@ if (typeof window != 'undefined') {
         stripped.find('script').remove();
         stripped.find('[onload]').attr('onload', null);
         stripped.find('[onerror]').attr('onerror', null);
-
+        stripped.find('[href]').attr('target', '_blank');
         return stripped.html();
     }
 
