@@ -40,12 +40,28 @@
 
         if (_.isArray(params)) { // Если переданы только данные
             if (_.isString(params[0])) {
+                var domMode = !_.has(this, '_templating');
+
                 params = [{
                     items: _.map(params, function(str, i) {
-                        return {
+                        var item = {
                             name: str,
                             type: 'block'
                         };
+
+                        if (domMode) {
+                            var elements = $('.' + str);
+                            if (elements.length > 1) {
+                                item.items = _.map(elements, function(elem, index) {
+                                    return {
+                                        html: elem.outerHTML,
+                                        name: str + (index + 1)
+                                    };
+                                });
+                            }
+                        }
+
+                        return item;
                     })
                 }];
             }

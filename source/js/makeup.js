@@ -513,6 +513,7 @@ if (typeof window != 'undefined') {
             if (diff.chain) {
                 this._renderItem(diff.chain);
                 this._setCurrentMenuItem(diff.chain);
+                this._fullHtmlBackup = null;
             }
 
             // Modes toggler
@@ -580,7 +581,9 @@ if (typeof window != 'undefined') {
                         }
                     }
                 } else {
-                    this.el.containerMarkup.html(this._fullHtmlBackup);
+                    if (this._fullHtmlBackup) {
+                        this.el.containerMarkup.html(this._fullHtmlBackup);
+                    }
                 }
 
                 if (full.checked != fullValue) {
@@ -647,7 +650,7 @@ if (typeof window != 'undefined') {
             }
 
             // data -> html
-            var html = this._templating(instance);
+            var html = item.html || this._templating(instance);
 
             var width = this._find(itemsChain, ['width']);
 
@@ -660,9 +663,11 @@ if (typeof window != 'undefined') {
 
             this._containerMarkup.html(cutScripts(html));
 
-            if (width) {
-                this._state.set({ width: width });
-            }
+            setTimeout(function() {
+                if (width) {
+                    makeup._state.set({ width: width });
+                }
+            }, 0);
 
             // Навешиваем допклассы на блок
             classes = this._map(itemsChain, 'cls').join(' ');
