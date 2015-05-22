@@ -1,0 +1,59 @@
+<div class="promo">
+    <div class="promo__project">
+        <div class="promo__projectIcon"></div>
+        <div class="promo__projectLogo"></div>
+        <p class="promo__projectDesc">
+            {{projectDesc}}
+        </p>
+    </div>
+
+    <div class="promo__makeup">
+        <div class="promoMakeup">
+            <h2 class="promoMakeup__header">
+                {{header}}
+            </h2>
+
+            <div class="promoMakeup__interactive">
+                <ul class="promoMakeup__interactiveControls">
+                    {{#each controls}}
+                        <li class="promoMakeup__interactiveControlsItem _{{type}}{{#if active}} _active{{/if}}">
+                            <div class="promoMakeup__interactiveControlsItemControl">
+                                {{@index}}&nbsp;—&nbsp;{{text}}
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+                <div class="promoMakeup__interactiveExample">
+                    <div class="interactive">
+                        <header class="interactive__header" role="banner">
+                            <a href="http://2gis.ru" class="interactivePromo__logo_interactive"></a>
+                            <div class="interactivePromo__main_interactive">
+                                <h1 class="interactivePromo__main-title_interactive"></h1>
+                                <div class="interactivePromo__main-description_interactive"></div>
+                            </div>
+                            <div class="interactivePromo__interactivePromo_interactive">
+                                <div class="interactivePromo_interactive interactivePromo--2">
+                                    <div class="interactivePromo__box_interactive">
+                                        <div class="interactivePromo__window_interactive">
+                                          <div class="interactivePromo__window-layer_interactive interactivePromo__window-layer--markup_interactive"></div>
+                                          <div class="interactivePromo__window-layer_interactive interactivePromo__window-layer--design_interactive"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+                <div class="promoMakeup__interactiveDescription">
+                    <p class="promoMakeup__interactiveDescriptionContent">
+                        Как сравнить вёрстку с&nbsp;исходным макетом? Просто&nbsp;— наложить полупрозрачную картинку на&nbsp;настоящую вёрстку.
+                        Makeup делает это правильно! Все несоответствия видны сразу, если включить режим с&nbsp;инвертированным изображением <a href="#" class="promoMakeup__interactiveLink">[4]</a>.
+                    </p>
+                    <p class="promoMakeup__interactiveDescriptionContent">
+                        Переключайте режимы отображения при&nbsp;помощи клавиатуры.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

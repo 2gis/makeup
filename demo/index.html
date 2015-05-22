@@ -9,36 +9,40 @@
     <!--[if gt IE 8]><!--><!-- CSS библиотеки makeup -->
     <link rel="stylesheet" href="dist/makeup.css"><!--<![endif]-->
     <!--[if lte IE 8]><link rel="stylesheet" href="dist/makeup.ie.css"><![endif]-->
-</head>
-<body>
 
-<script src="dist/makeup.js"></script><!-- Библиотека makeup -->
-<script src="data.js"></script><!-- Контент для рендеринга блоков (тексты) -->
-<script src="dist/handlebars.js"></script><!-- Один из используемых в демке шаблонизаторов, может быть любой другой -->
+    <script src="dist/makeup.js"></script><!-- Библиотека makeup -->
+    <script src="data.js"></script><!-- Контент для рендеринга блоков (тексты) -->
+</head>
+
+<body>
 
 <script>
 
     var miniCardTemplate;
+    var promoTemplate;
+    var $ = Makeup.$;
 
     // Скачиваем и компилируем шаблон блока miniCard
     $.get('miniCard.hbs', function (data) {
-        miniCardTemplate = Handlebars.compile(data);
+        miniCardTemplate = Makeup.Handlebars.compile(data);
+    }, 'html');
+
+    $.get('promo.hbs', function (data) {
+        promoTemplate = Makeup.Handlebars.compile(data);
     }, 'html');
 
     // Передаём функцию, которая по названию блока генерирует конечный html
-    M.templating(function(params) {
-        // Можно использовать разные шаблонизаторы для разных блоков, например
-        switch (params.modulename) {
-            case 'makeup': return makeupTemplates.makeup(makeupCtx);
+    Makeup(data, function(params) {
+        // Можно использовать разные шаблонизаторы для разных блоков
+        switch (params.module) {
+            case 'makeup': return Makeup.Handlebars.partials.makeup(makeupCtx);
             case 'Hello World!': return '<div class="helloworld">Hello World!</div>';
-            case 'miniCard':  return miniCardTemplate(miniCardCtx[params.typename]);
+            case 'miniCard': return miniCardTemplate(miniCardCtx[params.type]);
+            case 'promo': return promoTemplate(promoCtx[params.type]);
         }
 
-        return 'Просто текст';
+        return '418. I am a teapot.';
     });
-
-    // Инициализация: makeup отрисовывает себя, навешивает события, делает список блоков
-    M.init(data);
 
 </script>
 </body>

@@ -1,58 +1,83 @@
 var data = [{
     label: 'Простые блоки',
     items: [{
+        name: 'promo',
+        type: 'module',
+        items: [
+            {
+                name: 'default',
+                type: 'type',
+                image: 'images/_promo_type_default.png'
+            },
+            {
+                name: 'full',
+                type: 'type'
+            }
+        ]
+    }, {
         name: 'Hello World!',
-        image: "qwe.jpg"
+        image: "qwe.jpg",
+        type: 'module'
     }, {
-        name: 'Блок 2'
+        name: 'Блок 2',
+        type: 'module'
     }, {
-        name: 'makeup'
+        name: 'makeup',
+        type: 'module'
     }, {
         name: 'miniCard',
+        type: 'module',
         styles: {
             markup: 'background: white;'
         },
-        types: [{
+        items: [{
             label: 'context',
             imagePrefix: 'images/_miniCard_type_',
+            type: 'context',
             items: [{
-                name:"full"
+                name: 'full',
+                type: 'item'
             }, {
-                name:"adv"
+                name: 'adv',
+                type: 'item'
             }, {
-                name:"recoveryStart",
-                cls: "ads _recovery"
+                name: 'recoveryStart',
+                cls:  'ads _recovery',
+                type: 'item'
             }, {
-                name:"recoveryEnd",
-                cls: "ads _recovery"
+                name: 'recoveryEnd',
+                cls:  'ads _recovery'
             }, {
-                name:"booklet",
+                name: 'booklet',
                 cls: '_photo'
             }, {
-                name:"discount"
+                name: 'discount'
             }, {
-                name:"eshop"
+                name: 'eshop'
             }, {
-                name:"plusOne"
+                name: 'plusOne'
             }, {
-                name:"taxi",
+                name: 'taxi',
                 cls: '_photo'
             }, {
-                name:"truba"
+                name: 'truba'
             }, {
-                name:"place"
+                name: 'place'
             }, {
-                name:"stop",
+                name: 'stop',
                 cls: '_type_station'
             }, {
-                name:"route",
+                name: 'route',
                 cls: '_type_route _transportType_bus'
             }, {
-                name:"filials",
+                name: 'filials',
                 cls: '_photo'
             }, {
-                name:"advWarning",
-                cls: '_ads _advWarning'
+                name: 'advWarning',
+                cls: '_ads _advWarning',
+                items: [{
+                    name: 'dima'
+                }]
             }]
         }]
     }]
@@ -66,7 +91,7 @@ var makeupCtx = {
         baron: 'makeup__aside--baron'
     },
 
-    menu: {
+    sidebar: {
         tooltip: 'Toggle menu',
         checked: true
     },
@@ -163,6 +188,48 @@ var makeupCtx = {
         checked: false
     }
 };
+
+var promoCtx = {};
+
+promoCtx['default'] = {
+    projectDesc: 'Инструмент для приятного контроля за качеством вёрстки на веб-проектах',
+    header: 'Сравните вёрстку с дизайном',
+    controls: [{
+        type: 'design',
+        text: 'дизайн'
+    }, {
+        type: 'markup',
+        text: 'вёрстка'
+    }, {
+        type: 'summary',
+        text: 'сумма'
+    }, {
+        type: 'diff',
+        text: 'разница'
+    }]
+};
+
+promoCtx.full = {
+    projectDesc: 'Инструмент для приятного контроля за качеством вёрстки на веб-проектах, с его помощью можно приятно контролировать качество приятной вёрстки',
+    header: 'Сравните вёрстку с диваном, расскажите про покупки, про какие про покупки?',
+    controls: [{
+        type: 'design',
+        text: 'дизайн великолепный'
+    }, {
+        type: 'markup',
+        text: 'вёрстка тоже на высоте'
+    }, {
+        type: 'summary',
+        text: 'сумма'
+    }, {
+        type: 'diff',
+        text: 'разница'
+    }, {
+        type: 'diff',
+        text: 'пятый элемент'
+    }]
+};
+
 
 var miniCardCtx = {};
 

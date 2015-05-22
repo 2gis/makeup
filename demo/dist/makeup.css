@@ -20,51 +20,53 @@ button {
   top: 0;
   right: 0;
   left: 0;
+  z-index: 2;
+  overflow: hidden;
   height: 2em;
   background: #363535;
-  z-index: 2;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  overflow: hidden;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.7);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .makeup__aside {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
   position: absolute;
   top: 2em;
   bottom: 1.1em;
   left: 0;
+  z-index: 1;
+  overflow: hidden;
   width: 10em;
   background: #1e1e1e;
-  z-index: 1;
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: transform .3s ease;
-  -webkit-transform: translate(0, 0) translateZ(0);
-  transform: translate(0, 0) translateZ(0);
   color: #fff;
   font: 20px/1 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  overflow: hidden;
+  -webkit-transition: -webkit-transform .3s ease;
+          transition: transform .3s ease;
+  -webkit-transform: translate(0, 0) translateZ(0);
+          transform: translate(0, 0) translateZ(0);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-.makeup--menu-false .makeup__aside {
+.makeup--sidebar-false > .makeup__aside {
   -webkit-transform: translate(-100%, 0) translateZ(0);
-  transform: translate(-100%, 0) translateZ(0);
+          transform: translate(-100%, 0) translateZ(0);
 }
 .makeup__aside-in {
-  height: 100%;
   overflow-y: scroll;
+  height: 100%;
 }
 .makeup__aside-in::-webkit-scrollbar {
   width: 0;
 }
 .makeup__aside-track {
-  display: none;
   position: absolute;
-  right: 1px;
   top: 1px;
+  right: 1px;
   bottom: 1px;
+  display: none;
   width: 4px;
 }
 .makeup__aside--baron .makeup__aside-track {
@@ -72,67 +74,71 @@ button {
 }
 .makeup__aside-track-bar {
   position: absolute;
-  z-index: 1;
   right: 0;
+  z-index: 1;
   width: 4px;
   background: rgba(255, 255, 255, 0.4);
 }
 .makeup__status {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 2;
   overflow: hidden;
+  padding: 0 1em;
   height: 1.8em;
   background: #363535;
   box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-  font: 0.6em/1.9 Helvetica, Arial, sans-serif;
-  padding: 0 1em;
   color: #bbb;
+  font: 0.6em/1.9 Helvetica, Arial, sans-serif;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .makeup__main {
   position: absolute;
   top: 2em;
-  left: 10em;
   right: 0;
   bottom: .75em;
+  left: 10em;
   overflow-x: hidden;
   overflow-y: auto;
-  transition: left .3s ease;
+  -webkit-transition: left .3s ease;
+          transition: left .3s ease;
   -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+          transform: translateZ(0);
 }
-.makeup--menu-false .makeup__main {
+.makeup--sidebar-false > .makeup__main {
   left: 0;
 }
 .makeup--bg-transparency .makeup__main {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxyZWN0IGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIvPg0KPHJlY3QgeT0iOCIgZmlsbD0iI0NDQ0NDQyIgd2lkdGg9IjgiIGhlaWdodD0iOCIvPg0KPHJlY3QgeD0iOCIgZmlsbD0iI0NDQ0NDQyIgd2lkdGg9IjgiIGhlaWdodD0iOCIvPg0KPC9zdmc+DQo=");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2016%2016%22%20enable-background%3D%22new%200%200%2016%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Crect%20fill%3D%22%23FFFFFF%22%20width%3D%2216%22%20height%3D%2216%22%2F%3E%0D%0A%3Crect%20y%3D%228%22%20fill%3D%22%23CCCCCC%22%20width%3D%228%22%20height%3D%228%22%2F%3E%0D%0A%3Crect%20x%3D%228%22%20fill%3D%22%23CCCCCC%22%20width%3D%228%22%20height%3D%228%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
 }
 /* Ruler */
 .makeup__ruler {
   position: absolute;
+  z-index: 10;
   overflow: hidden;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  z-index: 10;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .makeup__ruler--h {
   top: 0;
   right: 0;
   left: 0;
+  padding: 0 0 0 40px;
   height: .75em;
   background: #242424;
-  padding: 0 0 0 40px;
 }
 .makeup__ruler-track {
   position: relative;
   width: 2000px;
   height: .75em;
+  background: -webkit-linear-gradient(left, transparent 10%, #898989 10%, #898989 11%, transparent 11%, transparent 20%, #898989 20%, #898989 21%, transparent 21%, transparent 30%, #898989 30%, #898989 31%, transparent 31%, transparent 40%, #898989 40%, #898989 41%, transparent 41%, transparent 50%, #898989 50%, #898989 51%, transparent 51%, transparent 60%, #898989 60%, #898989 61%, transparent 61%, transparent 70%, #898989 70%, #898989 71%, transparent 71%, transparent 80%, #898989 80%, #898989 81%, transparent 81%, transparent 90%, #898989 90%, #898989 91%, transparent 91%, transparent 100%) 0 10px repeat-x;
   background: linear-gradient(to right, transparent 10%, #898989 10%, #898989 11%, transparent 11%, transparent 20%, #898989 20%, #898989 21%, transparent 21%, transparent 30%, #898989 30%, #898989 31%, transparent 31%, transparent 40%, #898989 40%, #898989 41%, transparent 41%, transparent 50%, #898989 50%, #898989 51%, transparent 51%, transparent 60%, #898989 60%, #898989 61%, transparent 61%, transparent 70%, #898989 70%, #898989 71%, transparent 71%, transparent 80%, #898989 80%, #898989 81%, transparent 81%, transparent 90%, #898989 90%, #898989 91%, transparent 91%, transparent 100%) 0 10px repeat-x;
   background-size: 100px 2px;
 }
@@ -141,23 +147,23 @@ button {
 }
 .makeup__ruler-track-point {
   position: absolute;
+  z-index: 1;
   width: 0;
   height: .75em;
-  z-index: 1;
 }
 .makeup__ruler-track-point:first-child {
   visibility: hidden;
 }
 .makeup__ruler-track-point:before {
   display: inline-block;
-  vertical-align: top;
-  width: 3em;
-  text-align: center;
   margin-left: -1.5em;
+  width: 3em;
   content: counter(scale) '00';
   counter-increment: scale;
-  font: 0.5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  vertical-align: top;
+  text-align: center;
   letter-spacing: -0.1ex;
+  font: 0.5em/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .makeup__ruler-track-active {
   position: absolute;
@@ -171,18 +177,18 @@ button {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
   width: 0;
   height: 0;
-  z-index: 2;
 }
 .makeup__ruler-track-runner:before {
-  position: absolute;
-  top: 1px;
-  left: -7px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTVweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTUgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE1IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxsaW5lYXJHcmFkaWVudCBpZD0iU1ZHSURfMV8iIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iNy41IiB5MT0iLTIuMDI4MTczZS0xMCIgeDI9IjcuNSIgeTI9IjE2Ij4NCgk8c3RvcCAgb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjojMDAwMDAwIi8+DQoJPHN0b3AgIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6IzIyMjIyMiIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjxwYXRoIG9wYWNpdHk9IjAuNSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9InVybCgjU1ZHSURfMV8pIiBkPSJNNi41NCwxNkwwLDguMzdWM2MwLTEuNjU0LDEuMzQ2LTMsMy0zaDkNCgljMS42NTQsMCwzLDEuMzQ2LDMsM3Y1LjM3TDguNDYsMTZINi41NHoiLz4NCjxsaW5lYXJHcmFkaWVudCBpZD0iU1ZHSURfMl8iIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iNy41IiB5MT0iMTQiIHgyPSI3LjUiIHkyPSItMS44OTQ1NjhlLTA4Ij4NCgk8c3RvcCAgb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjojNTU1NTU1Ii8+DQoJPHN0b3AgIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6Izg4ODg4OCIvPg0KPC9saW5lYXJHcmFkaWVudD4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBmaWxsPSJ1cmwoI1NWR0lEXzJfKSIgZD0iTTMsMGg5YzEuMTA1LDAsMiwwLjg5NSwyLDJ2NWwtNiw3SDdMMSw3VjINCglDMSwwLjg5NSwxLjg5NiwwLDMsMHoiLz4NCjwvc3ZnPg0K");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2215px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2015%2016%22%20enable-background%3D%22new%200%200%2015%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3ClinearGradient%20id%3D%22SVGID_1_%22%20gradientUnits%3D%22userSpaceOnUse%22%20x1%3D%227.5%22%20y1%3D%22-2.028173e-10%22%20x2%3D%227.5%22%20y2%3D%2216%22%3E%0D%0A%09%3Cstop%20%20offset%3D%220%22%20style%3D%22stop-color%3A%23000000%22%2F%3E%0D%0A%09%3Cstop%20%20offset%3D%221%22%20style%3D%22stop-color%3A%23222222%22%2F%3E%0D%0A%3C%2FlinearGradient%3E%0D%0A%3Cpath%20opacity%3D%220.5%22%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20fill%3D%22url(%23SVGID_1_)%22%20d%3D%22M6.54%2C16L0%2C8.37V3c0-1.654%2C1.346-3%2C3-3h9%0D%0A%09c1.654%2C0%2C3%2C1.346%2C3%2C3v5.37L8.46%2C16H6.54z%22%2F%3E%0D%0A%3ClinearGradient%20id%3D%22SVGID_2_%22%20gradientUnits%3D%22userSpaceOnUse%22%20x1%3D%227.5%22%20y1%3D%2214%22%20x2%3D%227.5%22%20y2%3D%22-1.894568e-08%22%3E%0D%0A%09%3Cstop%20%20offset%3D%220%22%20style%3D%22stop-color%3A%23555555%22%2F%3E%0D%0A%09%3Cstop%20%20offset%3D%221%22%20style%3D%22stop-color%3A%23888888%22%2F%3E%0D%0A%3C%2FlinearGradient%3E%0D%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20fill%3D%22url(%23SVGID_2_)%22%20d%3D%22M3%2C0h9c1.105%2C0%2C2%2C0.895%2C2%2C2v5l-6%2C7H7L1%2C7V2%0D%0A%09C1%2C0.895%2C1.896%2C0%2C3%2C0z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 15px;
   height: 16px;
+  position: absolute;
+  top: 1px;
+  left: -7px;
   content: '';
 }
 .makeup__ruler-track-runner--disabled {
@@ -202,14 +208,14 @@ button {
   left: 40px;
   width: 400px;
   height: 300px;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
   color: #000;
   font: 16px/1 Times, serif;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
 }
 .makeup--smiley-true .makeup__container-in {
-  font: 100px/1 'Comic Sans';
   color: red;
+  font: 100px/1 'Comic Sans';
 }
 .makeup__container-image {
   position: absolute;
@@ -244,9 +250,9 @@ button {
 /* Button */
 .makeup__btn {
   display: inline-block;
-  vertical-align: middle;
-  height: 1.6em;
   margin: .2em;
+  height: 1.6em;
+  vertical-align: middle;
   white-space: nowrap;
 }
 .makeup__btn-checkbox {
@@ -254,17 +260,17 @@ button {
 }
 .makeup__btn-label {
   position: relative;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   display: inline-block;
-  vertical-align: middle;
+  overflow: hidden;
+  box-sizing: border-box;
   width: 1.6em;
   height: 100%;
   border-radius: 2px;
+  vertical-align: middle;
   text-indent: -999em;
-  overflow: hidden;
   cursor: pointer;
-  transition: background .2s ease;
+  -webkit-transition: background .2s ease;
+          transition: background .2s ease;
 }
 .makeup__btn-label:before {
   position: absolute;
@@ -279,70 +285,79 @@ button {
   background: #000;
   box-shadow: inset 0 0 0 1px #202020;
 }
-.makeup__btn-label--menu:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxMnB4IiB2aWV3Qm94PSIwIDAgMTYgMTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxyZWN0IGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxLjk5NSIvPg0KPHJlY3QgeT0iNSIgZmlsbD0iI0ZGRkZGRiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjEuOTk1Ii8+DQo8cmVjdCB5PSIxMC4wMDUiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxLjk5NSIvPg0KPC9zdmc+DQo=");
+.makeup__btn-label--sidebar:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2212px%22%20viewBox%3D%220%200%2016%2012%22%20enable-background%3D%22new%200%200%2016%2012%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Crect%20fill%3D%22%23FFFFFF%22%20width%3D%2216%22%20height%3D%221.995%22%2F%3E%0D%0A%3Crect%20y%3D%225%22%20fill%3D%22%23FFFFFF%22%20width%3D%2216%22%20height%3D%221.995%22%2F%3E%0D%0A%3Crect%20y%3D%2210.005%22%20fill%3D%22%23FFFFFF%22%20width%3D%2216%22%20height%3D%221.995%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 16px;
   height: 12px;
   margin: -6px 0 0 -8px;
 }
 .makeup__btn-label--smiley:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTYgMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTgsMWMzLjg2NiwwLDcsMy4xMzQsNyw3cy0zLjEzNCw3LTcsN3MtNy0zLjEzNC03LTdTNC4xMzQsMSw4LDEgTTgsMEMzLjU4OSwwLDAsMy41ODksMCw4czMuNTg5LDgsOCw4DQoJczgtMy41ODksOC04UzEyLjQxMSwwLDgsMEw4LDB6Ii8+DQo8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSI1IiBjeT0iNiIgcj0iMSIvPg0KPGNpcmNsZSBmaWxsPSIjRkZGRkZGIiBjeD0iMTEiIGN5PSI2IiByPSIxIi8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTEuODM5LDljLTAuNDY4LDItMiwyLjkzOC0zLjgzOSwyLjkzOFM0LjYyOSwxMSw0LjE2MSw5SDMuMTE5QzMuNjA4LDExLDUuNjA4LDEyLjkzOCw4LDEyLjkzOA0KCVMxMi4zOTIsMTEsMTIuODgxLDlIMTEuODM5eiIvPg0KPC9zdmc+DQo=");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.1.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2016%2016%22%20enable-background%3D%22new%200%200%2016%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M8%2C1c3.866%2C0%2C7%2C3.134%2C7%2C7s-3.134%2C7-7%2C7s-7-3.134-7-7S4.134%2C1%2C8%2C1%20M8%2C0C3.589%2C0%2C0%2C3.589%2C0%2C8s3.589%2C8%2C8%2C8%0D%0A%09s8-3.589%2C8-8S12.411%2C0%2C8%2C0L8%2C0z%22%2F%3E%0D%0A%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%225%22%20cy%3D%226%22%20r%3D%221%22%2F%3E%0D%0A%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%2211%22%20cy%3D%226%22%20r%3D%221%22%2F%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M11.839%2C9c-0.468%2C2-2%2C2.938-3.839%2C2.938S4.629%2C11%2C4.161%2C9H3.119C3.608%2C11%2C5.608%2C12.938%2C8%2C12.938%0D%0A%09S12.392%2C11%2C12.881%2C9H11.839z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 16px;
   height: 16px;
   margin: -8px 0 0 -8px;
 }
+.makeup__btn-label--full:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.1.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2016%2016%22%20enable-background%3D%22new%200%200%2016%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M8%2C1c3.866%2C0%2C7%2C3.134%2C7%2C7s-3.134%2C7-7%2C7s-7-3.134-7-7S4.134%2C1%2C8%2C1%20M8%2C0C3.589%2C0%2C0%2C3.589%2C0%2C8s3.589%2C8%2C8%2C8%0D%0A%09s8-3.589%2C8-8S12.411%2C0%2C8%2C0L8%2C0z%22%2F%3E%0D%0A%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%225%22%20cy%3D%226%22%20r%3D%221%22%2F%3E%0D%0A%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%2211%22%20cy%3D%226%22%20r%3D%221%22%2F%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M11.839%2C9c-0.468%2C2-2%2C2.938-3.839%2C2.938S4.629%2C11%2C4.161%2C9H3.119C3.608%2C11%2C5.608%2C12.938%2C8%2C12.938%0D%0A%09S12.392%2C11%2C12.881%2C9H11.839z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
 /* Search */
 .makeup__search {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
   margin: 0 0 0 -0.25em;
   width: 8em;
   height: 1.6em;
+  vertical-align: middle;
 }
 .makeup__search-input {
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   display: inline-block;
+  box-sizing: border-box;
+  padding: .3em 1em .3em 1.5em;
   width: 100%;
   height: 100%;
   border: 1px solid #444242;
-  padding: .3em 1em .3em 1.5em;
-  -webkit-font-smoothing: antialiased;
-  background: #2b2a29;
-  font: 0.7em/1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #efefef;
   border-radius: 3px;
+  background: #2b2a29;
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.6);
+  color: #efefef;
+  font: 0.7em/1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .makeup__search-input:focus {
   outline: none;
 }
 .makeup__search-icon {
-  position: absolute;
-  top: 50%;
-  left: .3em;
-  margin-top: -5px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTBweCIgaGVpZ2h0PSIxMHB4IiB2aWV3Qm94PSIwIDAgMTAgMTAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEwIDEwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM2NjY2NjYiIGQ9Ik05LjMzNyw4Ljc2MUw4Ljc4NCw5LjMxM2MtMC4yMzksMC4yMTYtMC42LDAuMjE2LTAuODE1LDBsLTIuMjgtMi4yOGMtMC41NTIsMC4zMTItMS4yLDAuNTA0LTEuODcyLDAuNTA0DQoJCUMxLjc3Niw3LjUzNywwLDUuNzYxLDAsMy43MkMwLDEuNjU2LDEuNjU2LDAsMy42OTYsMGMyLjA2NCwwLDMuODQsMS43NzYsMy44NCwzLjgxNmMwLDAuNzItMC4xOTEsMS4zNjgtMC41NTIsMS45NDRsMi4yOCwyLjI1Ng0KCQlDOS40OCw4LjI1Nyw5LjU1Myw4LjUyMSw5LjMzNyw4Ljc2MXogTTMuODE2LDYuNDA5YzEuNDE2LDAsMi41NjgtMS4xNTIsMi41NjgtMi41OTJjMC0xLjQxNi0xLjI3Mi0yLjY2NC0yLjY4OC0yLjY2NA0KCQlTMS4xMjgsMi4zMDQsMS4xMjgsMy43MlMyLjQsNi40MDksMy44MTYsNi40MDl6Ii8+DQo8L2c+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2210px%22%20height%3D%2210px%22%20viewBox%3D%220%200%2010%2010%22%20enable-background%3D%22new%200%200%2010%2010%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M9.337%2C8.761L8.784%2C9.313c-0.239%2C0.216-0.6%2C0.216-0.815%2C0l-2.28-2.28c-0.552%2C0.312-1.2%2C0.504-1.872%2C0.504%0D%0A%09%09C1.776%2C7.537%2C0%2C5.761%2C0%2C3.72C0%2C1.656%2C1.656%2C0%2C3.696%2C0c2.064%2C0%2C3.84%2C1.776%2C3.84%2C3.816c0%2C0.72-0.191%2C1.368-0.552%2C1.944l2.28%2C2.256%0D%0A%09%09C9.48%2C8.257%2C9.553%2C8.521%2C9.337%2C8.761z%20M3.816%2C6.409c1.416%2C0%2C2.568-1.152%2C2.568-2.592c0-1.416-1.272-2.664-2.688-2.664%0D%0A%09%09S1.128%2C2.304%2C1.128%2C3.72S2.4%2C6.409%2C3.816%2C6.409z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 10px;
   height: 10px;
+  position: absolute;
+  top: 50%;
+  left: .3em;
   z-index: 1;
+  margin-top: -5px;
 }
 /* Radio */
 .makeup__radio {
   display: inline-block;
-  vertical-align: middle;
   padding: 0 .25em 0 .75em;
+  vertical-align: middle;
 }
 .makeup__radio-title {
   display: inline-block;
+  margin-right: .4em;
+  color: #ccc;
   vertical-align: middle;
   font-size: .7em;
-  color: #ccc;
-  margin-right: .4em;
 }
 .makeup__radio-item {
   display: inline-block;
@@ -354,14 +369,14 @@ button {
 .makeup__radio-item-label {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
+  overflow: hidden;
+  margin: 0.2em -0.15em;
   width: 1.6em;
   height: 1.6em;
-  margin: 0.2em -0.15em;
-  text-indent: -999em;
-  overflow: hidden;
-  cursor: pointer;
   border-radius: 2px;
+  vertical-align: middle;
+  text-indent: -999em;
+  cursor: pointer;
 }
 .makeup__radio-item-label:before {
   position: absolute;
@@ -373,9 +388,9 @@ button {
   background: #4e4d4b;
 }
 .makeup__radio-item-input:checked + .makeup__radio-item-label {
+  border-radius: 3px;
   background: #000;
   box-shadow: inset 0 0 0 1px #202020;
-  border-radius: 3px;
 }
 /* Blend modes */
 .makeup__radio-item-label--blend-1:before,
@@ -385,25 +400,25 @@ button {
   margin: -8px 0 0 -9px;
 }
 .makeup__radio-item-label--blend-1:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMThweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTggMTciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE4IDE3IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiNGQUI0M0MiIGQ9Ik0xNywzaC0zVjFjMC0wLjU1LTAuNDUtMS0xLTFoLTF2MWgxdjJINUM0LjQ1LDMsNCwzLjQ1LDQsNHY5SDN2MWgxdjJjMCwwLjU1LDAuNDUsMSwxLDFoMTINCgkJYzAuNTUsMCwxLTAuNDUsMS0xVjRDMTgsMy40NSwxNy41NSwzLDE3LDN6IE0xNywxNkg1di0ydi0xVjRoOGgxaDNWMTZ6Ii8+DQoJPHJlY3QgeD0iNCIgZmlsbD0iI0ZBQjQzQyIgd2lkdGg9IjMiIGhlaWdodD0iMSIvPg0KCTxyZWN0IHg9IjgiIGZpbGw9IiNGQUI0M0MiIHdpZHRoPSIzIiBoZWlnaHQ9IjEiLz4NCgk8cmVjdCB5PSIzIiBmaWxsPSIjRkFCNDNDIiB3aWR0aD0iMSIgaGVpZ2h0PSIzIi8+DQoJPHBhdGggZmlsbD0iI0ZBQjQzQyIgZD0iTTEsMWgyVjBIMUMwLjQ1LDAsMCwwLjQ1LDAsMXYxaDFWMXoiLz4NCgk8cmVjdCB5PSI3IiBmaWxsPSIjRkFCNDNDIiB3aWR0aD0iMSIgaGVpZ2h0PSIzIi8+DQoJPHBhdGggZmlsbD0iI0ZBQjQzQyIgZD0iTTEsMTFIMHYyYzAsMC41NSwwLjQ1LDEsMSwxaDF2LTFIMVYxMXoiLz4NCjwvZz4NCjwvc3ZnPg0K");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2218px%22%20height%3D%2217px%22%20viewBox%3D%220%200%2018%2017%22%20enable-background%3D%22new%200%200%2018%2017%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M17%2C3h-3V1c0-0.55-0.45-1-1-1h-1v1h1v2H5C4.45%2C3%2C4%2C3.45%2C4%2C4v9H3v1h1v2c0%2C0.55%2C0.45%2C1%2C1%2C1h12%0D%0A%09%09c0.55%2C0%2C1-0.45%2C1-1V4C18%2C3.45%2C17.55%2C3%2C17%2C3z%20M17%2C16H5v-2v-1V4h8h1h3V16z%22%2F%3E%0D%0A%09%3Crect%20x%3D%224%22%20fill%3D%22%23FAB43C%22%20width%3D%223%22%20height%3D%221%22%2F%3E%0D%0A%09%3Crect%20x%3D%228%22%20fill%3D%22%23FAB43C%22%20width%3D%223%22%20height%3D%221%22%2F%3E%0D%0A%09%3Crect%20y%3D%223%22%20fill%3D%22%23FAB43C%22%20width%3D%221%22%20height%3D%223%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M1%2C1h2V0H1C0.45%2C0%2C0%2C0.45%2C0%2C1v1h1V1z%22%2F%3E%0D%0A%09%3Crect%20y%3D%227%22%20fill%3D%22%23FAB43C%22%20width%3D%221%22%20height%3D%223%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M1%2C11H0v2c0%2C0.55%2C0.45%2C1%2C1%2C1h1v-1H1V11z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 18px;
   height: 17px;
 }
 .makeup__radio-item-label--blend-2:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMThweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTggMTciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE4IDE3IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxyZWN0IHg9IjQiIHk9IjYiIGZpbGw9IiNGQUI0M0MiIHdpZHRoPSIxIiBoZWlnaHQ9IjMiLz4NCgk8cGF0aCBmaWxsPSIjRkFCNDNDIiBkPSJNNSw0aDJWM0g1QzQuNDUsMyw0LDMuNDUsNCw0djFoMVY0eiIvPg0KCTxwb2x5Z29uIGZpbGw9IiNGQUI0M0MiIHBvaW50cz0iMTEsMyA4LDMgOCwzLjE2NyA4LDMuODMzIDgsNCAxMSw0IAkiLz4NCgk8cGF0aCBmaWxsPSIjRkFCNDNDIiBkPSJNMTUsM2gtMVYxYzAtMC41NS0wLjQ1LTEtMS0xSDFDMC40NSwwLDAsMC40NSwwLDF2MTJjMCwwLjU1LDAuNDUsMSwxLDFoM3YyYzAsMC41NSwwLjQ1LDEsMSwxaDF2LTFINXYtMg0KCQl2LTF2LTNINHYzSDFWMWgxMnYyaC0xdjFoMWgxaDFWM3oiLz4NCgk8cmVjdCB4PSIxNyIgeT0iNyIgZmlsbD0iI0ZBQjQzQyIgd2lkdGg9IjEiIGhlaWdodD0iMyIvPg0KCTxyZWN0IHg9IjE3IiB5PSIxMSIgZmlsbD0iI0ZBQjQzQyIgd2lkdGg9IjEiIGhlaWdodD0iMyIvPg0KCTxyZWN0IHg9IjciIHk9IjE2IiBmaWxsPSIjRkFCNDNDIiB3aWR0aD0iMyIgaGVpZ2h0PSIxIi8+DQoJPHBhdGggZmlsbD0iI0ZBQjQzQyIgZD0iTTE3LDNoLTF2MWgxdjJoMVY0QzE4LDMuNDUsMTcuNTUsMywxNywzeiIvPg0KCTxwYXRoIGZpbGw9IiNGQUI0M0MiIGQ9Ik0xNywxNmgtMnYxaDJjMC41NSwwLDEtMC40NSwxLTF2LTFoLTFWMTZ6Ii8+DQoJPHJlY3QgeD0iMTEiIHk9IjE2IiBmaWxsPSIjRkFCNDNDIiB3aWR0aD0iMyIgaGVpZ2h0PSIxIi8+DQo8L2c+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2218px%22%20height%3D%2217px%22%20viewBox%3D%220%200%2018%2017%22%20enable-background%3D%22new%200%200%2018%2017%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Crect%20x%3D%224%22%20y%3D%226%22%20fill%3D%22%23FAB43C%22%20width%3D%221%22%20height%3D%223%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M5%2C4h2V3H5C4.45%2C3%2C4%2C3.45%2C4%2C4v1h1V4z%22%2F%3E%0D%0A%09%3Cpolygon%20fill%3D%22%23FAB43C%22%20points%3D%2211%2C3%208%2C3%208%2C3.167%208%2C3.833%208%2C4%2011%2C4%20%09%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M15%2C3h-1V1c0-0.55-0.45-1-1-1H1C0.45%2C0%2C0%2C0.45%2C0%2C1v12c0%2C0.55%2C0.45%2C1%2C1%2C1h3v2c0%2C0.55%2C0.45%2C1%2C1%2C1h1v-1H5v-2%0D%0A%09%09v-1v-3H4v3H1V1h12v2h-1v1h1h1h1V3z%22%2F%3E%0D%0A%09%3Crect%20x%3D%2217%22%20y%3D%227%22%20fill%3D%22%23FAB43C%22%20width%3D%221%22%20height%3D%223%22%2F%3E%0D%0A%09%3Crect%20x%3D%2217%22%20y%3D%2211%22%20fill%3D%22%23FAB43C%22%20width%3D%221%22%20height%3D%223%22%2F%3E%0D%0A%09%3Crect%20x%3D%227%22%20y%3D%2216%22%20fill%3D%22%23FAB43C%22%20width%3D%223%22%20height%3D%221%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M17%2C3h-1v1h1v2h1V4C18%2C3.45%2C17.55%2C3%2C17%2C3z%22%2F%3E%0D%0A%09%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M17%2C16h-2v1h2c0.55%2C0%2C1-0.45%2C1-1v-1h-1V16z%22%2F%3E%0D%0A%09%3Crect%20x%3D%2211%22%20y%3D%2216%22%20fill%3D%22%23FAB43C%22%20width%3D%223%22%20height%3D%221%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 18px;
   height: 17px;
 }
 .makeup__radio-item-label--blend-3:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMThweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTggMTciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE4IDE3IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGQUI0M0MiIGQ9Ik0xNywzaC0zVjFjMC0wLjU1LTAuNDUtMS0xLTFIMUMwLjQ1LDAsMCwwLjQ1LDAsMXYxMmMwLDAuNTUsMC40NSwxLDEsMWgzdjJjMCwwLjU1LDAuNDUsMSwxLDFoMTINCgljMC41NSwwLDEtMC40NSwxLTFWNEMxOCwzLjQ1LDE3LjU1LDMsMTcsM3ogTTEsMTNWMWgxMnYySDVDNC40NSwzLDQsMy40NSw0LDR2OUgxeiBNMTMsNHY5SDVWNEgxM3ogTTE3LDE2SDV2LTJoOA0KCWMwLjU1LDAsMS0wLjQ1LDEtMVY0aDNWMTZ6Ii8+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2218px%22%20height%3D%2217px%22%20viewBox%3D%220%200%2018%2017%22%20enable-background%3D%22new%200%200%2018%2017%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M17%2C3h-3V1c0-0.55-0.45-1-1-1H1C0.45%2C0%2C0%2C0.45%2C0%2C1v12c0%2C0.55%2C0.45%2C1%2C1%2C1h3v2c0%2C0.55%2C0.45%2C1%2C1%2C1h12%0D%0A%09c0.55%2C0%2C1-0.45%2C1-1V4C18%2C3.45%2C17.55%2C3%2C17%2C3z%20M1%2C13V1h12v2H5C4.45%2C3%2C4%2C3.45%2C4%2C4v9H1z%20M13%2C4v9H5V4H13z%20M17%2C16H5v-2h8%0D%0A%09c0.55%2C0%2C1-0.45%2C1-1V4h3V16z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 18px;
   height: 17px;
 }
 .makeup__radio-item-label--blend-4:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMThweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTggMTciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE4IDE3IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGQUI0M0MiIGQ9Ik0xNywzaC0zVjFjMC0wLjU1LTAuNDUtMS0xLTFIMUMwLjQ1LDAsMCwwLjQ1LDAsMXYxMmMwLDAuNTUsMC40NSwxLDEsMWgzdjJjMCwwLjU1LDAuNDUsMSwxLDFoMTINCgljMC41NSwwLDEtMC40NSwxLTFWNEMxOCwzLjQ1LDE3LjU1LDMsMTcsM3ogTTEsMTNWMWgxMnYySDVDNC40NSwzLDQsMy40NSw0LDR2OUgxeiBNMTcsMTZINXYtMmg4YzAuNTUsMCwxLTAuNDUsMS0xVjRoM1YxNnoiLz4NCjwvc3ZnPg0K");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2218px%22%20height%3D%2217px%22%20viewBox%3D%220%200%2018%2017%22%20enable-background%3D%22new%200%200%2018%2017%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FAB43C%22%20d%3D%22M17%2C3h-3V1c0-0.55-0.45-1-1-1H1C0.45%2C0%2C0%2C0.45%2C0%2C1v12c0%2C0.55%2C0.45%2C1%2C1%2C1h3v2c0%2C0.55%2C0.45%2C1%2C1%2C1h12%0D%0A%09c0.55%2C0%2C1-0.45%2C1-1V4C18%2C3.45%2C17.55%2C3%2C17%2C3z%20M1%2C13V1h12v2H5C4.45%2C3%2C4%2C3.45%2C4%2C4v9H1z%20M17%2C16H5v-2h8c0.55%2C0%2C1-0.45%2C1-1V4h3V16z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 18px;
   height: 17px;
@@ -414,64 +429,63 @@ button {
   margin: -8px 0 0 -8px;
 }
 .makeup__radio-item-label--bg-color:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xNSwxdjE0SDFWMUgxNSBNMTUsMEgxQzAuNDUsMCwwLDAuNDUsMCwxdjE0YzAsMC41NSwwLjQ1LDEsMSwxaDE0YzAuNTUsMCwxLTAuNDUsMS0xVjENCglDMTYsMC40NSwxNS41NSwwLDE1LDBMMTUsMHoiLz4NCjxyZWN0IHg9IjIiIHk9IjIiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIvPg0KPC9zdmc+DQo=");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2016%2016%22%20enable-background%3D%22new%200%200%2016%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M15%2C1v14H1V1H15%20M15%2C0H1C0.45%2C0%2C0%2C0.45%2C0%2C1v14c0%2C0.55%2C0.45%2C1%2C1%2C1h14c0.55%2C0%2C1-0.45%2C1-1V1%0D%0A%09C16%2C0.45%2C15.55%2C0%2C15%2C0L15%2C0z%22%2F%3E%0D%0A%3Crect%20x%3D%222%22%20y%3D%222%22%20fill%3D%22%23FFFFFF%22%20width%3D%2212%22%20height%3D%2212%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 16px;
   height: 16px;
 }
 .makeup__radio-item-label--bg-transparency:before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xNSwxdjE0SDFWMUgxNSBNMTUsMEgxQzAuNDUsMCwwLDAuNDUsMCwxdjE0YzAsMC41NSwwLjQ1LDEsMSwxaDE0YzAuNTUsMCwxLTAuNDUsMS0xVjENCglDMTYsMC40NSwxNS41NSwwLDE1LDBMMTUsMHoiLz4NCjxyZWN0IHg9IjgiIHk9IjIiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiLz4NCjxyZWN0IHg9IjUiIHk9IjUiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiLz4NCjxyZWN0IHg9IjgiIHk9IjgiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiLz4NCjxyZWN0IHg9IjIiIHk9IjgiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiLz4NCjxyZWN0IHg9IjIiIHk9IjIiIGZpbGw9IiNGRkZGRkYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiLz4NCjxnPg0KCTxyZWN0IHg9IjUiIHk9IjExIiBmaWxsPSIjRkZGRkZGIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIi8+DQo8L2c+DQo8cmVjdCB4PSIxMSIgeT0iNSIgZmlsbD0iI0ZGRkZGRiIgd2lkdGg9IjMiIGhlaWdodD0iMyIvPg0KPHJlY3QgeD0iMTEiIHk9IjExIiBmaWxsPSIjRkZGRkZGIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIi8+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2016%2016%22%20enable-background%3D%22new%200%200%2016%2016%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M15%2C1v14H1V1H15%20M15%2C0H1C0.45%2C0%2C0%2C0.45%2C0%2C1v14c0%2C0.55%2C0.45%2C1%2C1%2C1h14c0.55%2C0%2C1-0.45%2C1-1V1%0D%0A%09C16%2C0.45%2C15.55%2C0%2C15%2C0L15%2C0z%22%2F%3E%0D%0A%3Crect%20x%3D%228%22%20y%3D%222%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Crect%20x%3D%225%22%20y%3D%225%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Crect%20x%3D%228%22%20y%3D%228%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Crect%20x%3D%222%22%20y%3D%228%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Crect%20x%3D%222%22%20y%3D%222%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Cg%3E%0D%0A%09%3Crect%20x%3D%225%22%20y%3D%2211%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3Crect%20x%3D%2211%22%20y%3D%225%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3Crect%20x%3D%2211%22%20y%3D%2211%22%20fill%3D%22%23FFFFFF%22%20width%3D%223%22%20height%3D%223%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 16px;
   height: 16px;
 }
 .makeup__radio-item-label--bg-map:before {
-  margin: -7px 0 0 -8px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTdweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTcgMTQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE3IDE0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNFRUVFRUUiIGQ9Ik0xNi43MiwyLjQ3NWwtMy43ODQtMi4zOTZjLTAuMTc2LTAuMTA1LTAuMzg2LTAuMTA1LTAuNTYxLDBMOC41NiwyLjQ1OUw1LDAuMDc5DQoJYy0wLjE3NS0wLjEwNS0wLjgyNS0wLjEwNS0xLDBMMC4yOCwyLjYzNEMwLjEwNSwyLjczOSwwLDIuOTQ5LDAsMy4xNTlWMTMuMzhjMCwwLjI0NiwwLjEwNSwwLjQyMSwwLjI4LDAuNTI1DQoJYzAuMjEsMC4xMDUsMC40MiwwLjEwNSwwLjU5NiwwbDMuNzgtMi4zOGwzLjYyNCwyLjM4YzAuMTc1LDAuMTA1LDAuMzg1LDAuMTA1LDAuNTk1LDBsMy43OC0yLjM4bDMuNDcsMi4yMjENCgljMC4xMDUsMC4wNywwLjIxLDAuMTA1LDAuMzE1LDAuMTA1YzAuMTA0LDAsMC4xNzUtMC4wMzUsMC4yNzktMC4xMDVjMC4xNzYtMC4xMDQsMC4yOC0wLjI3OSwwLjI4LTAuNTI1VjMNCglDMTcsMi43OSwxNi44OTYsMi41OCwxNi43MiwyLjQ3NXogTTQsMTAuNTFsLTMsMS44MlYzLjQ3NGwzLTEuODJWMTAuNTF6IE04LDEyLjMzMWwtMy0xLjgyVjEuNjU0bDMsMS44MlYxMi4zMzF6IE0xMiwxMC41MWwtMywxLjgyDQoJVjMuNDc0bDMtMS44MlYxMC41MXogTTE2LDEyLjMzMWwtMy0xLjgyVjEuNjU0bDMsMS44MlYxMi4zMzF6Ii8+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2217px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2017%2014%22%20enable-background%3D%22new%200%200%2017%2014%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cpath%20fill%3D%22%23EEEEEE%22%20d%3D%22M16.72%2C2.475l-3.784-2.396c-0.176-0.105-0.386-0.105-0.561%2C0L8.56%2C2.459L5%2C0.079%0D%0A%09c-0.175-0.105-0.825-0.105-1%2C0L0.28%2C2.634C0.105%2C2.739%2C0%2C2.949%2C0%2C3.159V13.38c0%2C0.246%2C0.105%2C0.421%2C0.28%2C0.525%0D%0A%09c0.21%2C0.105%2C0.42%2C0.105%2C0.596%2C0l3.78-2.38l3.624%2C2.38c0.175%2C0.105%2C0.385%2C0.105%2C0.595%2C0l3.78-2.38l3.47%2C2.221%0D%0A%09c0.105%2C0.07%2C0.21%2C0.105%2C0.315%2C0.105c0.104%2C0%2C0.175-0.035%2C0.279-0.105c0.176-0.104%2C0.28-0.279%2C0.28-0.525V3%0D%0A%09C17%2C2.79%2C16.896%2C2.58%2C16.72%2C2.475z%20M4%2C10.51l-3%2C1.82V3.474l3-1.82V10.51z%20M8%2C12.331l-3-1.82V1.654l3%2C1.82V12.331z%20M12%2C10.51l-3%2C1.82%0D%0A%09V3.474l3-1.82V10.51z%20M16%2C12.331l-3-1.82V1.654l3%2C1.82V12.331z%22%2F%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 17px;
   height: 14px;
+  margin: -7px 0 0 -8px;
 }
 /* Slider */
 .makeup__slider {
   display: inline-block;
-  vertical-align: middle;
   padding: 0 .25em 0 .2em;
+  vertical-align: middle;
 }
 .makeup__slider:before {
   display: inline-block;
-  vertical-align: middle;
   height: 1.6em;
   content: '';
+  vertical-align: middle;
 }
 .makeup__slider-title {
   display: inline-block;
+  margin-right: .4em;
+  color: #ccc;
   vertical-align: middle;
   font-size: .7em;
-  color: #ccc;
-  margin-right: .4em;
 }
 .makeup__slider-track {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
+  margin: 0 0 0 8px;
+  width: 60px;
   height: 1px;
   border-top: 1px solid #000;
   background: #444;
-  width: 60px;
-  margin: 0 0 0 8px;
+  vertical-align: middle;
 }
 .makeup__slider-track-runner {
   position: absolute;
+  z-index: 1;
   width: 0;
   height: 0;
-  z-index: 1;
 }
 .makeup__slider-track-runner:active {
   z-index: 2;
 }
 .makeup__slider-track-runner:before {
-  content: '';
   position: absolute;
   top: -8px;
   left: -7px;
@@ -479,84 +493,111 @@ button {
   height: 16px;
   border-radius: 2px;
   background: #555;
+  background: -webkit-linear-gradient(bottom, #555555, #444444);
   background: linear-gradient(to top, #555555, #444444);
   box-shadow: 0 1px 3px 0 #000;
+  content: '';
 }
 .makeup__slider-track-runner:after {
-  content: '';
   position: absolute;
   top: -4px;
   left: -3px;
   width: 5px;
   height: 8px;
-  border-left: 1px solid #252525;
   border-right: 1px solid #252525;
+  border-left: 1px solid #252525;
+  background: -webkit-linear-gradient(left, #252525, #252525) center center repeat-y;
   background: linear-gradient(to right, #252525, #252525) center center repeat-y;
   background-size: 1px 1px;
+  content: '';
 }
 /* Navigation */
 .makeup__nav {
   padding-bottom: 2em;
 }
 .makeup__nav-title {
-  font: bold 0.8em/1.25em 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin: .875em 0 .625em 1em;
+  font: bold 0.8em/1.25em 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-/* Module */
-.makeup__module {
+/* Item (module, block, type, subtype, etc) */
+.makeup__item {
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-.makeup__module--hidden {
+.makeup__item > .makeup__item {
+  padding-left: 13px;
+}
+.makeup__item--expandable > .makeup__item {
   display: none;
 }
-.makeup__module-header {
+.makeup__item--expanded > .makeup__item {
+  display: block;
+}
+.makeup__item--hidden,
+.makeup__item--expanded > .makeup__item--hidden {
+  display: none;
+}
+.makeup__item-header {
   position: relative;
-  font: 0.6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #eee;
   padding: 0 0 0 2.5em;
+  color: #eee;
   white-space: nowrap;
-  overflow: hidden;
+  font: 0.6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
   cursor: pointer;
 }
-.makeup__module--expandable .makeup__module-header:before {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  margin-top: -4px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iN3B4IiBoZWlnaHQ9IjhweCIgdmlld0JveD0iMCAwIDcgOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNyA4IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM5OTk5OUEiIGQ9Ik02LjM5OSwzLjY3OUwwLDcuMzU5VjBMNi4zOTksMy42Nzl6Ii8+DQo8L2c+DQo8L3N2Zz4NCg==");
+.makeup__item--expandable > .makeup__item-header:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%227px%22%20height%3D%228px%22%20viewBox%3D%220%200%207%208%22%20enable-background%3D%22new%200%200%207%208%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%2399999A%22%20d%3D%22M6.399%2C3.679L0%2C7.359V0L6.399%2C3.679z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 7px;
   height: 8px;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  margin-top: -4px;
   content: '';
 }
-.makeup__module--expanded .makeup__module-header:before {
-  left: 17px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iOHB4IiBoZWlnaHQ9IjdweCIgdmlld0JveD0iMCAwIDggNyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgOCA3IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM5OTk5OUEiIGQ9Ik0zLjY4LDYuMzk5TDAsMGg3LjM1OUwzLjY4LDYuMzk5eiIvPg0KPC9nPg0KPC9zdmc+DQo=");
+.makeup__item--expanded > .makeup__item-header:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%228px%22%20height%3D%227px%22%20viewBox%3D%220%200%208%207%22%20enable-background%3D%22new%200%200%208%207%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%2399999A%22%20d%3D%22M3.68%2C6.399L0%2C0h7.359L3.68%2C6.399z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 8px;
   height: 7px;
+  left: 17px;
   margin-top: -3px;
 }
-.makeup__module--current .makeup__module-header {
+.makeup__item--current > .makeup__item-header:before {
   background: #656565;
+  background: -webkit-linear-gradient(bottom, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
   background: linear-gradient(to top, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
+  content: '';
+  position: absolute;
+  width: 200%;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
-.makeup__module-header-in {
+.makeup__item--highlight > .makeup__item-header {
+  font-weight: bold;
+}
+.makeup__item--matched > .makeup__item-header {
+  color: #fff;
+  font-weight: bold;
+}
+.makeup__item-header-in {
   width: 100%;
   max-width: 100%;
 }
-.makeup__module-header-meta {
+.makeup__item-header-meta {
   height: 1.7em;
   float: right;
 }
-.makeup__module-header-inner {
+.makeup__item-header-inner {
   position: relative;
   overflow: hidden;
   white-space: nowrap;
 }
-.makeup__module-header-title {
+.makeup__item-header-title {
   display: inline-block;
   overflow: hidden;
   max-width: 100%;
@@ -566,76 +607,48 @@ button {
 /* Module rating */
 .makeup__rating {
   display: inline-block;
+  padding: 0 1em 0 0;
+  width: 1.5em;
+  color: #666;
   vertical-align: middle;
   font: bold 0.75em/2.2em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #666;
-  width: 1.5em;
-  padding: 0 1em 0 0;
 }
 /* Module doc links */
 .makeup__doc {
+  padding: 0 10px 0 0;
+  height: 100%;
   font-size: 0;
   line-height: 0;
-  height: 100%;
-  padding: 0 10px 0 0;
 }
 .makeup__doc:before {
   display: inline-block;
-  vertical-align: middle;
-  height: 100%;
   width: 2px;
+  height: 100%;
   content: '';
+  vertical-align: middle;
 }
 .makeup__doc-link {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
   width: 16px;
   height: 16px;
+  vertical-align: middle;
   opacity: .5;
-  transition: opacity .2s linear;
+  -webkit-transition: opacity .2s linear;
+          transition: opacity .2s linear;
 }
 .makeup__doc-link:before {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOC4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTBweCIgaGVpZ2h0PSIxMHB4IiB2aWV3Qm94PSIwIDAgMTAgMTAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEwIDEwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM2NjY2NjYiIGQ9Ik05Ljk5OSw0Ljk3M2MwLjA0NCwyLjc5NC0yLjIsNS4xMDQtNC45OTUsNS4xNDlDMi4yMSwxMC4xNDQtMC4wNzgsNy45MjItMC4xMjMsNS4xMjgNCgkJYy0wLjA0My0yLjc5NCwyLjIwMS01LjEwNSw0Ljk5NS01LjEyN0M3LjY2Ni0wLjA0Myw5Ljk1NSwyLjE3OSw5Ljk5OSw0Ljk3M3ogTTYuMjE1LDcuMDY0TDYuMDE3LDYuNzk5DQoJCUM1LjY2NCw3LjA2NCw1LjMxMyw3LjE5NSw1LjIyNSw3LjE5NVM1LjA5Miw3LjA4Niw1LjE4LDYuNzc3bDAuNDYzLTEuNzZjMC4xNzYtMC42MzgsMC4xMDktMS4wNTYtMC4yNDItMS4wNTYNCgkJYy0wLjQxOCwwLTEuMzg3LDAuNDE4LTIuMjQ0LDEuMTQ0bDAuMTc2LDAuMjg2YzAuMjY0LTAuMTc2LDAuNzI3LTAuMzc0LDAuODE0LTAuMzc0czAuMDg4LDAuMTEsMCwwLjM3NEwzLjc1LDcuMDY0DQoJCUMzLjUwOCw4LjAwOSwzLjc3Miw4LjIwOCw0LjEyNCw4LjIwOFM1LjM3OSw3LjksNi4yMTUsNy4wNjR6IE00LjQ3NywyLjQ4N2MtMC4wMjIsMC4zOTYsMC4yMiwwLjY2LDAuNzAzLDAuNjYNCgkJYzAuNTcyLDAsMC45MjUtMC4zOTYsMC45MjUtMC44MzZjMC0wLjMzLTAuMTU0LTAuNjM4LTAuNjYtMC42MzhDNC43NjIsMS42NzMsNC40NzcsMi4xNTcsNC40NzcsMi40ODd6Ii8+DQo8L2c+DQo8L3N2Zz4NCg==");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2018.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0D%0A%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2210px%22%20height%3D%2210px%22%20viewBox%3D%220%200%2010%2010%22%20enable-background%3D%22new%200%200%2010%2010%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M9.999%2C4.973c0.044%2C2.794-2.2%2C5.104-4.995%2C5.149C2.21%2C10.144-0.078%2C7.922-0.123%2C5.128%0D%0A%09%09c-0.043-2.794%2C2.201-5.105%2C4.995-5.127C7.666-0.043%2C9.955%2C2.179%2C9.999%2C4.973z%20M6.215%2C7.064L6.017%2C6.799%0D%0A%09%09C5.664%2C7.064%2C5.313%2C7.195%2C5.225%2C7.195S5.092%2C7.086%2C5.18%2C6.777l0.463-1.76c0.176-0.638%2C0.109-1.056-0.242-1.056%0D%0A%09%09c-0.418%2C0-1.387%2C0.418-2.244%2C1.144l0.176%2C0.286c0.264-0.176%2C0.727-0.374%2C0.814-0.374s0.088%2C0.11%2C0%2C0.374L3.75%2C7.064%0D%0A%09%09C3.508%2C8.009%2C3.772%2C8.208%2C4.124%2C8.208S5.379%2C7.9%2C6.215%2C7.064z%20M4.477%2C2.487c-0.022%2C0.396%2C0.22%2C0.66%2C0.703%2C0.66%0D%0A%09%09c0.572%2C0%2C0.925-0.396%2C0.925-0.836c0-0.33-0.154-0.638-0.66-0.638C4.762%2C1.673%2C4.477%2C2.157%2C4.477%2C2.487z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A");
   background-repeat: no-repeat;
   width: 10px;
   height: 10px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
   content: '';
 }
 .makeup__doc-link:hover {
   opacity: 1;
 }
-/* Subnav */
-.makeup__subnav {
-  display: none;
-  overflow: hidden;
-}
-.makeup__module--expanded .makeup__subnav {
-  display: block;
-}
-.makeup__subnav-title {
-  color: #666;
-  font: 0.6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  padding-left: 3.4em;
-}
-.makeup__subnav-link {
-  display: block;
-  text-decoration: none;
-  color: #eee;
-  font: 0.6em/1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  padding-left: 3.4em;
-  cursor: pointer;
-}
-.makeup__subnav-link:hover {
-  color: #fff;
-}
-.makeup__subnav-link--current {
-  background: #656565;
-  background: linear-gradient(to top, #4d4d4d 6%, #5d5d5d 6%, #6d6d6d 94%, #7e7e7e 94%);
-}
-.makeup__subnav-link--hidden {
-  display: none;
-}
+
+/*# sourceMappingURL=makeup.css.map */
