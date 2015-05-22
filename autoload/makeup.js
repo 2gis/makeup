@@ -25141,6 +25141,7 @@ if (typeof window != 'undefined') {
             if (diff.chain) {
                 this._renderItem(diff.chain);
                 this._setCurrentMenuItem(diff.chain);
+                this._fullHtmlBackup = null;
             }
 
             // Modes toggler
@@ -25208,7 +25209,9 @@ if (typeof window != 'undefined') {
                         }
                     }
                 } else {
-                    this.el.containerMarkup.html(this._fullHtmlBackup);
+                    if (this._fullHtmlBackup) {
+                        this.el.containerMarkup.html(this._fullHtmlBackup);
+                    }
                 }
 
                 if (full.checked != fullValue) {
@@ -25275,7 +25278,7 @@ if (typeof window != 'undefined') {
             }
 
             // data -> html
-            var html = this._templating(instance);
+            var html = item.html || this._templating(instance);
 
             var width = this._find(itemsChain, ['width']);
 
@@ -25288,9 +25291,11 @@ if (typeof window != 'undefined') {
 
             this._containerMarkup.html(cutScripts(html));
 
-            if (width) {
-                this._state.set({ width: width });
-            }
+            setTimeout(function() {
+                if (width) {
+                    makeup._state.set({ width: width });
+                }
+            }, 0);
 
             // Навешиваем допклассы на блок
             classes = this._map(itemsChain, 'cls').join(' ');
@@ -25634,10 +25639,12 @@ if (typeof window != 'undefined') {
             'login',
             'form',
             'table',
-            'profile'
+            'profile',
+            'gadget',
+            'dashboard'
         ];
 
-        $(root).find('.' + commonBlockNames.join(',.')).each(function() {
+        $(root).find('.' + commonBlockNames.join(',.')).not('script, link, iframe, object, svg').each(function() {
             var classes = _.compact(this.className.split(' '));
             var blockName = _.intersection(classes, commonBlockNames)[0];
 
@@ -25896,12 +25903,28 @@ if (typeof window != 'undefined') {
 
         if (_.isArray(params)) { // Если переданы только данные
             if (_.isString(params[0])) {
+                var domMode = !_.has(this, '_templating');
+
                 params = [{
                     items: _.map(params, function(str, i) {
-                        return {
+                        var item = {
                             name: str,
                             type: 'block'
                         };
+
+                        if (domMode) {
+                            var elements = $('.' + str);
+                            if (elements.length > 1) {
+                                item.items = _.map(elements, function(elem, index) {
+                                    return {
+                                        html: elem.outerHTML,
+                                        name: str + (index + 1)
+                                    };
+                                });
+                            }
+                        }
+
+                        return item;
                     })
                 }];
             }
