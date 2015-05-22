@@ -237,7 +237,7 @@
             traverseItems(item.items, item, index);
         }
 
-        traverseItems(out.data[0].items, {
+        traverseItems(out.data && out.data[0] && out.data[0].items, {
             _id: '',
             _chain: []
         }, 0);
@@ -246,10 +246,16 @@
     };
 
     Makeup.fn._templating = function(params) {
-        var node = $('.' + params.block)[0];
+        var node = $('.' + params.block);
+        var maxWidth = this.el.box.width() - 80;
 
-        if (node) {
-            return node.outerHTML;
+        if (node.length) {
+            return {
+                data: {
+                    width: Math.min(node.outerWidth(true), maxWidth)
+                },
+                html: node[0].outerHTML
+            };
         }
 
         return '418. I am a teapot.';
