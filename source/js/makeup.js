@@ -90,9 +90,7 @@ if (typeof window != 'undefined') {
 
             this._state.push(); // wanted state -> actual state
 
-            // setTimeout(_.bind(function() {
-                this._obey(this._state.get()); // init actual state
-            // }, this), 0); // async call for initializing _templating variable
+            this._obey(this._state.get()); // init actual state
 
             return this;
         },
@@ -455,15 +453,16 @@ if (typeof window != 'undefined') {
 
             horizontalRuler.pos(0, 0);
             horizontalRuler.pos(1, value);
+
+            this._horizontalRuler = horizontalRuler;
         },
 
         _applyRulerPosition: function(pos) {
-            var params = this._params,
-                container = $(params.selectors.container);
-
-            container.css({
-                width: validateRangeValue(pos, params.ruler.h.slider) + 'px'
+            var width = validateRangeValue(pos, this._params.ruler.h.slider);
+            this.el.container.css({
+                width: width + 'px'
             });
+            // @TODO sync rader value
         },
 
         _bindSmileyListeners: function() {
@@ -605,9 +604,13 @@ if (typeof window != 'undefined') {
          * Render item
          */
         _renderItem: function(chain) {
+            var makeup = this;
             var itemsChain = this._itemsChain(chain);
+            var item = _.last(itemsChain);
             var instance = _.reduce(itemsChain, function(result, item) {
-                result[item.type] = item.name;
+                if (item.type) {
+                    result[item.type] = item.name;
+                }
 
                 return result;
             }, {}, this);
@@ -629,16 +632,23 @@ if (typeof window != 'undefined') {
 
             // Загружаем изображение
             var src = this._find(itemsChain, 'image');
-            if (!src) {
-                var imagePrefix = this._find(itemsChain, 'imagePrefix');
-                src = imagePrefix + instance.item + '.png';
+            var imagePrefix = this._find(itemsChain, 'imagePrefix');
+            if (!src && imagePrefix) {
+                src = imagePrefix + item.name + '.png';
             }
-            this._loadImage(src);
+            if (src) {
+                this._loadImage(src);
+            } else {
+                // @TODO State closers
+                setTimeout(function() {
+                    makeup._state.set({mode: 2, transparency: 1});
+                }, 0);
+            }
 
             // data -> html
             var html = this._templating(instance);
 
-            var width;
+            var width = this._find(itemsChain, ['width']);
 
             if (typeof html != 'string') {
                 if (html.html) {

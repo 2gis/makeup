@@ -16,14 +16,14 @@ var data = [{
         ]
     }, {
         name: 'Hello World!',
-        image: "qwe.jpg",
         type: 'module'
     }, {
         name: 'Блок 2',
         type: 'module'
     }, {
         name: 'makeup',
-        type: 'module'
+        type: 'module',
+        width: 1000
     }, {
         name: 'miniCard',
         type: 'module',
@@ -35,15 +35,12 @@ var data = [{
             imagePrefix: 'images/_miniCard_type_',
             type: 'context',
             items: [{
-                name: 'full',
-                type: 'item'
+                name: 'full'
             }, {
-                name: 'adv',
-                type: 'item'
+                name: 'adv'
             }, {
                 name: 'recoveryStart',
-                cls:  'ads _recovery',
-                type: 'item'
+                cls:  'ads _recovery'
             }, {
                 name: 'recoveryEnd',
                 cls:  'ads _recovery'
