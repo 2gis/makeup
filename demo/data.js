@@ -1,6 +1,20 @@
 var data = [{
     label: 'Простые блоки',
     items: [{
+        name: 'promo',
+        type: 'module',
+        items: [
+            {
+                name: 'default',
+                type: 'type',
+                image: 'images/_promo_type_default.png'
+            },
+            {
+                name: 'full',
+                type: 'type'
+            }
+        ]
+    }, {
         name: 'Hello World!',
         image: "qwe.jpg",
         type: 'module'
@@ -174,6 +188,48 @@ var makeupCtx = {
         checked: false
     }
 };
+
+var promoCtx = {};
+
+promoCtx['default'] = {
+    projectDesc: 'Инструмент для приятного контроля за качеством вёрстки на веб-проектах',
+    header: 'Сравните вёрстку с дизайном',
+    controls: [{
+        type: 'design',
+        text: 'дизайн'
+    }, {
+        type: 'markup',
+        text: 'вёрстка'
+    }, {
+        type: 'summary',
+        text: 'сумма'
+    }, {
+        type: 'diff',
+        text: 'разница'
+    }]
+};
+
+promoCtx.full = {
+    projectDesc: 'Инструмент для приятного контроля за качеством вёрстки на веб-проектах, с его помощью можно приятно контролировать качество приятной вёрстки',
+    header: 'Сравните вёрстку с диваном, расскажите про покупки, про какие про покупки?',
+    controls: [{
+        type: 'design',
+        text: 'дизайн великолепный'
+    }, {
+        type: 'markup',
+        text: 'вёрстка тоже на высоте'
+    }, {
+        type: 'summary',
+        text: 'сумма'
+    }, {
+        type: 'diff',
+        text: 'разница'
+    }, {
+        type: 'diff',
+        text: 'пятый элемент'
+    }]
+};
+
 
 var miniCardCtx = {};
 
