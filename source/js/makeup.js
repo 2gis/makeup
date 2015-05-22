@@ -8,9 +8,17 @@ if (typeof window != 'undefined') {
     hbs && hbs.noConflict(); // doesnt return anything
 
     onload = $.Deferred();
-    $(window).on('load', function() {
+    if (document.readyState === 'complete') {
         onload.resolve();
-    });
+    } else {
+        $(window).on('load', function() {
+            onload.resolve();
+        });
+    }
+
+    setTimeout(function() {
+        onload.resolve();
+    }, 5000);
 }
 
 /**

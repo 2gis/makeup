@@ -48,7 +48,10 @@
     }
 
     Makeup.fn.detectBlocks = function(root) {
+        root = root || document.body;
+
         var blocks = [];
+
         $(root).find('*').each(function() {
             var block = getBlockName(this);
             if (block) {
