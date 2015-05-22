@@ -7,6 +7,7 @@ var s=document.createElement('script');s.src ="//2gis.github.io/makeup/autoload/
 ```
 
 [Демо-сайт](http://2gis.github.io/makeup/demo)
+
 [Промо-сайт](http://2gis.github.io/makeup)
 
 # Makeup
