@@ -59,6 +59,58 @@
             }
         });
 
+        blocks = _.uniq(blocks);
+
+        if (blocks.length) {
+            return blocks;
+        }
+
+        // if there are no BEM blocks, search for common block names + body children
+        var commonBlockNames = [
+            'head',
+            'header',
+            'nav',
+            'navigation',
+            'menu',
+            'item',
+            'list',
+            'footer',
+            'main',
+            'content',
+            'box',
+            'popup',
+            'post',
+            'btn',
+            'button',
+            'auth',
+            'user',
+            'home',
+            'player',
+            'logo',
+            'section',
+            'article',
+            'login',
+            'form',
+            'table',
+            'profile'
+        ];
+
+        $(root).find('.' + commonBlockNames.join(',.')).each(function() {
+            var classes = _.compact(this.className.split(' '));
+            var blockName = _.intersection(classes, commonBlockNames)[0];
+
+            if (blockName) {
+                blocks.push(blockName);
+            }
+        });
+
+        $(root).children().each(function() {
+            var firstClass = _.compact(this.className.split(' '))[0];
+            if (firstClass) {
+                blocks.push(firstClass);
+            }
+        });
+
         return _.uniq(blocks);
     };
 
