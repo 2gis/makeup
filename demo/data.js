@@ -28,6 +28,7 @@ var data = [{
     }, {
         name: 'miniCard',
         type: 'module',
+        width: 400,
         styles: {
             markup: 'background: white;'
         },

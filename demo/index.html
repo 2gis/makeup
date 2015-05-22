@@ -21,6 +21,7 @@
 <script>
 
     Makeup(data, function(params) {
+        console.log('params', params);
         if (params.module == 'makeup') {
             return Makeup.Handlebars.partials.makeup(makeupCtx);
         }
@@ -32,7 +33,7 @@
         if (params.module == 'miniCard') {
             var source   = Makeup.$("#miniCard").html();
             var template = Makeup.Handlebars.compile(source);
-            var html = template(miniCardCtx[params.item]);
+            var html = template(miniCardCtx[params.block]);
 
             return html;
         }
