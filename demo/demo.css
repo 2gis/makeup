@@ -877,3 +877,236 @@ doesnotexist:-o-prefocus,
   padding: 4px 48px 10px;
   font-size: 12px;
 }
+
+/**
+ * Promo
+ */
+
+.promo {
+    width: 901px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 7px 0;
+    background: #4e4c49;
+}
+.promo__project {
+    margin-bottom: 39px;
+    text-align: center
+}
+.promo__projectIcon {
+    margin: 15px auto 30px;
+    background-position: -10px -146px;
+    width: 48px;
+    height: 48px
+}
+.promo__projectIcon,
+.promo__projectLogo {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-repeat: no-repeat
+}
+.promo__projectLogo {
+    margin: 0 auto 39px;
+    background-position: -10px -10px;
+    width: 260px;
+    height: 50px
+}
+.promo__projectDesc {
+    margin: 0 auto;
+    width: 480px;
+    font: 22px/28px Helvetica, Arial, sans-serif;
+    color: #fff
+}
+.interactive {
+    position: relative;
+    width: 100%;
+    height: 400px
+}
+.interactive__header {
+    width: 100%;
+    height: 100%;
+    background: #4e4c4a;
+    overflow: hidden
+}
+.promoMakeup {
+    width: 901px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 60px
+}
+.promoMakeup__header {
+    margin: 0 0 92px;
+    font: 48px/50px 'SuisseCondNoConflict', 'Arial Narrow', Helvetica, Arial, sans-serif;
+    color: #ffb62b;
+    text-align: center
+}
+.promoMakeup__interactive:before {
+    display: table;
+    content: ""
+}
+.promoMakeup__interactive:after {
+    display: table;
+    content: "";
+    clear: both
+}
+.lt-ie8 .promoMakeup__interactive {
+    zoom: 1
+}
+.promoMakeup__interactiveControls {
+    margin: 0;
+    padding: 0 0 0 39px;
+    text-indent: 0;
+    list-style: none;
+    list-style-position: outside;
+    float: left;
+    width: 100px
+}
+.promoMakeup__interactiveControlsItem {
+    display: block;
+    margin-top: 35px
+}
+.promoMakeup__interactiveControlsItem:first-child {
+    margin-top: 0
+}
+.promoMakeup__interactiveControlsItemControl {
+    font: 14px/24px Helvetica, Arial, sans-serif;
+    color: #ffb62b;
+    cursor: pointer
+}
+._active .promoMakeup__interactiveControlsItemControl,
+.promoMakeup__interactiveControlsItemControl:hover {
+    color: #fff
+}
+.promoMakeup__interactiveControlsItemControl:before {
+    content: '';
+    display: block;
+    margin-bottom: 15px
+}
+._design .promoMakeup__interactiveControlsItemControl:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -456px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._active._design .promoMakeup__interactiveControlsItemControl:before,
+._design .promoMakeup__interactiveControlsItemControl:hover:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -505px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._markup .promoMakeup__interactiveControlsItemControl:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -603px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._active._markup .promoMakeup__interactiveControlsItemControl:before,
+._markup .promoMakeup__interactiveControlsItemControl:hover:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -652px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._summary .promoMakeup__interactiveControlsItemControl:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -701px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._active._summary .promoMakeup__interactiveControlsItemControl:before,
+._summary .promoMakeup__interactiveControlsItemControl:hover:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -750px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._diff .promoMakeup__interactiveControlsItemControl:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -554px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+._active._diff .promoMakeup__interactiveControlsItemControl:before,
+._diff .promoMakeup__interactiveControlsItemControl:hover:before {
+    background-image: url('images/svg-sprite/sprite.svg');
+    background-position: -10px -407px;
+    width: 42px;
+    height: 39px;
+    background-repeat: no-repeat
+}
+.promoMakeup__interactiveExample {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+    width: 554px
+}
+.promoMakeup__interactiveDescription {
+    float: right;
+    width: 188px
+}
+.promoMakeup__interactiveDescriptionContent {
+    margin: 40px 0 0;
+    font: 14px/24px Helvetica, Arial, sans-serif;
+    color: #fff
+}
+.promoMakeup__interactiveDescriptionContent:first-child {
+    margin-top: 0
+}
+.promoMakeup__interactiveDescriptionContent a {
+    color: #ffb62b;
+    text-decoration: none
+}
+.promoMakeup__interactiveDescriptionContent a:hover {
+    color: #fff
+}
+
+
+.interactivePromo__box_interactive {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -239px 0 0 -235px;
+    width: 462px;
+    height: 480px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d
+}
+.interactivePromo__window_interactive {
+    width: 470px;
+    height: 480px;
+    background: url('images/interactive/browser.png') 0 0 no-repeat
+}
+.interactivePromo__window-layer_interactive {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 462px;
+    height: 372px;
+    margin: 0 0 0 -231px;
+    border: 1px solid rgba(255, 255, 255, .7)
+}
+.interactivePromo__window-layer--markup_interactive {
+    background: url('images/interactive/markup.png') 0 0 no-repeat
+}
+.interactivePromo__window-layer--design_interactive {
+    background: url('images/interactive/design.png') 0 0 no-repeat
+}
+.interactivePromo--1 .interactivePromo__window-layer--markup_interactive,
+.interactivePromo--2 .interactivePromo__window-layer--design_interactive {
+    background: 0 0
+}
+.interactivePromo--3 .interactivePromo__window-layer--design_interactive {
+    opacity: .5
+}
+.interactivePromo--4 .interactivePromo__window-layer--design_interactive {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+    opacity: .5
+}
