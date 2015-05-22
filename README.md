@@ -1,12 +1,15 @@
-[![Build Status](https://travis-ci.org/2gis/makeup.svg)](https://travis-ci.org/2gis/makeup)
+[![Build Status](https://travis-ci.org/2gis/makeup.svg)](https://travis-ci.org/2gis/makeup) [![Join the chat at https://gitter.im/2gis/makeup](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/2gis/makeup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Makeup
-
-[![Join the chat at https://gitter.im/2gis/makeup](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/2gis/makeup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Экспресс-версию Makeup можно загрузить почти на любой сайт (кроме тех, где выставлен HTTP заголовок content-security-policy). Для этого скопируйте и выполните строчку кода в консоли Dev Tools вашего браузера:
 
 ```js
 var s=document.createElement('script');s.src ="//2gis.github.io/makeup/autoload/script.js";document.body.appendChild(s)
 ```
+
+[Демо-сайт](http://2gis.github.io/makeup/demo)
+[Промо-сайт](http://2gis.github.io/makeup)
+
+# Makeup
 
 Makeup – инструмент для приятного контроля за качеством вёрстки на веб-проектах.
 
@@ -18,9 +21,9 @@ Makeup – инструмент для приятного контроля за
 
 Makeup предназначен
 
-* для сравнения вёрстки блоков с исходными дизайн-макетами;
-* для контроля за состояниями блоков (модификации блоков, разный контент);
-* для комфортной изолированной разработки блоков.
+* Для сравнения вёрстки блоков с исходными дизайн-макетами.
+* Для контроля за состояниями блоков (модификации блоков, разный контент).
+* Для комфортной изолированной разработки блоков.
 
 ## Быстрый старт
 
@@ -39,7 +42,7 @@ Makeup предназначен
 </html>
 ```
 
-Добавьте скрипты и стили Makeup, спрячьте верстку приложения.
+Добавьте скрипт и стили Makeup.
 
 ```html
 <!DOCTYPE html>
@@ -60,19 +63,10 @@ Makeup предназначен
 
 Инициализируйте Мейкап
 
-
 ```js
-Makeup([{
-    name: 'button',
-    image: 'button.png'
-}], function(params) {
-    return '<div>Hello World!</div>';
-});
+Makeup(params, templating);
 ```
-
-Функция `renderModule` позволяет использовать Мейкап в любом окружении. Она может содержать методы по работе с шаблонизаторами, методами вашего фреймворка, использовать для рендера произвольные данные.
-
-Аргумент, который получает функция `renderModule` — это объект, содержащий всю имеющуюся у Мейкапа информацию о генерируемом модуле.
+где params - опциональный объект параметров, включая список блоков. Если объект не передан, все параметры берутся со значениями по-умолчанию, а список блоков генерируется из имеющегося в текущий момент DOM-дерева; templating - опциональная функция, которая по имени блока (и параметрам этого блока) должна возвращать html этого блока. Если функция не передана, используется встроенная функция, которая просто ищет в имеющемся DOM-дереве $('.' + blockname) и берёт от него outerHTML.
 
 [Формат данных для инициализации](docs/format.md)
 
@@ -90,7 +84,7 @@ Makeup([{
 
     ```bash
     npm i
-    gulp
+    npm start
     ```
 
 Демо будет доступно по адресу [localhost:3333/demo](http://localhost:3333/demo).
