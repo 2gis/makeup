@@ -59,6 +59,5 @@ gulp.task('templates', require('./tasks/templates')(buildOptions));
 gulp.task('js', require('./tasks/scripts')(buildOptions));
 gulp.task('sprite', require('./tasks/sprite')(buildOptions));
 gulp.task('css', require('./tasks/styles')(buildOptions));
-gulp.task('css', require('./tasks/styles')(buildOptions));
 gulp.task('test', require('./tasks/tests')(buildOptions));
 require('./tasks/hooks')(buildOptions);

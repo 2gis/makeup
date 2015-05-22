@@ -12,8 +12,43 @@
         <link rel="stylesheet" href="../dist/makeup.ie.css">
     <![endif]-->
 
+    <script src="data.js"></script>
+    <script src="../dist/makeup.js"></script>
+
 </head>
 <body>
+
+<script>
+
+    Makeup(data, function(params) {
+        if (params.module == 'makeup') {
+            return Makeup.Handlebars.partials.makeup(makeupCtx);
+        }
+
+        if (params.module == 'Hello World!') {
+            return '<div class="helloworld">Hello World!</div>';
+        }
+
+        if (params.module == 'miniCard') {
+            var source   = Makeup.$("#miniCard").html();
+            var template = Makeup.Handlebars.compile(source);
+            var html = template(miniCardCtx[params.item]);
+
+            return html;
+        }
+
+        if (params.module == 'promo') {
+            var source   = Makeup.$("#promo").html();
+            var template = Makeup.Handlebars.compile(source);
+            var html = template(promoCtx[params.type]);
+
+            return html;
+        }
+
+        return 'Hello World!';
+    });
+
+</script>
 
 <script id="miniCard" type="text/x-handlebars-template">
 <div class="miniCard">
@@ -202,38 +237,6 @@
     </div>
 </div>
 </script>
-<script src="data.js"></script>
-<script src="../dist/makeup.js"></script>
-<script>
 
-    Makeup(data, function(params) {
-        if (params.module == 'makeup') {
-            return Makeup.Handlebars.partials.makeup(makeupCtx);
-        }
-
-        if (params.module == 'Hello World!') {
-            return '<div class="helloworld">Hello World!</div>';
-        }
-
-        if (params.module == 'miniCard') {
-            var source   = Makeup.$("#miniCard").html();
-            var template = Makeup.Handlebars.compile(source);
-            var html = template(miniCardCtx[params.item]);
-
-            return html;
-        }
-
-        if (params.module == 'promo') {
-            var source   = Makeup.$("#promo").html();
-            var template = Makeup.Handlebars.compile(source);
-            var html = template(params.full ? promoCtx.full : promoCtx['default']);
-
-            return html;
-        }
-
-        return 'Hello World!';
-    });
-
-</script>
 </body>
 </html>

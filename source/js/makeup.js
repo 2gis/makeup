@@ -134,6 +134,7 @@ if (typeof window != 'undefined') {
             if (params.zoom) this._bindZoomListeners();
             if (params.ruler) this._bindRulerListeners();
             if (params.smiley) this._bindSmileyListeners();
+            if (params.full) this._bindFullListeners();
 
             $(window).on('statechange', _.bind(this._statechange, this));
         },
@@ -474,6 +475,23 @@ if (typeof window != 'undefined') {
             });
         },
 
+        _bindFullListeners: function() {
+            var self = this,
+                full = this.el.full,
+                makeupElement = $(this._params.selectors.root);
+
+            // Set default smiley value
+            if (!this._state.get('full')) {
+                var defaultFull = this._mod(makeupElement[0]).full || full[0].checked;
+
+                this._state.want({ full: defaultFull });
+            }
+
+            full.on('change', function() {
+                self._state.set({ full: this.checked });
+            });
+        },
+
         /**
          * Obeys application diff
          *
@@ -538,6 +556,28 @@ if (typeof window != 'undefined') {
 
                 if (smiley.checked != smileyValue) {
                     smiley.checked = smileyValue;
+                }
+            }
+
+            // Full
+            if (diff.full) {
+                var full = this.el.full[0],
+                    fullValue = s.full == 'true';
+
+                if (fullValue) {
+                    this._fullHtmlBackup = this.el.containerMarkup.html();
+                    var a, w = document.createTreeWalker(this.el.containerMarkup[0], NodeFilter.SHOW_TEXT);
+                    while (a = w.nextNode()) {
+                        if (a.textContent.trim().length) {
+                            a.textContent = 'Одиннадцатиклассница пошла посмотреть на достопримечательность, она шла долго, несколько строчек, пока не пришла';
+                        }
+                    }
+                } else {
+                    this.el.containerMarkup.html(this._fullHtmlBackup);
+                }
+
+                if (full.checked != fullValue) {
+                    full.checked = fullValue;
                 }
             }
         },

@@ -8,6 +8,22 @@ var gulp = require('gulp'),
 
 module.exports = function(buildOptions) {
 
+    // Use it carefully
+    gulp.task('rasterize-svg', function() {
+        var svg2png = require('gulp-svg2png');
+
+        return (
+            gulp
+                .src([
+                    'source/svg/**/*.svg',
+                    '!source/svg/**/_*.svg'
+                ])
+                .pipe(newer({ dest: 'source/png/', ext: '.png' }))
+                .pipe(svg2png())
+                .pipe(gulp.dest('source/png/'))
+        );
+    });
+
     gulp.task('copy-png', function() {
         return (
             gulp

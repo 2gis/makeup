@@ -99,6 +99,15 @@
             </div>
         {{/if}}
 
+        {{#if full}}
+            <div class="makeup__btn">
+                <input type="checkbox" id="makeup-full-{{next}}" class="makeup__btn-checkbox makeup__full"{{#if full.checked}} checked{{/if}}>
+                <label for="makeup-full-{{current}}" class="makeup__btn-label makeup__btn-label--full" title="{{full.tooltip}}">
+                    {{full.tooltip}}
+                </label>
+            </div>
+        {{/if}}
+
     </div>
 
     <!-- Sidebar -->
