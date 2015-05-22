@@ -25142,6 +25142,7 @@ if (typeof window != 'undefined') {
                 this._renderItem(diff.chain);
                 this._setCurrentMenuItem(diff.chain);
                 this._fullHtmlBackup = null;
+                this._applyRulerPosition(this._state.get('width'));
             }
 
             // Modes toggler
@@ -25281,13 +25282,6 @@ if (typeof window != 'undefined') {
             var html = item.html || this._templating(instance);
 
             var width = this._find(itemsChain, ['width']);
-
-            if (typeof html != 'string') {
-                if (html.html) {
-                    width = html.data && html.data.width;
-                    html = html.html;
-                }
-            }
 
             this._containerMarkup.html(cutScripts(html));
 
@@ -25896,6 +25890,18 @@ if (typeof window != 'undefined') {
         logic: true
     };
 
+    // @TODO zhest'
+    function validateSize(elem, item, maxWidth) {
+
+        var width = $(elem).outerWidth(true);
+        var height = $(elem).outerHeight(true);
+
+        if (_.isNumber(width) && _.isNumber(height) && width * height) {
+            item.width = Math.min(width, maxWidth);
+            return item;
+        }
+    }
+
     Makeup.fn._getParams = function(params) {
         if (!params) {
             params = this.detectBlocks();
@@ -25904,28 +25910,40 @@ if (typeof window != 'undefined') {
         if (_.isArray(params)) { // Если переданы только данные
             if (_.isString(params[0])) {
                 var domMode = !_.has(this, '_templating');
+                var maxWidth = 900;
 
                 params = [{
-                    items: _.map(params, function(str, i) {
+                    items: _.compact(_.map(params, function(str, i) {
                         var item = {
                             name: str,
                             type: 'block'
                         };
 
+                        var elements = $('.' + str);
+
+                        if (!elements.length) return;
+
                         if (domMode) {
-                            var elements = $('.' + str);
                             if (elements.length > 1) {
-                                item.items = _.map(elements, function(elem, index) {
-                                    return {
+                                var items = _.compact(_.map(elements, function(elem, index) {
+                                    return validateSize(elem, {
                                         html: elem.outerHTML,
                                         name: str + (index + 1)
-                                    };
-                                });
+                                    }, maxWidth);
+                                }));
+
+                                if (items.length) {
+                                    item.items = items;
+                                }
                             }
                         }
 
+                        if (!item.items) {
+                            item = validateSize(elements[0], item, maxWidth);
+                        }
+
                         return item;
-                    })
+                    }))
                 }];
             }
 
@@ -26126,15 +26144,9 @@ if (typeof window != 'undefined') {
 
     Makeup.fn._templating = function(params) {
         var node = $('.' + params.block);
-        var maxWidth = this.el.box.width() - 80;
 
         if (node.length) {
-            return {
-                data: {
-                    width: Math.min(node.outerWidth(true), maxWidth)
-                },
-                html: node[0].outerHTML
-            };
+            return node[0].outerHTML;
         }
 
         return '418. I am a teapot.';
