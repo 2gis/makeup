@@ -249,12 +249,11 @@ button {
   right: 0;
   bottom: 0;
   left: 0;
+  -webkit-transform: scale(1);
+          transform: scale(1);
 }
 .makeup--mode-1 .makeup__container-markup {
   display: none;
-}
-.makeup__container-markup > * {
-  position: static;
 }
 /* Button */
 .makeup__btn {
