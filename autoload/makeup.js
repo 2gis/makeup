@@ -24718,9 +24718,7 @@ if (typeof window != 'undefined') {
 
             this._state.push(); // wanted state -> actual state
 
-            // setTimeout(_.bind(function() {
-                this._obey(this._state.get()); // init actual state
-            // }, this), 0); // async call for initializing _templating variable
+            this._obey(this._state.get()); // init actual state
 
             return this;
         },
@@ -25083,15 +25081,16 @@ if (typeof window != 'undefined') {
 
             horizontalRuler.pos(0, 0);
             horizontalRuler.pos(1, value);
+
+            this._horizontalRuler = horizontalRuler;
         },
 
         _applyRulerPosition: function(pos) {
-            var params = this._params,
-                container = $(params.selectors.container);
-
-            container.css({
-                width: validateRangeValue(pos, params.ruler.h.slider) + 'px'
+            var width = validateRangeValue(pos, this._params.ruler.h.slider);
+            this.el.container.css({
+                width: width + 'px'
             });
+            // @TODO sync rader value
         },
 
         _bindSmileyListeners: function() {
@@ -25233,9 +25232,13 @@ if (typeof window != 'undefined') {
          * Render item
          */
         _renderItem: function(chain) {
+            var makeup = this;
             var itemsChain = this._itemsChain(chain);
+            var item = _.last(itemsChain);
             var instance = _.reduce(itemsChain, function(result, item) {
-                result[item.type] = item.name;
+                if (item.type) {
+                    result[item.type] = item.name;
+                }
 
                 return result;
             }, {}, this);
@@ -25256,16 +25259,38 @@ if (typeof window != 'undefined') {
             }
 
             // Загружаем изображение
+            this.el.containerImage.empty();
             var src = this._find(itemsChain, 'image');
-            if (!src) {
-                var imagePrefix = this._find(itemsChain, 'imagePrefix');
-                src = imagePrefix + instance.item + '.png';
+            var imagePrefix = this._find(itemsChain, 'imagePrefix');
+            if (!src && imagePrefix) {
+                src = imagePrefix + item.name + '.png';
             }
-            this._loadImage(src);
+            if (src) {
+                this._loadImage(src);
+            } else {
+                // @TODO State closers
+                setTimeout(function() {
+                    makeup._state.set({mode: 2, transparency: 1});
+                }, 0);
+            }
 
             // data -> html
             var html = this._templating(instance);
-            this._containerMarkup.html(html);
+
+            var width = this._find(itemsChain, ['width']);
+
+            if (typeof html != 'string') {
+                if (html.html) {
+                    width = html.data && html.data.width;
+                    html = html.html;
+                }
+            }
+
+            this._containerMarkup.html(cutScripts(html));
+
+            if (width) {
+                this._state.set({ width: width });
+            }
 
             // Навешиваем допклассы на блок
             classes = this._map(itemsChain, 'cls').join(' ');
@@ -25284,34 +25309,31 @@ if (typeof window != 'undefined') {
          * @param {string} src URL изображения
          */
         _loadImage: function(src) {
-            var self = this,
+            var makeup = this,
                 img = new Image(),
-                selectors = self._params.selectors,
-                container = selectors.containerImage,
-                imageClass = selectors.containerImageRegular.slice(1);
+                imageClass = makeup._params.selectors.containerImageRegular.slice(1);
 
-            $(container).empty();
+            $(this.el.containerImage).empty();
             this.imageLoader = null;
 
             img.onload = this.imageLoader = function(event) {
                 img.onload = img.onerror = this.imageLoader = null;
 
-                $(container).empty();
                 $(this)
                     .css({
                         width: img.width,
                         height: img.height
                     })
                     .addClass(imageClass)
-                    .appendTo(container);
+                    .appendTo(makeup.el.containerImage);
 
-                self._invertImage(img);
+                makeup._invertImage(img);
             };
 
             img.onerror = function(event) {
                 img.onerror = null;
 
-                self._state.set({mode: 2, transparency: 1});
+                makeup._state.set({mode: 2, transparency: 1});
             };
 
             img.src = src;
@@ -25498,6 +25520,15 @@ if (typeof window != 'undefined') {
         return value;
     }
 
+    function cutScripts(html) {
+        var stripped = $('<div>').html(html);
+        stripped.find('script').remove();
+        stripped.find('[onload]').attr('onload', null);
+        stripped.find('[onerror]').attr('onerror', null);
+        stripped.find('[href]').attr('target', '_blank');
+        return stripped.html();
+    }
+
     if (typeof TEST != 'undefined' && TEST) {
         module.exports = Makeup.prototype;
         Handlebars = require('handlebars');
@@ -25567,6 +25598,58 @@ if (typeof window != 'undefined') {
             var block = getBlockName(this);
             if (block) {
                 blocks.push(block);
+            }
+        });
+
+        blocks = _.uniq(blocks);
+
+        if (blocks.length) {
+            return blocks;
+        }
+
+        // if there are no BEM blocks, search for common block names + body children
+        var commonBlockNames = [
+            'head',
+            'header',
+            'nav',
+            'navigation',
+            'menu',
+            'item',
+            'list',
+            'footer',
+            'main',
+            'content',
+            'box',
+            'popup',
+            'post',
+            'btn',
+            'button',
+            'auth',
+            'user',
+            'home',
+            'player',
+            'logo',
+            'section',
+            'article',
+            'login',
+            'form',
+            'table',
+            'profile'
+        ];
+
+        $(root).find('.' + commonBlockNames.join(',.')).each(function() {
+            var classes = _.compact(this.className.split(' '));
+            var blockName = _.intersection(classes, commonBlockNames)[0];
+
+            if (blockName) {
+                blocks.push(blockName);
+            }
+        });
+
+        $(root).children().each(function() {
+            var firstClass = _.compact(this.className.split(' '))[0];
+            if (firstClass) {
+                blocks.push(firstClass);
             }
         });
 
@@ -26005,12 +26088,12 @@ if (typeof window != 'undefined') {
             item._chain = parent._chain.slice(0).concat(item.name || 'Untitled'); // slice to clone array
 
             item._state = {};
-            item.type = item.type || 'item';
+            item.type = item.type || 'block';
 
             traverseItems(item.items, item, index);
         }
 
-        traverseItems(out.data[0].items, {
+        traverseItems(out.data && out.data[0] && out.data[0].items, {
             _id: '',
             _chain: []
         }, 0);
@@ -26019,10 +26102,16 @@ if (typeof window != 'undefined') {
     };
 
     Makeup.fn._templating = function(params) {
-        var node = $('.' + params.block)[0];
+        var node = $('.' + params.block);
+        var maxWidth = this.el.box.width() - 80;
 
-        if (node) {
-            return node.outerHTML;
+        if (node.length) {
+            return {
+                data: {
+                    width: Math.min(node.outerWidth(true), maxWidth)
+                },
+                html: node[0].outerHTML
+            };
         }
 
         return '418. I am a teapot.';

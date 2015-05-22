@@ -37,7 +37,7 @@
         switch (params.module) {
             case 'makeup': return Makeup.Handlebars.partials.makeup(makeupCtx);
             case 'Hello World!': return '<div class="helloworld">Hello World!</div>';
-            case 'miniCard': return miniCardTemplate(miniCardCtx[params.item]);
+            case 'miniCard': return miniCardTemplate(miniCardCtx[params.block]);
             case 'promo': return promoTemplate(promoCtx[params.type]);
         }
 
