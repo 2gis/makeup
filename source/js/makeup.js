@@ -631,6 +631,7 @@ if (typeof window != 'undefined') {
             }
 
             // Загружаем изображение
+            this.el.containerImage.empty();
             var src = this._find(itemsChain, 'image');
             var imagePrefix = this._find(itemsChain, 'imagePrefix');
             if (!src && imagePrefix) {
@@ -680,34 +681,31 @@ if (typeof window != 'undefined') {
          * @param {string} src URL изображения
          */
         _loadImage: function(src) {
-            var self = this,
+            var makeup = this,
                 img = new Image(),
-                selectors = self._params.selectors,
-                container = selectors.containerImage,
-                imageClass = selectors.containerImageRegular.slice(1);
+                imageClass = makeup._params.selectors.containerImageRegular.slice(1);
 
-            $(container).empty();
+            $(this.el.containerImage).empty();
             this.imageLoader = null;
 
             img.onload = this.imageLoader = function(event) {
                 img.onload = img.onerror = this.imageLoader = null;
 
-                $(container).empty();
                 $(this)
                     .css({
                         width: img.width,
                         height: img.height
                     })
                     .addClass(imageClass)
-                    .appendTo(container);
+                    .appendTo(makeup.el.containerImage);
 
-                self._invertImage(img);
+                makeup._invertImage(img);
             };
 
             img.onerror = function(event) {
                 img.onerror = null;
 
-                self._state.set({mode: 2, transparency: 1});
+                makeup._state.set({mode: 2, transparency: 1});
             };
 
             img.src = src;

@@ -232,7 +232,7 @@
             item._chain = parent._chain.slice(0).concat(item.name || 'Untitled'); // slice to clone array
 
             item._state = {};
-            item.type = item.type || 'item';
+            item.type = item.type || 'block';
 
             traverseItems(item.items, item, index);
         }

@@ -3,6 +3,7 @@ var data = [{
     items: [{
         name: 'promo',
         type: 'module',
+        width: 900,
         items: [
             {
                 name: 'default',
