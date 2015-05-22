@@ -34,6 +34,10 @@
     };
 
     Makeup.fn._getParams = function(params) {
+        if (!params) {
+            params = this.detectBlocks();
+        }
+
         if (_.isArray(params)) { // Если переданы только данные
             if (_.isString(params[0])) {
                 params = [{
