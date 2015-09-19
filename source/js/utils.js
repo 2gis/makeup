@@ -44,7 +44,7 @@
      * [{type: {mode: 'asd'}}, {type: mode:{'qwe'}}], ['type', 'mode'] => ['asd', 'qwe']
      */
     Makeup.fn._map = function(_itemsChain, key) {
-        var chain = _.clone(_itemsChain).reverse(); // parent-child => child-parent
+        var chain = _.clone(_itemsChain);
 
         return _.compact(_.map(chain, function(item) {
             if (_.isString(key)) {
