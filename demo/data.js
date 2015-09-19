@@ -1,4 +1,4 @@
-var data = [{
+var data = {
     label: 'Простые блоки',
     items: [{
         name: 'promo',
@@ -80,7 +80,7 @@ var data = [{
             }]
         }]
     }]
-}];
+};
 
 var makeupCtx = {
 

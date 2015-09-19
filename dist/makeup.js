@@ -24704,9 +24704,8 @@ if (typeof window != 'undefined') {
         // Инициализация makeup: подтягивание конфига, данных, рендеринг, навешивание событий
         _init: function(options) {
             this._instanceId = new Date().getTime() % 100000000; // ~ 1 day
-
             this._params = this._getParams(options); // @see params.js
-            this._items = this._params.data && this._params.data[0] && this._params.data[0].items; // @TODO use all data, root groups must work as regular groups
+            this._items = this._params.data && this._params.data.items;
             this._state = new this._State();
 
             this._render();
@@ -26004,7 +26003,7 @@ if (typeof window != 'undefined') {
                 var domMode = !_.has(this, '_templating');
                 var maxWidth = 900;
 
-                params = [{
+                params = {
                     items: _.compact(_.map(params, function(str, i) {
                         var item = {
                             name: str,
@@ -26036,9 +26035,11 @@ if (typeof window != 'undefined') {
 
                         return item;
                     }))
-                }];
+                };
             }
+        }
 
+        if (params.items) {
             params = {
                 data: params
             };
@@ -26226,7 +26227,7 @@ if (typeof window != 'undefined') {
             traverseItems(item.items, item, index);
         }
 
-        traverseItems(out.data && out.data[0] && out.data[0].items, {
+        traverseItems(out.data && out.data.items, {
             _id: '',
             _chain: []
         }, 0);

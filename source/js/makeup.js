@@ -76,9 +76,8 @@ if (typeof window != 'undefined') {
         // Инициализация makeup: подтягивание конфига, данных, рендеринг, навешивание событий
         _init: function(options) {
             this._instanceId = new Date().getTime() % 100000000; // ~ 1 day
-
             this._params = this._getParams(options); // @see params.js
-            this._items = this._params.data && this._params.data[0] && this._params.data[0].items; // @TODO use all data, root groups must work as regular groups
+            this._items = this._params.data && this._params.data.items;
             this._state = new this._State();
 
             this._render();

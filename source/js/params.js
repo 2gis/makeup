@@ -55,7 +55,7 @@
                 var domMode = !_.has(this, '_templating');
                 var maxWidth = 900;
 
-                params = [{
+                params = {
                     items: _.compact(_.map(params, function(str, i) {
                         var item = {
                             name: str,
@@ -87,9 +87,11 @@
 
                         return item;
                     }))
-                }];
+                };
             }
+        }
 
+        if (params.items) {
             params = {
                 data: params
             };
@@ -277,7 +279,7 @@
             traverseItems(item.items, item, index);
         }
 
-        traverseItems(out.data && out.data[0] && out.data[0].items, {
+        traverseItems(out.data && out.data.items, {
             _id: '',
             _chain: []
         }, 0);
