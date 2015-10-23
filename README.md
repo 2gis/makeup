@@ -104,4 +104,6 @@ templating(ctx) {
 
 [Горячие клавиши в интерфейсе Makeup](docs/keyboard.md)
 
-До 23 октября 2015 года под именем makeup находился другой проект. Вы можете получить доступ к проекту node-makeup в [гите](https://github.com/defunctzombie/node-makeup).
+До 23 октября 2015 года под именем «makeup» в npm находился другой проект — «node-makeup». Вы можете получить доступ к проекту «node-makeup» в [гите](https://github.com/defunctzombie/node-makeup).
+
+Another project ("node-makeup") has been published in npm with name "makeup" till 23.10.2015. You can find previous project in [github with name "node-makeup"](https://github.com/defunctzombie/node-makeup).
