@@ -103,3 +103,5 @@ templating(ctx) {
 Демо будет доступно по адресу [localhost:3333/demo](http://localhost:3333/demo).
 
 [Горячие клавиши в интерфейсе Makeup](docs/keyboard.md)
+
+До 23 октября 2015 года под именем makeup находился другой проект. Вы можете получить доступ к проекту node-makeup в [гите](https://github.com/defunctzombie/node-makeup).
