@@ -1,6 +1,6 @@
 {
   "name": "makeup",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/makeup.js",
   "scripts": {
@@ -11,7 +11,16 @@
     "type": "git",
     "url": "git://github.com/2gis/makeup.git"
   },
-  "author": "",
+  "author": {
+    "name": "Tim Chaptykov",
+    "email": "tim.chaptykov@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Tim Chaptykov",
+      "email": "tim.chaptykov@gmail.com"
+    }
+  ],
   "license": "MPL 2.0",
   "bugs": {
     "url": "https://github.com/2gis/makeup/issues"
