@@ -16,7 +16,6 @@ logs
 results
 temp
 node_modules
-bower_components
 .idea/
 
 dist/assets/
