@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/2gis/makeup.svg)](https://travis-ci.org/2gis/makeup) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/2gis/makeup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-## What is Makeup?
+## What Is Makeup?
 
 Makeup is a tool for development and comfortable quality assurance of markup on web projects. You'll certainly find it useful if your design is based on independent blocks and you prioritize stability and reliability.
 
@@ -14,25 +14,25 @@ Makeup is a JavaScript library. It provides visual interface for isolated develo
 
 Check out the interactive [Makeup promotion site](http://2gis.github.io/makeup)!
 
-## Why should I use it?
+## Why Should I Use Makeup?
 
-Makeup lets you:
+Makeup allows you to:
 
 * Compare page design with the sample layout,
 * Monitor blocks for modifications and mismatching content,
 * Develop isolated blocks with ease.
 
-###Examples
+### Examples
 
 Features of Makeup can be seen on the [Makeup demo page](http://2gis.github.io/makeup/demo).
 
 Examples can be found in the [demo/](demo/) subfolder. Just open any `.html` file in your browser.
 
-### Shortcuts
+### Keyboard Shortcuts
 
-Makeup has convenient keyboard shortcuts. See the [cheatsheet](docs/en/keyboard.md).
+Makeup has convenient keyboard shortcuts – see the [cheatsheet](docs/en/keyboard.md).
 
-## How can I use it?
+## How Do I Use Makeup?
 
 ### Makeup Express
 
@@ -44,7 +44,7 @@ s.src ="//2gis.github.io/makeup/autoload/script.js";
 document.body.appendChild(s);
 ```
 
-### Quick start with Makeup
+### Quick Start With Makeup
 
 1. Make a web page with all resourses of your page's layout (markup, styles and images):
 
@@ -69,7 +69,6 @@ document.body.appendChild(s);
     <head>
         <title>Makeup</title>
         <link rel="stylesheet" href="style.css">
-
         <script src="makeup.js"></script><!-- Makeup -->
         <link rel="stylesheet" href="makeup.css"> <!-- Makeup styles -->
     </head>
@@ -91,7 +90,7 @@ document.body.appendChild(s);
 
 ## Development
 
-You are welcome to take part in the development of Makeup. To start working, follow this instruction:
+You are welcome to take part in the development of Makeup. To start working, follow the instruction:
 
 1. Make sure that you have *nodejs*, *npm* and *gulp* installed.
 
