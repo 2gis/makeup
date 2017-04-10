@@ -1,6 +1,6 @@
-# Makeup keyboard shortcuts
+# Makeup Keyboard Shortcuts
 
-## Switching views
+## Switching Views
 
 * `1` – Image view,
 * `2` – Markup view,

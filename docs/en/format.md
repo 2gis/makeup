@@ -1,8 +1,15 @@
-# Initialization data format
+# Initialization Data Format
 
 ```js
 Makeup(params, templating);
 ```
+
+- [`params`](#params)
+  - [`item`](#item)
+  - [`styles`](#styles)
+- [`templating`](#templating)
+  - [`ctx`](#ctx)
+  - [`html`](#html)
 
 ## `params`
 
